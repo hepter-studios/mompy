@@ -14,6 +14,33 @@
 
 **Mompy** is a retro CRT-style desktop app that teaches Python through guided missions, instant feedback, local progress, sound effects, and a friendly monitor mascot.
 
+> [!NOTE]
+> Mompy is currently in active development. The repository is public, but the first downloadable Windows version is still being prepared.
+
+---
+
+## Download options
+
+Mompy is planned to be distributed as a Windows desktop app.
+
+| Option | Status | Description |
+| --- | --- | --- |
+| **Windows installer** | Planned | Future `.exe` installer published through [GitHub Releases](https://github.com/macksonvictor/mompy/releases). |
+| **Portable build** | Planned | Future portable version for testing without full installation. |
+| **Source code** | Available | Developers can clone the repository and run the project locally while it is in development. |
+
+When the first public version is ready, users should download it from:
+
+```txt
+https://github.com/macksonvictor/mompy/releases
+```
+
+The planned official website is:
+
+```txt
+https://mompy.com.br
+```
+
 ---
 
 ## What Mompy does
@@ -47,6 +74,74 @@ The goal is simple: **open Mompy, complete missions, learn Python, and keep prog
 
 ---
 
+## Main app areas
+
+Mompy is structured around a few core screens and systems.
+
+### Loading screen
+
+The app starts with a CRT-style loading screen. It should feel like an old training terminal turning on.
+
+Expected behavior:
+
+- show Mompy branding;
+- animate a loading bar;
+- avoid sound during loading;
+- transition cleanly to the start screen.
+
+### Start screen
+
+The start screen is the user entry point.
+
+Expected behavior:
+
+- show Mompy monitor/mascot;
+- show `START` and `CONTINUE` actions;
+- display local user data;
+- show level and completed missions;
+- play only the calm CRT ambient sound.
+
+### Mission screen
+
+The mission screen is where learning happens.
+
+Expected behavior:
+
+- show mission objective;
+- provide a code editor area;
+- provide output feedback;
+- offer Help, Back, Run, Settings, and Exit controls;
+- validate the answer;
+- update Mompy's state based on success or error.
+
+### Completion flow
+
+When a mission is completed, Mompy should react and ask the user what to do next.
+
+Expected behavior:
+
+- show success feedback;
+- change Mompy to a happy state;
+- display completion text inside Mompy's screen;
+- allow `REPEAT`;
+- allow `NEXT MISSION`;
+- prevent accidental auto-advance.
+
+### Settings
+
+Settings should control the local experience without requiring an online account.
+
+Expected behavior:
+
+- audio on/off;
+- music volume;
+- sound effects volume;
+- language preference;
+- local profile editing;
+- progress reset with confirmation.
+
+---
+
 ## Visual identity
 
 Mompy uses a retro-futuristic visual style inspired by old terminals, CRT monitors, and industrial control panels.
@@ -61,26 +156,30 @@ Main characteristics:
 - retro monitor mascot;
 - old-computer atmosphere.
 
+Mompy should feel like an old intelligent training machine, not a normal website.
+
 ---
 
-## Current features
+## Current feature status
 
-- Retro CRT interface
-- Loading screen
-- Start screen
-- Mission screen
-- Code editor area
-- Output panel
-- Help button
-- Run button
-- Back button
-- Settings modal
-- Local user profile
-- Local progress planning
-- Mompy mascot states
-- Mission completion flow
-- Audio system planning
-- Electron desktop packaging planning
+| Area | Status |
+| --- | --- |
+| Retro CRT interface | In development |
+| Loading screen | In development |
+| Start screen | In development |
+| Mission screen | In development |
+| Code editor area | In development |
+| Output panel | In development |
+| Help / Run / Back buttons | In development |
+| Settings modal | In development |
+| Local user profile | Planned / in progress |
+| Local progress saving | Planned / in progress |
+| Mompy mascot states | Planned / in progress |
+| Mission completion flow | Planned / in progress |
+| Audio system | Planned / in progress |
+| Electron packaging | Planned |
+| GitHub Releases | Planned |
+| Official website | Planned |
 
 ---
 
@@ -151,6 +250,8 @@ For the first version, the following data should stay on the user's computer:
 
 No server, password, or cloud account is required for the first desktop version.
 
+Future online features may exist, but they should be optional.
+
 ---
 
 ## Desktop app
@@ -165,13 +266,38 @@ Electron
 Mompy.exe
 ```
 
-The website will be used mainly as the official page for information and downloads.
+Planned distribution model:
 
 ```txt
 Mompy app = installable desktop app
 mompy.com.br = official website / download page
 GitHub Releases = app installer downloads
 ```
+
+The repository should contain the source code. Installers and generated builds should be published separately through GitHub Releases.
+
+---
+
+## System requirements
+
+### For users
+
+The first desktop version is planned for:
+
+- Windows 10 or newer;
+- keyboard and mouse;
+- enough storage for a small desktop app;
+- no required online account.
+
+### For developers
+
+To run or package the project locally, the recommended tools are:
+
+- Git;
+- Node.js;
+- npm;
+- VS Code or another code editor;
+- Electron / Electron Builder when desktop packaging is configured.
 
 ---
 
@@ -232,7 +358,14 @@ The structure may change while the project is still in development.
 
 ## Development
 
-After installing dependencies:
+Clone the repository:
+
+```bash
+git clone https://github.com/macksonvictor/mompy.git
+cd mompy
+```
+
+Install dependencies:
 
 ```bash
 npm install
@@ -250,6 +383,9 @@ Or, depending on the current setup:
 npm start
 ```
 
+> [!NOTE]
+> The development commands may change while the Electron structure is being completed.
+
 ---
 
 ## Build
@@ -261,6 +397,19 @@ npm run build
 ```
 
 The generated installer or executable should not be committed directly into the repository.
+
+Do not commit:
+
+```txt
+node_modules/
+dist/
+build/
+release/
+out/
+.env
+*.exe
+*.log
+```
 
 Installers should be published later through **GitHub Releases**.
 
@@ -390,6 +539,14 @@ Before release:
 - [ ] Next Mission works
 - [ ] Settings and Exit still work
 
+### Settings
+
+- [ ] Settings modal opens
+- [ ] Audio settings save
+- [ ] Profile editing works
+- [ ] Progress reset asks confirmation
+- [ ] Language preference is saved
+
 ### GitHub
 
 - [ ] `.gitignore` exists
@@ -427,19 +584,6 @@ git commit -m "Add Mompy audio system"
 git push
 ```
 
-Files that should not be pushed:
-
-```txt
-node_modules/
-dist/
-build/
-release/
-out/
-.env
-*.exe
-*.log
-```
-
 ---
 
 ## Official website
@@ -447,7 +591,7 @@ out/
 Planned official website:
 
 ```txt
-mompy.com.br
+https://mompy.com.br
 ```
 
 The website can be used for:
@@ -479,6 +623,12 @@ A ideia é unir:
 
 O objetivo é fazer o aprendizado de programação parecer mais divertido, focado e memorável.
 
+Quando a primeira versão pública estiver pronta, o download deverá ficar disponível em:
+
+```txt
+https://github.com/macksonvictor/mompy/releases
+```
+
 ---
 
 ## Author
@@ -488,7 +638,7 @@ Created by **Mackson Victor**.
 GitHub:
 
 ```txt
-github.com/macksonvictor
+https://github.com/macksonvictor
 ```
 
 ---
