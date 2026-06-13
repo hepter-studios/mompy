@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/branding/mompy-cover.svg" alt="Mompy retro monitor cover" width="420">
+  <img src="assets/branding/mompy-cover.webp" alt="Mompy monitor showing GitHub logo" width="420">
 </p>
 
 # Mompy: Learn Python with a Retro Training Console
