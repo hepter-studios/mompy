@@ -5,7 +5,7 @@
 # Mompy: Learn Python with a Retro Training Console
 
 [![Status](https://img.shields.io/badge/status-in%20development-8cff3a?style=for-the-badge)](#project-status)
-[![Platform](https://img.shields.io/badge/platform-Windows-0b5fff?style=for-the-badge&logo=windows&logoColor=white)](#desktop-app)
+[![Platform](https://img.shields.io/badge/platform-cross--platform-6f42c1?style=for-the-badge)](#desktop-app)
 [![Built with](https://img.shields.io/badge/built%20with-HTML%20%7C%20CSS%20%7C%20JS-f7df1e?style=for-the-badge&logo=javascript&logoColor=black)](#technology-stack)
 [![Desktop](https://img.shields.io/badge/desktop-Electron-47848f?style=for-the-badge&logo=electron&logoColor=white)](#desktop-app)
 [![Python Training](https://img.shields.io/badge/python-training-3776ab?style=for-the-badge&logo=python&logoColor=white)](#what-mompy-does)
@@ -15,18 +15,20 @@
 **Mompy** is a retro CRT-style desktop app that teaches Python through guided missions, instant feedback, local progress, sound effects, and a friendly monitor mascot.
 
 > [!NOTE]
-> Mompy is currently in active development. The repository is public, but the first downloadable Windows version is still being prepared.
+> Mompy is currently in active development. The repository is public, but the first downloadable desktop versions are still being prepared.
 
 ---
 
 ## Download options
 
-Mompy is planned to be distributed as a Windows desktop app.
+Mompy is planned to be distributed as an installable desktop app.
 
 | Option | Status | Description |
 | --- | --- | --- |
-| **Windows installer** | Planned | Future `.exe` installer published through [GitHub Releases](https://github.com/macksonvictor/mompy/releases). |
-| **Portable build** | Planned | Future portable version for testing without full installation. |
+| **Desktop releases** | Planned | Future app builds published through [GitHub Releases](https://github.com/macksonvictor/mompy/releases). |
+| **Windows build** | Planned | Installable `.exe` or installer package. |
+| **macOS build** | Planned | Future macOS app build. |
+| **Linux build** | Planned | Future Linux package or portable build. |
 | **Source code** | Available | Developers can clone the repository and run the project locally while it is in development. |
 
 When the first public version is ready, users should download it from:
@@ -38,7 +40,7 @@ https://github.com/macksonvictor/mompy/releases
 The planned official website is:
 
 ```txt
-https://mompy.com.br
+https://mompy.co
 ```
 
 ---
@@ -227,7 +229,9 @@ Mompy should feel like an old intelligent training machine, not a normal website
 ### Desktop app
 
 - Electron app
-- Windows `.exe`
+- Windows build
+- macOS build
+- Linux build
 - Local-first storage
 - GitHub Releases
 - Official website/download page
@@ -263,18 +267,43 @@ HTML + CSS + JavaScript
 ↓
 Electron
 ↓
-Mompy.exe
+Desktop app releases
 ```
 
 Planned distribution model:
 
 ```txt
 Mompy app = installable desktop app
-mompy.com.br = official website / download page
-GitHub Releases = app installer downloads
+mompy.co = official website / download page
+GitHub Releases = app downloads
 ```
 
 The repository should contain the source code. Installers and generated builds should be published separately through GitHub Releases.
+
+---
+
+## Platform strategy
+
+Mompy should not be described as Windows-only.
+
+The project can start with one platform during early testing, but the long-term direction is:
+
+| Platform | Status |
+| --- | --- |
+| Windows | Planned |
+| macOS | Planned |
+| Linux | Planned |
+| Web version | Possible future option, mainly for preview or documentation |
+
+Each operating system may need its own build/package later. GitHub Releases can contain separate downloads for each platform.
+
+Example future release assets:
+
+```txt
+Mompy-Setup-Windows.exe
+Mompy-macOS.dmg
+Mompy-Linux.AppImage
+```
 
 ---
 
@@ -282,9 +311,11 @@ The repository should contain the source code. Installers and generated builds s
 
 ### For users
 
-The first desktop version is planned for:
+The first public releases are planned for desktop computers.
 
-- Windows 10 or newer;
+Expected requirements:
+
+- Windows, macOS, or Linux depending on the release package;
 - keyboard and mouse;
 - enough storage for a small desktop app;
 - no required online account.
@@ -408,10 +439,12 @@ release/
 out/
 .env
 *.exe
+*.dmg
+*.AppImage
 *.log
 ```
 
-Installers should be published later through **GitHub Releases**.
+Installers and packaged builds should be published later through **GitHub Releases**.
 
 ---
 
@@ -425,10 +458,12 @@ Example future release:
 
 ```txt
 Mompy v1.0.0
-Mompy-Setup.exe
+Mompy-Setup-Windows.exe
+Mompy-macOS.dmg
+Mompy-Linux.AppImage
 ```
 
-Users will be able to download the installer without touching the source code.
+Users will be able to download the app without touching the source code.
 
 ---
 
@@ -497,7 +532,7 @@ Fix bugs, improve alignment, test screens, test audio, test progress, and create
 
 ### Phase 10 — Desktop App and GitHub
 
-Configure Electron, prepare the Windows desktop app, organize the repository, and push the project to GitHub.
+Configure Electron, prepare desktop packaging, organize the repository, and push the project to GitHub.
 
 ---
 
@@ -591,7 +626,7 @@ git push
 Planned official website:
 
 ```txt
-https://mompy.com.br
+https://mompy.co
 ```
 
 The website can be used for:
@@ -619,14 +654,20 @@ A ideia é unir:
 - missões de Python;
 - feedback visual e sonoro;
 - progresso salvo localmente;
-- aplicativo instalável para Windows.
+- aplicativo desktop instalável.
 
-O objetivo é fazer o aprendizado de programação parecer mais divertido, focado e memorável.
+O Mompy não deve ser apresentado como um projeto apenas para Windows. A primeira fase pode começar por uma plataforma, mas a direção correta é preparar versões desktop para Windows, macOS e Linux quando o empacotamento estiver pronto.
 
 Quando a primeira versão pública estiver pronta, o download deverá ficar disponível em:
 
 ```txt
 https://github.com/macksonvictor/mompy/releases
+```
+
+Site oficial planejado:
+
+```txt
+https://mompy.co
 ```
 
 ---
