@@ -53,6 +53,15 @@ const settingsState = {
 
 let pythonBackendConnected = false;
 
+const PYTHON_HTTP_ROUTES = {
+  get_bootstrap_state: { method: "GET", path: "/api/bootstrap" },
+  validate_mission: { method: "POST", path: "/api/validate", body: ([missionId, userCode]) => ({ mission_id: missionId, user_code: userCode }) },
+  complete_mission: { method: "POST", path: "/api/complete", body: ([missionId]) => ({ mission_id: missionId }) },
+  reset_progress: { method: "POST", path: "/api/reset", body: () => ({}) },
+  save_profile: { method: "POST", path: "/api/profile/save", body: ([profile]) => ({ profile }) },
+  logout_profile: { method: "POST", path: "/api/profile/logout", body: () => ({}) },
+};
+
 function getPythonBackend() {
   return window.pywebview?.api || null;
 }
@@ -60,16 +69,39 @@ function getPythonBackend() {
 async function callPythonBackend(method, ...args) {
   const backend = getPythonBackend();
 
-  if (!backend || typeof backend[method] !== "function") {
+  if (backend && typeof backend[method] === "function") {
+    try {
+      const result = await backend[method](...args);
+      pythonBackendConnected = true;
+      return result;
+    } catch (error) {
+      console.warn(`Mompy Python backend call failed: ${method}`, error);
+    }
+  }
+
+  const route = PYTHON_HTTP_ROUTES[method];
+  const canUseHttpBackend = route && ["http:", "https:"].includes(window.location.protocol);
+
+  if (!canUseHttpBackend) {
     return null;
   }
 
   try {
-    const result = await backend[method](...args);
+    const response = await fetch(route.path, {
+      method: route.method,
+      headers: route.method === "POST" ? { "Content-Type": "application/json" } : undefined,
+      body: route.method === "POST" ? JSON.stringify(route.body(args)) : undefined,
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const result = await response.json();
     pythonBackendConnected = true;
     return result;
   } catch (error) {
-    console.warn(`Mompy Python backend call failed: ${method}`, error);
+    console.warn(`Mompy Python HTTP backend call failed: ${method}`, error);
     return null;
   }
 }
@@ -109,6 +141,30 @@ function applyPythonProfile(profile) {
   renderStartUserInfo();
 }
 
+function normalizePythonMission(mission) {
+  return {
+    id: mission.id,
+    level: mission.level,
+    title: mission.title,
+    description: mission.description,
+    objective: mission.objective,
+    starterCode: mission.starterCode ?? mission.starter_code ?? "",
+    expectedOutput: mission.expectedOutput ?? mission.expected_output ?? "",
+    help: mission.help,
+    blocks: mission.blocks,
+    xp: mission.xp,
+  };
+}
+
+function applyPythonMissions(pythonMissions) {
+  if (!Array.isArray(pythonMissions) || pythonMissions.length === 0) {
+    return;
+  }
+
+  missions.splice(0, missions.length, ...pythonMissions.map(normalizePythonMission));
+  currentMissionIndex = clampMissionIndex(currentMissionIndex);
+}
+
 async function syncPythonBackendState() {
   const state = await callPythonBackend("get_bootstrap_state");
 
@@ -116,6 +172,7 @@ async function syncPythonBackendState() {
     return;
   }
 
+  applyPythonMissions(state.missions);
   applyPythonProfile(state.profile);
   applyPythonProgress(state.progress);
 
@@ -139,6 +196,10 @@ function schedulePythonBackendSync() {
 document.addEventListener("pywebviewready", () => {
   schedulePythonBackendSync();
 });
+
+if (["http:", "https:"].includes(window.location.protocol)) {
+  schedulePythonBackendSync();
+}
 
 const learningBriefings = [
   {
@@ -388,12 +449,6 @@ const missions = [
         { text: "Hello, Mompy!", tag: "strong" },
       ],
     ],
-    validate(code) {
-      return matchesCode(code, [
-        /^print\s*\(\s*"Hello,\s*Mompy!"\s*\)$/,
-        /^print\s*\(\s*'Hello,\s*Mompy!'\s*\)$/,
-      ]);
-    },
   },
   {
     id: "mission_002",
@@ -404,11 +459,6 @@ const missions = [
     starterCode: 'name = "Mompy"\n',
     expectedOutput: "Mompy",
     help: 'Depois de criar a variável, use print(name). Não coloque name entre aspas no print.',
-    validate(code) {
-      return matchesCode(code, [
-        /name\s*=\s*["']Mompy["'][\s\S]*print\s*\(\s*name\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_003",
@@ -419,12 +469,6 @@ const missions = [
     starterCode: "a = 2\nb = 3\n",
     expectedOutput: "5",
     help: "Você pode usar print(a + b) depois de criar as variáveis.",
-    validate(code) {
-      return matchesCode(code, [
-        /print\s*\(\s*(2\s*\+\s*3|3\s*\+\s*2)\s*\)/,
-        /a\s*=\s*2[\s\S]*b\s*=\s*3[\s\S]*print\s*\(\s*(a\s*\+\s*b|b\s*\+\s*a)\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_004",
@@ -435,12 +479,6 @@ const missions = [
     starterCode: "power = True\n",
     expectedOutput: "Ready",
     help: 'Use if power: e, dentro dele, print("Ready").',
-    validate(code) {
-      return matchesCode(code, [
-        /if\s+power\s*:\s*[\s\S]*print\s*\(\s*["']Ready["']\s*\)/,
-        /if\s+True\s*:\s*[\s\S]*print\s*\(\s*["']Ready["']\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_005",
@@ -451,11 +489,6 @@ const missions = [
     starterCode: "for i in range(3):\n    ",
     expectedOutput: "0\n1\n2",
     help: "Dentro do for, use print(i). A linha do print precisa ficar indentada.",
-    validate(code) {
-      return matchesCode(code, [
-        /for\s+i\s+in\s+range\s*\(\s*3\s*\)\s*:\s*[\s\S]*print\s*\(\s*i\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_006",
@@ -466,11 +499,6 @@ const missions = [
     starterCode: 'items = ["onion", "terminal", "python"]\n',
     expectedOutput: "terminal",
     help: "O primeiro item é índice 0. O segundo item é items[1].",
-    validate(code) {
-      return matchesCode(code, [
-        /items\s*=\s*\[[\s\S]*["']onion["'][\s\S]*["']terminal["'][\s\S]*["']python["'][\s\S]*\][\s\S]*print\s*\(\s*items\s*\[\s*1\s*\]\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_007",
@@ -481,12 +509,6 @@ const missions = [
     starterCode: 'word = "Mompy"\n',
     expectedOutput: "5",
     help: "Use print(len(word)) ou print(len(\"Mompy\")).",
-    validate(code) {
-      return matchesCode(code, [
-        /word\s*=\s*["']Mompy["'][\s\S]*print\s*\(\s*len\s*\(\s*word\s*\)\s*\)/,
-        /print\s*\(\s*len\s*\(\s*["']Mompy["']\s*\)\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_008",
@@ -497,12 +519,6 @@ const missions = [
     starterCode: "def greet(user):\n    ",
     expectedOutput: "Hello, Mompy",
     help: 'Retorne ou imprima "Hello, " + user, depois chame greet("Mompy").',
-    validate(code) {
-      return matchesCode(code, [
-        /def\s+greet\s*\(\s*user\s*\)\s*:\s*[\s\S]*(return|print)\s*\(?\s*f?["']Hello,\s*\{?user\}?["']\s*\)?[\s\S]*print\s*\(\s*greet\s*\(\s*["']Mompy["']\s*\)\s*\)/,
-        /def\s+greet\s*\(\s*user\s*\)\s*:\s*[\s\S]*return\s+["']Hello,\s*["']\s*\+\s*user[\s\S]*print\s*\(\s*greet\s*\(\s*["']Mompy["']\s*\)\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_009",
@@ -513,11 +529,6 @@ const missions = [
     starterCode: "is_ready = True\n",
     expectedOutput: "True",
     help: "Use print(is_ready). Em Python, True começa com T maiúsculo.",
-    validate(code) {
-      return matchesCode(code, [
-        /is_ready\s*=\s*True[\s\S]*print\s*\(\s*is_ready\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_010",
@@ -528,12 +539,6 @@ const missions = [
     starterCode: 'name = "mompy"\n',
     expectedOutput: "MOMPY",
     help: "Use name.upper() dentro do print.",
-    validate(code) {
-      return matchesCode(code, [
-        /name\s*=\s*["']mompy["'][\s\S]*print\s*\(\s*name\.upper\s*\(\s*\)\s*\)/,
-        /print\s*\(\s*["']mompy["']\.upper\s*\(\s*\)\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_011",
@@ -544,11 +549,6 @@ const missions = [
     starterCode: "numbers = [1, 2, 3]\n",
     expectedOutput: "[1, 2, 3, 4]",
     help: "Use numbers.append(4), depois print(numbers).",
-    validate(code) {
-      return matchesCode(code, [
-        /numbers\s*=\s*\[\s*1\s*,\s*2\s*,\s*3\s*\][\s\S]*numbers\.append\s*\(\s*4\s*\)[\s\S]*print\s*\(\s*numbers\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_012",
@@ -559,11 +559,6 @@ const missions = [
     starterCode: 'profile = {"name": "Mompy"}\n',
     expectedOutput: "Mompy",
     help: 'Use print(profile["name"]).',
-    validate(code) {
-      return matchesCode(code, [
-        /profile\s*=\s*\{[\s\S]*["']name["']\s*:\s*["']Mompy["'][\s\S]*\}[\s\S]*print\s*\(\s*profile\s*\[\s*["']name["']\s*\]\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_013",
@@ -574,11 +569,6 @@ const missions = [
     starterCode: "count = 0\nwhile count < 3:\n    ",
     expectedOutput: "0\n1\n2",
     help: "Dentro do while, use print(count) e depois count += 1.",
-    validate(code) {
-      return matchesCode(code, [
-        /count\s*=\s*0[\s\S]*while\s+count\s*<\s*3\s*:\s*[\s\S]*print\s*\(\s*count\s*\)[\s\S]*count\s*(\+=\s*1|=\s*count\s*\+\s*1)/,
-      ]);
-    },
   },
   {
     id: "mission_014",
@@ -589,11 +579,6 @@ const missions = [
     starterCode: 'user = "Mackson"\n',
     expectedOutput: "Hello, Mackson",
     help: 'Use print(f"Hello, {user}").',
-    validate(code) {
-      return matchesCode(code, [
-        /user\s*=\s*["']Mackson["'][\s\S]*print\s*\(\s*f["']Hello,\s*\{user\}["']\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_015",
@@ -604,11 +589,6 @@ const missions = [
     starterCode: "",
     expectedOutput: "True",
     help: "Use print(10 > 3).",
-    validate(code) {
-      return matchesCode(code, [
-        /print\s*\(\s*10\s*>\s*3\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_016",
@@ -619,11 +599,6 @@ const missions = [
     starterCode: "",
     expectedOutput: "0",
     help: "Use print(8 % 2).",
-    validate(code) {
-      return matchesCode(code, [
-        /print\s*\(\s*8\s*%\s*2\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_017",
@@ -634,11 +609,6 @@ const missions = [
     starterCode: "numbers = [1, 2, 3]\n",
     expectedOutput: "[2, 4, 6]",
     help: "Use print([n * 2 for n in numbers]).",
-    validate(code) {
-      return matchesCode(code, [
-        /numbers\s*=\s*\[\s*1\s*,\s*2\s*,\s*3\s*\][\s\S]*print\s*\(\s*\[\s*n\s*\*\s*2\s+for\s+n\s+in\s+numbers\s*\]\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_018",
@@ -649,11 +619,6 @@ const missions = [
     starterCode: "def add(a, b):\n    ",
     expectedOutput: "5",
     help: "A função deve retornar a + b. Depois use print(add(2, 3)).",
-    validate(code) {
-      return matchesCode(code, [
-        /def\s+add\s*\(\s*a\s*,\s*b\s*\)\s*:\s*[\s\S]*return\s+a\s*\+\s*b[\s\S]*print\s*\(\s*add\s*\(\s*2\s*,\s*3\s*\)\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_019",
@@ -664,11 +629,6 @@ const missions = [
     starterCode: 'phrase = "Python is fun"\n',
     expectedOutput: "['Python', 'is', 'fun']",
     help: "Use print(phrase.split()).",
-    validate(code) {
-      return matchesCode(code, [
-        /phrase\s*=\s*["']Python is fun["'][\s\S]*print\s*\(\s*phrase\.split\s*\(\s*\)\s*\)/,
-      ]);
-    },
   },
   {
     id: "mission_020",
@@ -679,11 +639,6 @@ const missions = [
     starterCode: 'for letter in "py":\n    ',
     expectedOutput: "P\nY",
     help: "Dentro do for, use print(letter.upper()).",
-    validate(code) {
-      return matchesCode(code, [
-        /for\s+letter\s+in\s+["']py["']\s*:\s*[\s\S]*print\s*\(\s*letter\.upper\s*\(\s*\)\s*\)/,
-      ]);
-    },
   },
 ];
 
@@ -1407,17 +1362,6 @@ function updateProgressUI() {
   if (trainingStarted) {
     updateLevelDisplay();
   }
-}
-
-function normalizeCodeForMatch(code) {
-  return String(code || "")
-    .replace(/#.*$/gm, "")
-    .trim();
-}
-
-function matchesCode(code, patterns) {
-  const normalized = normalizeCodeForMatch(code);
-  return patterns.some((pattern) => pattern.test(normalized));
 }
 
 function escapeHtml(value) {
@@ -2598,29 +2542,11 @@ async function validateCode(code) {
     };
   }
 
-  const validation = mission.validate ? mission.validate(code) : false;
-
-  if (validation && typeof validation === "object") {
-    return {
-      ok: Boolean(validation.ok),
-      output: validation.output || mission.expectedOutput,
-      detail: validation.detail || (validation.ok ? "Missão concluída." : mission.help),
-    };
-  }
-
-  if (validation) {
-    return {
-      ok: true,
-      output: mission.expectedOutput,
-      detail: "Missão concluída.",
-    };
-  }
-
   const printed = extractPrintOutput(code);
   return {
     ok: false,
     output: printed || "Ainda não foi dessa vez.",
-    detail: mission.help || "Verifique o objetivo da missão e tente novamente.",
+    detail: "Abra o Mompy pelo Python para usar a validação real das missões.",
   };
 }
 

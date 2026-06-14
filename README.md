@@ -77,13 +77,15 @@ O backend Python foi criado para assumir gradualmente a logica real do app:
 
 - dados das missoes;
 - dados das aulas;
-- validacao simples das respostas;
+- validacao real das 20 missoes atuais;
 - progresso local;
 - XP e nivel;
 - API interna conectada ao frontend via pywebview;
+- API HTTP local para o modo navegador em `python main.py --serve`;
 - estrutura futura de execucao segura de codigo.
 
-Nesta fase, o backend ainda nao executa codigo livre do usuario. Isso fica para a fase de sandbox.
+Nesta fase, o backend valida a estrutura das respostas com AST e regras Python,
+mas ainda nao executa codigo livre do usuario. Isso fica para a fase de sandbox.
 
 ## Testes
 

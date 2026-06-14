@@ -23,7 +23,7 @@ class MompyAPI:
         return {
             "backend": {
                 "name": "Mompy Python Backend",
-                "phase": "10.3",
+                "phase": "10.4",
                 "connected": True,
             },
             "profile": self.get_profile(),

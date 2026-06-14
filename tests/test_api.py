@@ -10,6 +10,9 @@ class ApiTests(unittest.TestCase):
         api = MompyAPI()
         self.assertGreaterEqual(len(api.get_missions()), 20)
         self.assertGreaterEqual(len(api.get_lessons()), 6)
+        mission = api.get_missions()[0]
+        self.assertIn("starterCode", mission)
+        self.assertIn("expectedOutput", mission)
 
     def test_check_answer_can_complete_progress(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -25,7 +28,7 @@ class ApiTests(unittest.TestCase):
             state = api.get_bootstrap_state()
 
             self.assertTrue(state["backend"]["connected"])
-            self.assertEqual(state["backend"]["phase"], "10.3")
+            self.assertEqual(state["backend"]["phase"], "10.4")
             self.assertIn("profile", state)
             self.assertIn("progress", state)
             self.assertEqual(state["current_mission"]["id"], "mission_001")

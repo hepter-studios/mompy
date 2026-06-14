@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import argparse
 import http.server
+import json
 import socketserver
 from pathlib import Path
+from urllib.parse import urlparse
 
 from backend.api import MompyAPI
 
@@ -19,8 +21,88 @@ def serve_frontend(port: int = 8770) -> None:
     handler = http.server.SimpleHTTPRequestHandler
 
     class FrontendHandler(handler):
+        api = MompyAPI()
+
         def __init__(self, *args, **kwargs):
             super().__init__(*args, directory=str(FRONTEND_DIR), **kwargs)
+
+        def send_json(self, payload: dict, status: int = 200) -> None:
+            body = json.dumps(payload).encode("utf-8")
+            self.send_response(status)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def read_json_body(self) -> dict:
+            length = int(self.headers.get("Content-Length", "0") or "0")
+            if length <= 0:
+                return {}
+            raw_body = self.rfile.read(length)
+            try:
+                payload = json.loads(raw_body.decode("utf-8"))
+            except json.JSONDecodeError:
+                return {}
+            return payload if isinstance(payload, dict) else {}
+
+        def do_GET(self) -> None:
+            route = urlparse(self.path).path
+            if route == "/api/bootstrap":
+                self.send_json(self.api.get_bootstrap_state())
+                return
+            if route == "/api/progress":
+                self.send_json(self.api.get_progress())
+                return
+
+            if route.startswith("/frontend/"):
+                parsed = urlparse(self.path)
+                self.path = parsed.path.removeprefix("/frontend") or "/"
+                if parsed.query:
+                    self.path = f"{self.path}?{parsed.query}"
+
+            super().do_GET()
+
+        def do_HEAD(self) -> None:
+            route = urlparse(self.path).path
+            if route.startswith("/frontend/"):
+                parsed = urlparse(self.path)
+                self.path = parsed.path.removeprefix("/frontend") or "/"
+                if parsed.query:
+                    self.path = f"{self.path}?{parsed.query}"
+
+            super().do_HEAD()
+
+        def do_POST(self) -> None:
+            route = urlparse(self.path).path
+            payload = self.read_json_body()
+
+            try:
+                if route == "/api/validate":
+                    self.send_json(
+                        self.api.validate_mission(
+                            str(payload.get("mission_id", "")),
+                            str(payload.get("user_code", "")),
+                        )
+                    )
+                    return
+                if route == "/api/complete":
+                    self.send_json(self.api.complete_mission(str(payload.get("mission_id", ""))))
+                    return
+                if route == "/api/reset":
+                    self.send_json(self.api.reset_progress())
+                    return
+                if route == "/api/profile/save":
+                    profile = payload.get("profile", {})
+                    self.send_json(self.api.save_profile(profile if isinstance(profile, dict) else {}))
+                    return
+                if route == "/api/profile/logout":
+                    self.send_json(self.api.logout_profile())
+                    return
+            except Exception as error:
+                self.send_json({"error": str(error)}, status=400)
+                return
+
+            self.send_json({"error": "Unknown API route."}, status=404)
 
     with socketserver.TCPServer(("127.0.0.1", port), FrontendHandler) as server:
         print(f"Mompy frontend running at http://127.0.0.1:{port}/")

@@ -32,6 +32,8 @@ class Mission:
     def to_dict(self) -> dict:
         data = asdict(self)
         data["expected_concepts"] = list(self.expected_concepts)
+        data["starterCode"] = self.starter_code
+        data["expectedOutput"] = self.expected_output
         return data
 
 
