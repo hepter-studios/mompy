@@ -1,0 +1,56 @@
+name: Feature request
+description: Suggest an improvement, new mission, lesson, UI polish or desktop feature
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for ideas that improve Mompy as a Python training console.
+  - type: textarea
+    id: idea
+    attributes:
+      label: What should be improved?
+      description: Describe the feature or improvement.
+      placeholder: "Example: Add a stronger lesson before the first if/else mission."
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Guided lessons
+        - Mission content
+        - Python validation
+        - Safe code execution
+        - Progress / XP / level
+        - UI / CRT visual polish
+        - Audio / feedback
+        - Desktop build / release
+        - Documentation / README
+        - Community / website
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why does this matter?
+      description: Explain how it helps beginners or improves the project.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Suggested behavior
+      description: Describe how it should work in Mompy.
+    validations:
+      required: false
+  - type: textarea
+    id: references
+    attributes:
+      label: Screenshots, references or examples
+      description: Add images, videos, links or examples if useful.
+    validations:
+      required: false
