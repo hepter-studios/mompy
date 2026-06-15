@@ -1,0 +1,48 @@
+name: Release checklist
+description: Track a release build, packaging or GitHub Release task
+title: "[Release]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to track release packaging, build verification and GitHub Release preparation.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "v0.1.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Cross-platform
+    validations:
+      required: true
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Release checklist
+      options:
+        - label: App opens locally with Python/pywebview
+        - label: Frontend assets load correctly
+        - label: Backend validation works
+        - label: Progress, XP and level work
+        - label: Safe code execution was tested
+        - label: Windows build was generated
+        - label: Generated build was tested outside the development folder
+        - label: README download instructions were updated
+        - label: GitHub Release was created
+        - label: Build artifact was attached to the Release
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / problems
+      placeholder: "List build errors, missing assets, packaging problems or next steps."
+    validations:
+      required: false
