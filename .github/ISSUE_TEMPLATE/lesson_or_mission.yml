@@ -1,0 +1,46 @@
+name: Lesson or mission issue
+description: Report a problem with lesson coverage, mission order or beginner difficulty
+title: "[Learning]: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when a lesson does not prepare the learner for a mission, or when a mission appears too early.
+  - type: input
+    id: mission
+    attributes:
+      label: Mission / lesson
+      placeholder: "Example: Mission 01, Aula 03, Block 02"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is the learning problem?
+      description: Explain what the learner is asked to do without enough preparation.
+      placeholder: "Example: Mission 01 asks for if/else, but if/else has not been taught yet."
+    validations:
+      required: true
+  - type: textarea
+    id: concepts
+    attributes:
+      label: Concepts involved
+      description: List the Python concepts involved.
+      placeholder: "print, variables, if, else, indentation, for, list, function..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected learning flow
+      description: What should be taught before this mission?
+    validations:
+      required: false
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested fix
+      description: Should the lesson be expanded, the mission moved, or the mission simplified?
+    validations:
+      required: false
