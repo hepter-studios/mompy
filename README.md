@@ -3,7 +3,6 @@
     <img src="assets/branding/mompy-cover.webp" alt="Mompy retro CRT monitor preview" width="520">
   </a>
 </p>
-
 <h1 align="center">Mompy</h1>
 
 <p align="center">
