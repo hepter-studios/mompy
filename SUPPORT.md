@@ -2,16 +2,18 @@
 
 Thanks for using and following Mompy.
 
-## Public questions and bugs
+Mompy support currently happens through GitHub.
 
-Use GitHub Issues for public bug reports, feature requests and questions:
+## Get Help
 
-- Issues: https://github.com/hepter-studios/mompy/issues
-- Discussions: https://github.com/hepter-studios/mompy/discussions
+- Open a question or bug report in [GitHub Issues](https://github.com/hepter-studios/mompy/issues).
+- Check the latest builds on the [GitHub Releases page](https://github.com/hepter-studios/mompy/releases).
+- Read the contribution guide in [CONTRIBUTING.md](CONTRIBUTING.md).
+- Read the security policy in [SECURITY.md](SECURITY.md).
 
 Before opening an issue, please check if a similar one already exists.
 
-## What to include
+## What To Include
 
 When reporting a problem, include:
 
@@ -22,6 +24,14 @@ When reporting a problem, include:
 - your operating system;
 - the Mompy version or commit.
 
-## Private information
+## Official Links
+
+- Website: [mompy.co](https://mompy.co)
+- Repository: [github.com/hepter-studios/mompy](https://github.com/hepter-studios/mompy)
+- Latest release: [Mompy v0.1.0](https://github.com/hepter-studios/mompy/releases/tag/v0.1.0)
+
+## Private Information
 
 Do not post passwords, tokens or personal private information in public issues.
+
+Discord, X/Twitter, YouTube, Instagram and TikTok links will be added only after official channels exist.
