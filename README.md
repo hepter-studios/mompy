@@ -61,13 +61,15 @@ Download the latest official build from the [GitHub Releases page](https://githu
 Latest release:
 
 - [Mompy v0.1.0](https://github.com/hepter-studios/mompy/releases/tag/v0.1.0)
-- [Mompy-windows-x64.zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/Mompy-windows-x64.zip)
+- Recommended Windows installer: [MompySetup-v0.1.0.exe](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/MompySetup-v0.1.0.exe)
+- Portable Windows zip: [Mompy-windows-x64.zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/Mompy-windows-x64.zip)
 
 Current platform status:
 
 | Platform | Status | Link |
 | --- | --- | --- |
-| Windows | Available in Releases | [Download v0.1.0](https://github.com/hepter-studios/mompy/releases/tag/v0.1.0) |
+| Windows installer | Available in Releases | [Download setup](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/MompySetup-v0.1.0.exe) |
+| Windows portable zip | Available in Releases | [Download zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/Mompy-windows-x64.zip) |
 | macOS | Planned | [Roadmap](#roadmap) |
 | Linux | Planned | [Roadmap](#roadmap) |
 
@@ -250,11 +252,18 @@ Generate a zip package for a GitHub Release:
 powershell -ExecutionPolicy Bypass -File scripts/build_windows.ps1 -Zip
 ```
 
+Generate the Windows installer:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/build_windows_installer.ps1 -SkipAppBuild
+```
+
 Build output:
 
 ```txt
 dist/Mompy/Mompy.exe
 dist/Mompy-windows-x64.zip
+dist/MompySetup-v0.1.0.exe
 ```
 
 Build artifacts such as `.exe`, `.zip`, `.msi`, `.dmg` or `.AppImage` should not be committed directly to the repository. They should be attached to a [GitHub Release](https://github.com/hepter-studios/mompy/releases).
@@ -286,6 +295,8 @@ The `v0.1.0` Windows package was locally checked with:
 - `node --check frontend/js/app.js`
 - `dist/Mompy/Mompy.exe --check`
 - desktop executable startup smoke test
+- installer install smoke test
+- installed executable startup smoke test
 
 ## Trust And Verification
 
@@ -308,7 +319,8 @@ Official builds are distributed through [GitHub Releases](https://github.com/hep
 Current official release:
 
 - [Mompy v0.1.0](https://github.com/hepter-studios/mompy/releases/tag/v0.1.0)
-- [Windows x64 zip asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/Mompy-windows-x64.zip)
+- [Windows installer asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/MompySetup-v0.1.0.exe)
+- [Windows x64 portable zip asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/Mompy-windows-x64.zip)
 
 Release rule:
 
@@ -347,6 +359,7 @@ Release rule:
 | Security | [SECURITY.md](SECURITY.md) |
 | Support | [SUPPORT.md](SUPPORT.md) |
 | Build script | [scripts/build_windows.ps1](scripts/build_windows.ps1) |
+| Installer script | [scripts/build_windows_installer.ps1](scripts/build_windows_installer.ps1) |
 
 ## Community
 
