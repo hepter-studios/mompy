@@ -1,44 +1,12 @@
-<div align="center">
+<p align="center">
+  <a href="https://github.com/hepter-studios/mompy">
+    <img src="assets/branding/mompy-cover.webp" alt="Mompy retro CRT monitor preview" width="580">
+  </a>
+</p>
 
-<a href="https://github.com/hepter-studios/mompy">
-  <img src="assets/branding/mompy-cover.webp" alt="Mompy retro CRT monitor preview" width="560">
-</a>
-
-# Mompy
-
- **A retro learning console for Python programming.**
-
-A focused desktop experience where learners practice real Python through lessons, missions, progress, feedback, and challenges.
-
-<a href="https://mompy.co"><strong>Website</strong></a>
- · <a href="https://github.com/hepter-studios/mompy/releases"><strong>Download</strong></a>
- · <a href="https://discord.gg/fqxvyGFyfa"><strong>Discord</strong></a>
- · <a href="https://github.com/hepter-studios/mompy/issues"><strong>Issues</strong></a>
- · <a href="https://github.com/hepter-studios/mompy/discussions"><strong>Discussions</strong></a>
- · <a href="SUPPORT.md"><strong>Support</strong></a>
-
-<br>
-
-<a href="https://github.com/hepter-studios/mompy/releases/tag/v0.1.0">
-  <img alt="Latest release" src="https://img.shields.io/badge/release-v0.1.0-8cff3a?style=for-the-badge">
-</a>
-<a href="https://github.com/hepter-studios/mompy/releases">
-  <img alt="Download" src="https://img.shields.io/badge/download-GitHub%20Releases-2f3136?style=for-the-badge&logo=github&logoColor=white">
-</a>
-<a href="https://github.com/hepter-studios/mompy/blob/main/LICENSE">
-  <img alt="License" src="https://img.shields.io/badge/license-All%20Rights%20Reserved-lightgrey?style=for-the-badge">
-</a>
-
-<br><br>
-
-<a href="#-demo">Demo</a>
- · <a href="#-download">Download</a>
- · <a href="#-questions-problems-suggestions">Help</a>
- · <a href="#-screenshots">Screenshots</a>
- · <a href="#-learning-path">Learning Path</a>
- · <a href="#-run-from-source">Run From Source</a>
-
-</div>
+<p align="center">
+  <strong>Mompy is a mission-based programming learning platform designed to make coding clearer, practical, and more engaging — starting with Python.</strong>
+</p>
 
 > [!NOTE]
 > Mompy is in active development. The first Windows package is available in [GitHub Releases](https://github.com/hepter-studios/mompy/releases), and the source code remains the canonical reference for every feature listed here.
@@ -221,7 +189,7 @@ Each mission should only ask for concepts that were already introduced in a prev
 
 | Area | Direction |
 | --- | --- |
-| Focus | Python programming practice |
+| Focus | Programming learning, starting with Python |
 | Format | Desktop learning console |
 | Experience | Lessons, missions, feedback, XP and progress |
 | Runtime | Python backend with a CRT-style frontend |
