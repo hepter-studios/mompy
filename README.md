@@ -21,6 +21,10 @@
 
 **Mompy** is a mission-based programming learning platform designed to make coding clearer, practical, and more engaging — starting with Python.
 
+<a id="portugues"></a>
+
+**Mompy** é uma plataforma de aprendizado de programação baseada em missões, criada para tornar o estudo de código mais claro, prático e envolvente — começando por Python.
+
 > [!NOTE]
 > Mompy is in active development. The first Windows package is available in [GitHub Releases](https://github.com/hepter-studios/mompy/releases), and the source code remains the canonical reference for every feature listed here.
 
