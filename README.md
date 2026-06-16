@@ -3,9 +3,9 @@
 <a href="https://github.com/hepter-studios/mompy">
   <img src="assets/branding/mompy-cover.webp" alt="Mompy retro CRT monitor preview" width="560">
 </a>
-
 # Mompy
-# Mompy **A retro learning console for Python programming.**
+
+ **A retro learning console for Python programming.**
 
 A focused desktop experience where learners practice real Python through lessons, missions, progress, feedback, and challenges.
 
