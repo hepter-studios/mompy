@@ -20,8 +20,8 @@ from pathlib import Path
 
 
 APP_NAME = "Mompy"
-APP_VERSION = "0.1.0"
-PUBLISHER = "Hepterakt Studios"
+APP_VERSION = "0.1.1"
+PUBLISHER = "Hepter Studio"
 REPO_URL = "https://github.com/hepter-studios/mompy"
 SUPPORT_URL = "https://github.com/hepter-studios/mompy/issues"
 PAYLOAD_NAME = "Mompy-windows-x64.zip"

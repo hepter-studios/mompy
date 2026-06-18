@@ -9,7 +9,7 @@ Support currently happens through GitHub and the Mompy Discord community.
 | Need | Where To Go |
 | --- | --- |
 | Download Mompy | [GitHub Releases](https://github.com/hepter-studios/mompy/releases) |
-| Latest release | [Mompy v0.1.0](https://github.com/hepter-studios/mompy/releases/tag/v0.1.0) |
+| Latest release | [Mompy v0.1.1](https://github.com/hepter-studios/mompy/releases/tag/v0.1.1) |
 | Community chat | [Mompy Discord](https://discord.gg/fqxvyGFyfa) |
 | Report a bug | [GitHub Issues](https://github.com/hepter-studios/mompy/issues) |
 | Ask a question | [GitHub Discussions](https://github.com/hepter-studios/mompy/discussions) |
@@ -97,3 +97,4 @@ Discord is available now:
 - [Mompy Discord](https://discord.gg/fqxvyGFyfa)
 
 X/Twitter, YouTube, Instagram and TikTok links will be added only after official channels exist.
+

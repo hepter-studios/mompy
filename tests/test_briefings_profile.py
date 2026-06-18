@@ -19,6 +19,32 @@ class BriefingProfileTests(unittest.TestCase):
             self.assertEqual(profile["name"], "Mackson Victor")
             self.assertEqual(load_profile(path)["name"], "Mackson Victor")
 
+    def test_profile_save_persists_session_metadata(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "profile.json"
+            profile = save_profile({"name": "Mackson"}, path)
+
+            self.assertEqual(profile["name"], "Mackson")
+            self.assertIsNotNone(profile["created_at"])
+            self.assertIsNotNone(profile["last_seen_at"])
+
+            reloaded = load_profile(path)
+            self.assertEqual(reloaded["created_at"], profile["created_at"])
+            self.assertEqual(reloaded["last_seen_at"], profile["last_seen_at"])
+
+    def test_profile_settings_merge_without_losing_defaults(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "profile.json"
+            profile = save_profile(
+                {"name": "Mackson", "settings": {"music_enabled": False}},
+                path,
+            )
+
+            self.assertFalse(profile["settings"]["music_enabled"])
+            self.assertTrue(profile["settings"]["sfx_enabled"])
+            self.assertEqual(profile["settings"]["music_volume"], 0.10)
+            self.assertEqual(profile["settings"]["sfx_volume"], 0.45)
+
     def test_logout_resets_profile(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "profile.json"

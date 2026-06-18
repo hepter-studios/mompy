@@ -10,7 +10,7 @@
 
 <a id="portugues"></a>
 
-**Mompy** é uma plataforma de aprendizado de programação baseada em missões, criada para tornar o estudo de código mais claro, prático e envolvente — começando por Python.
+**Mompy** é um console de aprendizado retrô para programação em Python. Uma experiência de desktop focada onde estudantes praticam código real por meio de lições, missões, progresso, feedback e desafios.
 
 > [!NOTE]
 > Mompy está em desenvolvimento ativo. O primeiro pacote para Windows está disponível em [GitHub Releases](https://github.com/hepter-studios/mompy/releases), e o código-fonte continua sendo a referência oficial para cada recurso listado aqui.
@@ -31,9 +31,11 @@
 
 Baixe a versão oficial mais recente na página de [GitHub Releases](https://github.com/hepter-studios/mompy/releases).
 
-- [Mompy v0.1.0](https://github.com/hepter-studios/mompy/releases/tag/v0.1.0)
-- [Instalador Windows](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/MompySetup-v0.1.0.exe)
-- [Versão portátil Windows x64](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/Mompy-windows-x64.zip)
+- [Mompy v0.1.1](https://github.com/hepter-studios/mompy/releases/tag/v0.1.1)
+- [Instalador Windows](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/MompySetup-v0.1.1.exe)
+- [Versão portátil Windows x64](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/Mompy-windows-x64.zip)
+
+Já tem o Mompy instalado? Baixe e execute o instalador Windows mais recente em Releases. Ele substitui o app mantendo perfil e progresso locais. Quem usa a versão portátil pode baixar o zip novo e substituir a pasta extraída.
 
 ---
 
@@ -110,7 +112,6 @@ python main.py --check
 | Repositório | [github.com/hepter-studios/mompy](https://github.com/hepter-studios/mompy) |
 | Releases | [GitHub Releases](https://github.com/hepter-studios/mompy/releases) |
 | Discord | [discord.gg/fqxvyGFyfa](https://discord.gg/fqxvyGFyfa) |
-| X / Twitter | [@macksonvictor26](https://x.com/macksonvictor26) |
 | Issues | [GitHub Issues](https://github.com/hepter-studios/mompy/issues) |
 | Discussions | [GitHub Discussions](https://github.com/hepter-studios/mompy/discussions) |
 | Segurança | [SECURITY.md](SECURITY.md) |
@@ -121,3 +122,4 @@ python main.py --check
 ## 📜 Licença
 
 As informações de licença estão disponíveis em [LICENSE](LICENSE).
+

@@ -22,6 +22,7 @@ const PROGRESS_KEY = "mompy_progress_v1";
 const BRIEFING_PROGRESS_KEY = "mompy_briefing_progress_v1";
 const DEFAULT_USER_NAME = "Guest";
 const PLANNED_TOTAL_MISSIONS = 30;
+const FALLBACK_APP_VERSION = "0.1.1";
 
 const defaultProgressState = {
   currentMissionIndex: 0,
@@ -50,6 +51,9 @@ const settingsState = {
 };
 
 let pythonBackendConnected = false;
+let pythonBackendSyncPromise = null;
+let appVersion = FALLBACK_APP_VERSION;
+let updateStatusCache = null;
 
 const PYTHON_HTTP_ROUTES = {
   get_bootstrap_state: { method: "GET", path: "/api/bootstrap" },
@@ -60,10 +64,39 @@ const PYTHON_HTTP_ROUTES = {
   set_current_mission_index: { method: "POST", path: "/api/progress/current", body: ([missionIndex]) => ({ current_mission_index: missionIndex }) },
   save_profile: { method: "POST", path: "/api/profile/save", body: ([profile]) => ({ profile }) },
   logout_profile: { method: "POST", path: "/api/profile/logout", body: () => ({}) },
+  get_update_status: { method: "GET", path: "/api/update-status" },
 };
 
 function getPythonBackend() {
   return window.pywebview?.api || null;
+}
+
+function isHttpBackendAvailable() {
+  return ["http:", "https:"].includes(window.location.protocol);
+}
+
+function waitForPythonBridgeReady(timeoutMs = 1800) {
+  if (getPythonBackend() || isHttpBackendAvailable()) {
+    return Promise.resolve(true);
+  }
+
+  return new Promise((resolve) => {
+    let settled = false;
+
+    const finish = (ready) => {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      document.removeEventListener("pywebviewready", onReady);
+      resolve(ready);
+    };
+
+    const onReady = () => finish(true);
+    document.addEventListener("pywebviewready", onReady, { once: true });
+    setTimeout(() => finish(false), timeoutMs);
+  });
 }
 
 async function callPythonBackend(method, ...args) {
@@ -80,7 +113,7 @@ async function callPythonBackend(method, ...args) {
   }
 
   const route = PYTHON_HTTP_ROUTES[method];
-  const canUseHttpBackend = route && ["http:", "https:"].includes(window.location.protocol);
+  const canUseHttpBackend = route && isHttpBackendAvailable();
 
   if (!canUseHttpBackend) {
     return null;
@@ -135,15 +168,39 @@ function applyPythonProgress(progress) {
   }
 
   updateProgressUI();
+  saveLocalProgress({
+    currentMissionIndex,
+    completedMissionIds: [...completedMissionIds],
+    totalXp,
+    lastUpdatedAt: progress.last_updated_at || progress.lastUpdatedAt || new Date().toISOString(),
+  });
 }
 
 function applyPythonProfile(profile) {
   if (!profile || typeof profile !== "object" || !profile.name) {
-    return;
+    return null;
   }
 
-  applyUserProfile({ firstName: profile.name });
+  const firstName = normalizeName(profile.name);
+
+  if (!firstName || firstName === DEFAULT_USER_NAME) {
+    localStorage.removeItem(USER_PROFILE_KEY);
+    applyUserProfile(null);
+    renderStartUserInfo();
+    return null;
+  }
+
+  const frontendProfile = {
+    firstName,
+    language: profile.language || "pt-BR",
+    levelPreference: profile.level_preference || profile.levelPreference || "beginner",
+    email: profile.email || "",
+  };
+
+  localStorage.setItem(USER_PROFILE_KEY, JSON.stringify(frontendProfile));
+  applyUserProfile(frontendProfile);
   renderStartUserInfo();
+  return frontendProfile;
 }
 
 function normalizePythonMission(mission) {
@@ -174,10 +231,13 @@ async function syncPythonBackendState() {
   const state = await callPythonBackend("get_bootstrap_state");
 
   if (!state) {
-    return;
+    return false;
   }
 
   applyPythonMissions(state.missions);
+  if (state.backend?.version) {
+    appVersion = state.backend.version;
+  }
   applyPythonProfile(state.profile);
   applyPythonProgress(state.progress);
 
@@ -187,22 +247,41 @@ async function syncPythonBackendState() {
     codeEditor.value = currentMission().starterCode || codeEditor.value;
     updateLineNumbers();
   }
+
+  return true;
+}
+
+async function ensurePythonBackendState() {
+  if (pythonBackendSyncPromise) {
+    return pythonBackendSyncPromise;
+  }
+
+  pythonBackendSyncPromise = (async () => {
+    await waitForPythonBridgeReady();
+    return syncPythonBackendState();
+  })();
+
+  try {
+    return await pythonBackendSyncPromise;
+  } finally {
+    pythonBackendSyncPromise = null;
+  }
 }
 
 function schedulePythonBackendSync() {
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", syncPythonBackendState, { once: true });
+    document.addEventListener("DOMContentLoaded", ensurePythonBackendState, { once: true });
     return;
   }
 
-  setTimeout(syncPythonBackendState, 0);
+  setTimeout(ensurePythonBackendState, 0);
 }
 
 document.addEventListener("pywebviewready", () => {
   schedulePythonBackendSync();
 });
 
-if (["http:", "https:"].includes(window.location.protocol)) {
+if (isHttpBackendAvailable()) {
   schedulePythonBackendSync();
 }
 
@@ -1304,10 +1383,10 @@ function saveProgress() {
     lastUpdatedAt: new Date().toISOString(),
   };
 
+  saveLocalProgress(progress);
+
   if (pythonBackendConnected) {
     syncCurrentMissionToPython();
-  } else {
-    saveLocalProgress(progress);
   }
 
   updateProgressUI();
@@ -1349,7 +1428,18 @@ function hasSavedProgress() {
   }
 
   try {
-    return Boolean(localStorage.getItem(PROGRESS_KEY));
+    const rawProgress = localStorage.getItem(PROGRESS_KEY);
+
+    if (!rawProgress) {
+      return false;
+    }
+
+    const progress = JSON.parse(rawProgress);
+    const completedIds = sanitizeCompletedMissionIds(progress.completedMissionIds);
+    const missionIndex = Number(progress.currentMissionIndex) || 0;
+    const xp = Number(progress.totalXp) || 0;
+
+    return completedIds.length > 0 || missionIndex > 0 || xp > 0;
   } catch (error) {
     console.warn(error);
     return false;
@@ -1846,7 +1936,7 @@ function loadUserProfile() {
   return profile;
 }
 
-function saveUserProfile(firstName) {
+async function saveUserProfile(firstName) {
   const profile = {
     firstName: normalizeName(firstName),
     language: "pt-BR",
@@ -1857,13 +1947,15 @@ function saveUserProfile(firstName) {
   localStorage.setItem(USER_PROFILE_KEY, JSON.stringify(profile));
   applyUserProfile(profile);
   renderStartUserInfo();
-  callPythonBackend("save_profile", {
+
+  const savedProfile = await callPythonBackend("save_profile", {
     name: profile.firstName,
     language: profile.language,
     level_preference: profile.levelPreference,
     email: profile.email,
-  }).then(applyPythonProfile);
-  return profile;
+  });
+
+  return applyPythonProfile(savedProfile) || profile;
 }
 
 function clearUserProfile() {
@@ -2003,7 +2095,7 @@ async function submitOnboardingName() {
   }
 
   onboardingTerminalOutput.textContent += `> ${firstName}\n>>> print(nome)\n${firstName}\n\nPerfil salvo.\nCarregando workspace...`;
-  saveUserProfile(firstName);
+  await saveUserProfile(firstName);
   await wait(720);
   closeOnboarding();
   startStartScreenMompyAnimation();
@@ -2159,9 +2251,16 @@ function stopStartScreenMompyAnimation(options = {}) {
   }
 }
 
-function showStartScreen() {
+async function showStartScreen() {
+  const backendSynced = await ensurePythonBackendState();
   const profile = loadUserProfile();
-  loadProgress();
+
+  if (!backendSynced) {
+    loadProgress();
+  } else {
+    updateProgressUI();
+  }
+
   loadBriefingProgress();
   trainingStarted = false;
   missionCompleted = false;
@@ -2234,7 +2333,12 @@ function confirmStartOver() {
 }
 
 async function handleStart() {
-  loadProgress();
+  const backendSynced = await ensurePythonBackendState();
+
+  if (!backendSynced) {
+    loadProgress();
+  }
+
   loadBriefingProgress();
   await refreshPythonProgress();
 
@@ -2247,6 +2351,7 @@ async function handleStart() {
 }
 
 async function handleContinue() {
+  await ensurePythonBackendState();
   await refreshPythonProgress();
 
   if (hasSavedProgress()) {
@@ -2717,6 +2822,22 @@ function settingMeter(settingName) {
   `;
 }
 
+function updateStatusText() {
+  if (!updateStatusCache) {
+    return "Não verificado";
+  }
+
+  if (updateStatusCache.error) {
+    return "Verificação indisponível";
+  }
+
+  if (updateStatusCache.update_available) {
+    return `Nova versão ${updateStatusCache.latest_version}`;
+  }
+
+  return "Atualizado";
+}
+
 function renderSettingsBody() {
   return `
     <div class="settings-grid">
@@ -2783,6 +2904,18 @@ function renderSettingsBody() {
           <button id="logoutUserButton" class="settings-inline-button" type="button">Sair do usuário</button>
         </div>
       </section>
+
+      <section class="settings-section">
+        <h3>Atualizações</h3>
+        <div class="settings-row">
+          <span>Versão instalada</span>
+          <span class="settings-control">v${appVersion}</span>
+        </div>
+        <div class="settings-row">
+          <span id="updateStatusText">${updateStatusText()}</span>
+          <button id="checkUpdatesButton" class="settings-inline-button" type="button">Verificar updates</button>
+        </div>
+      </section>
     </div>
   `;
 }
@@ -2838,6 +2971,37 @@ function bindSettingsControls() {
 
   modalBody.querySelector("#logoutUserButton")?.addEventListener("click", confirmLogoutUser);
   modalBody.querySelector("#resetProgressButton")?.addEventListener("click", confirmResetProgress);
+  modalBody.querySelector("#checkUpdatesButton")?.addEventListener("click", checkUpdatesFromSettings);
+}
+
+async function checkUpdatesFromSettings() {
+  const button = modalBody.querySelector("#checkUpdatesButton");
+  const statusText = modalBody.querySelector("#updateStatusText");
+
+  if (updateStatusCache?.update_available && updateStatusCache.release_url) {
+    window.open(updateStatusCache.release_url, "_blank", "noopener");
+    return;
+  }
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = "Verificando";
+  }
+
+  if (statusText) {
+    statusText.textContent = "Consultando GitHub Releases";
+  }
+
+  updateStatusCache = await callPythonBackend("get_update_status");
+
+  if (statusText) {
+    statusText.textContent = updateStatusText();
+  }
+
+  if (button) {
+    button.disabled = false;
+    button.textContent = updateStatusCache?.update_available ? "Abrir release" : "Verificar updates";
+  }
 }
 
 function showSettings() {

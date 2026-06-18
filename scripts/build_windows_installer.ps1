@@ -7,7 +7,7 @@ Set-StrictMode -Version Latest
 
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 $Python = if ($env:PYTHON) { $env:PYTHON } else { "python" }
-$Version = "0.1.0"
+$Version = "0.1.1"
 $PayloadZip = Join-Path $ProjectRoot "dist\Mompy-windows-x64.zip"
 $SetupName = "MompySetup-v$Version"
 $SetupExe = Join-Path $ProjectRoot "dist\$SetupName.exe"

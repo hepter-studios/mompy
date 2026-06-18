@@ -8,8 +8,8 @@
   <a href="https://discord.gg/fqxvyGFyfa">
     <img alt="Discord" src="https://img.shields.io/badge/Discord-Community-5865F2?style=flat&logo=discord&logoColor=white">
   </a>
-  <a href="https://x.com/macksonvictor26">
-    <img alt="Follow on X" src="https://img.shields.io/badge/Follow%20on%20X-@macksonvictor26-000000?style=flat&logo=x&logoColor=white">
+  <a href="https://github.com/hepter-studios/mompy/releases">
+    <img alt="Latest release" src="https://img.shields.io/github/v/release/hepter-studios/mompy?color=8cff3a&label=Release&style=flat">
   </a>
 </p>
 
@@ -19,7 +19,7 @@
 
 <a id="english"></a>
 
-**Mompy** is a mission-based programming learning platform designed to make coding clearer, practical, and more engaging — starting with Python.
+**Mompy** is a retro learning console for Python programming. A focused desktop experience where learners practice real code through lessons, missions, progress, feedback, and challenges.
 
 > [!NOTE]
 > Mompy is in active development. The first Windows package is available in [GitHub Releases](https://github.com/hepter-studios/mompy/releases), and the source code remains the canonical reference for every feature listed here.
@@ -41,31 +41,33 @@
 Download the latest official build from the [GitHub Releases page](https://github.com/hepter-studios/mompy/releases).
 
 <p>
-  <a href="https://github.com/hepter-studios/mompy/releases/tag/v0.1.0">
-    <img alt="Mompy v0.1.0" src="https://img.shields.io/badge/latest-v0.1.0-8cff3a?style=for-the-badge">
+  <a href="https://github.com/hepter-studios/mompy/releases/tag/v0.1.1">
+    <img alt="Mompy v0.1.1" src="https://img.shields.io/badge/latest-v0.1.1-8cff3a?style=for-the-badge">
   </a>
-  <a href="https://github.com/hepter-studios/mompy/releases/download/v0.1.0/MompySetup-v0.1.0.exe">
+  <a href="https://github.com/hepter-studios/mompy/releases/download/v0.1.1/MompySetup-v0.1.1.exe">
     <img alt="Windows installer" src="https://img.shields.io/badge/windows-installer-2f3136?style=for-the-badge&logo=windows&logoColor=white">
   </a>
-  <a href="https://github.com/hepter-studios/mompy/releases/download/v0.1.0/Mompy-windows-x64.zip">
+  <a href="https://github.com/hepter-studios/mompy/releases/download/v0.1.1/Mompy-windows-x64.zip">
     <img alt="Portable zip" src="https://img.shields.io/badge/portable-zip-2f3136?style=for-the-badge&logo=github&logoColor=white">
   </a>
 </p>
 
 Latest release:
 
-- [Mompy v0.1.0](https://github.com/hepter-studios/mompy/releases/tag/v0.1.0)
-- Recommended Windows installer: [MompySetup-v0.1.0.exe](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/MompySetup-v0.1.0.exe)
-- Portable Windows zip: [Mompy-windows-x64.zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/Mompy-windows-x64.zip)
+- [Mompy v0.1.1](https://github.com/hepter-studios/mompy/releases/tag/v0.1.1)
+- Recommended Windows installer: [MompySetup-v0.1.1.exe](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/MompySetup-v0.1.1.exe)
+- Portable Windows zip: [Mompy-windows-x64.zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/Mompy-windows-x64.zip)
 
 Current platform status:
 
 | Platform | Status | Link |
 | --- | --- | --- |
-| Windows installer | Available in Releases | [Download setup](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/MompySetup-v0.1.0.exe) |
-| Windows portable zip | Available in Releases | [Download zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/Mompy-windows-x64.zip) |
+| Windows installer | Available in Releases | [Download setup](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/MompySetup-v0.1.1.exe) |
+| Windows portable zip | Available in Releases | [Download zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/Mompy-windows-x64.zip) |
 | macOS | Planned | [Roadmap](#-roadmap) |
 | Linux | Planned | [Roadmap](#-roadmap) |
+
+Already installed Mompy? Download and run the newest Windows installer from Releases. It replaces the app while keeping local profile/progress data. Portable users can download the newest zip and replace the extracted folder.
 
 ---
 
@@ -77,13 +79,7 @@ Join the Mompy community, report bugs, suggest improvements or ask for help thro
 
 <p align="center">
   <a href="https://discord.gg/fqxvyGFyfa">
-    <img src="https://discord.com/api/guilds/1516113994287415316/widget.png?style=banner2" alt="Join the Mompy Discord server" width="520">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://discord.gg/fqxvyGFyfa">
-    <img alt="Discord" src="https://img.shields.io/badge/Discord-Community-2f3136?style=for-the-badge&logo=discord&logoColor=white">
+    <img alt="Join Discord" src="https://img.shields.io/badge/%F0%9F%91%BD%20Join-Mompy%20Discord-2f3136?style=for-the-badge&logo=discord&logoColor=8cff3a">
   </a>
   <a href="https://github.com/hepter-studios/mompy/issues">
     <img alt="GitHub Issues" src="https://img.shields.io/github/issues/hepter-studios/mompy?color=8cff3a&label=Issues&logo=github&style=for-the-badge">
@@ -206,7 +202,7 @@ Each mission should only ask for concepts that were already introduced in a prev
 | Format | Desktop learning console |
 | Experience | Lessons, missions, feedback, XP and progress |
 | Runtime | Python backend with a CRT-style frontend |
-| Ownership | A Hepter Studios project owned by Chevel |
+| Ownership | A Hepter Studio project owned by Chevel |
 
 ---
 
@@ -332,7 +328,7 @@ Build output:
 ```txt
 dist/Mompy/Mompy.exe
 dist/Mompy-windows-x64.zip
-dist/MompySetup-v0.1.0.exe
+dist/MompySetup-v0.1.1.exe
 ```
 
 Build artifacts such as `.exe`, `.zip`, `.msi`, `.dmg` or `.AppImage` should not be committed directly to the repository. They should be attached to a [GitHub Release](https://github.com/hepter-studios/mompy/releases).
@@ -359,7 +355,7 @@ Check backend startup:
 python main.py --check
 ```
 
-The `v0.1.0` Windows package was locally checked with:
+The `v0.1.1` Windows package was locally checked with:
 
 - `python -m unittest discover -s tests`
 - `python main.py --check`
@@ -377,7 +373,7 @@ Mompy is intended to be easy to verify:
 
 - source code is public in the [repository](https://github.com/hepter-studios/mompy);
 - official downloads are attached to [GitHub Releases](https://github.com/hepter-studios/mompy/releases);
-- the latest release is [Mompy v0.1.0](https://github.com/hepter-studios/mompy/releases/tag/v0.1.0);
+- the latest release is [Mompy v0.1.1](https://github.com/hepter-studios/mompy/releases/tag/v0.1.1);
 - release assets are stored by GitHub, not pasted into the repository;
 - issue tracking happens in [GitHub Issues](https://github.com/hepter-studios/mompy/issues);
 - security guidance is in [SECURITY.md](SECURITY.md);
@@ -393,9 +389,9 @@ Official builds are distributed through [GitHub Releases](https://github.com/hep
 
 Current official release:
 
-- [Mompy v0.1.0](https://github.com/hepter-studios/mompy/releases/tag/v0.1.0)
-- [Windows installer asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/MompySetup-v0.1.0.exe)
-- [Windows x64 portable zip asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.0/Mompy-windows-x64.zip)
+- [Mompy v0.1.1](https://github.com/hepter-studios/mompy/releases/tag/v0.1.1)
+- [Windows installer asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/MompySetup-v0.1.1.exe)
+- [Windows x64 portable zip asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/Mompy-windows-x64.zip)
 
 Release rule:
 
@@ -416,7 +412,7 @@ Release rule:
 | 10.4 - migrate mission validation to Python | Done |
 | 10.5 - safer learner-code execution | Done |
 | 10.6 - progress, XP and levels through Python | Done |
-| 10.7 - package as installable Python desktop app | Done for Windows v0.1.0 |
+| 10.7 - package as installable Python desktop app | Done for Windows v0.1.1 |
 | macOS package | Planned |
 | Linux package | Planned |
 | more lessons and missions | Planned |
@@ -444,9 +440,8 @@ Release rule:
 | Website | [mompy.co](https://mompy.co) |
 | Repository | [github.com/hepter-studios/mompy](https://github.com/hepter-studios/mompy) |
 | Releases | [GitHub Releases](https://github.com/hepter-studios/mompy/releases) |
-| Latest release | [Mompy v0.1.0](https://github.com/hepter-studios/mompy/releases/tag/v0.1.0) |
+| Latest release | [Mompy v0.1.1](https://github.com/hepter-studios/mompy/releases/tag/v0.1.1) |
 | Discord | [discord.gg/fqxvyGFyfa](https://discord.gg/fqxvyGFyfa) |
-| X / Twitter | [@macksonvictor26](https://x.com/macksonvictor26) |
 | Português | [README.pt-BR.md](README.pt-BR.md) |
 | Discussions | [GitHub Discussions](https://github.com/hepter-studios/mompy/discussions) |
 | Issues | [GitHub Issues](https://github.com/hepter-studios/mompy/issues) |
@@ -481,3 +476,4 @@ Release rule:
 ## 📜 License
 
 License information is available in [LICENSE](LICENSE).
+

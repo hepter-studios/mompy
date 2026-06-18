@@ -61,6 +61,9 @@ def serve_frontend(port: int = 8770) -> None:
             if route == "/api/progress":
                 self.send_json(self.api.get_progress())
                 return
+            if route == "/api/update-status":
+                self.send_json(self.api.get_update_status())
+                return
 
             if route.startswith("/frontend/"):
                 parsed = urlparse(self.path)

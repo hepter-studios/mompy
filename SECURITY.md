@@ -16,7 +16,7 @@ Security notes and fixes apply to the latest public release and to the current d
 
 Please do not open public issues for serious security problems.
 
-Use the safest private contact path available through the GitHub repository or Hepter Studios channels. If private GitHub security advisories are enabled, use them.
+Use the safest private contact path available through the GitHub repository or Hepter Studio channels. If private GitHub security advisories are enabled, use them.
 
 When reporting, include:
 

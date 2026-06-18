@@ -2,7 +2,7 @@
 
 Thank you for your interest in improving Mompy.
 
-Mompy is maintained by Hepter Studios. Contributions are welcome when they are focused, testable and aligned with the current product direction.
+Mompy is maintained by Hepter Studio. Contributions are welcome when they are focused, testable and aligned with the current product direction.
 
 ## Where To Help
 

@@ -10,7 +10,9 @@ from .lessons import get_lessons
 from .missions import get_current_mission, get_mission, get_missions
 from .profile import load_profile, logout_profile, save_profile
 from .progress import complete_mission, load_progress, reset_progress, set_current_mission_index
+from .updater import check_for_updates
 from .validator import validate_mission
+from .version import APP_VERSION
 
 
 class MompyAPI:
@@ -25,6 +27,7 @@ class MompyAPI:
                 "name": "Mompy Python Backend",
                 "phase": "10.6",
                 "connected": True,
+                "version": APP_VERSION,
             },
             "profile": self.get_profile(),
             "progress": self.get_progress(),
@@ -53,6 +56,9 @@ class MompyAPI:
 
     def get_profile(self) -> dict:
         return load_profile()
+
+    def get_update_status(self) -> dict:
+        return check_for_updates()
 
     def save_profile(self, profile: dict) -> dict:
         return save_profile(profile)
