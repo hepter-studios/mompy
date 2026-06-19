@@ -21,7 +21,7 @@
 
 <p align="center">
   <a href="assets/media/mompy-demo.gif">
-    <img src="assets/media/mompy-demo.gif" alt="Demo do Mompy" width="760">
+    <img src="assets/media/mompy-demo.gif" alt="Demo do Mompy" width="640">
   </a>
 </p>
 
