@@ -22,7 +22,7 @@ const PROGRESS_KEY = "mompy_progress_v1";
 const BRIEFING_PROGRESS_KEY = "mompy_briefing_progress_v1";
 const DEFAULT_USER_NAME = "Guest";
 const PLANNED_TOTAL_MISSIONS = 30;
-const FALLBACK_APP_VERSION = "0.1.1";
+const FALLBACK_APP_VERSION = "0.1.2";
 
 const defaultProgressState = {
   currentMissionIndex: 0,
@@ -192,7 +192,7 @@ function applyPythonProfile(profile) {
 
   const frontendProfile = {
     firstName,
-    language: profile.language || "pt-BR",
+    language: profile.language || "en-US",
     levelPreference: profile.level_preference || profile.levelPreference || "beginner",
     email: profile.email || "",
   };
@@ -288,223 +288,223 @@ if (isHttpBackendAvailable()) {
 const learningBriefings = [
   {
     id: "briefing_001",
-    title: "Preparação do Bloco 01",
-    subtitle: "Primeiros comandos em Python",
+    title: "Block 01 Briefing",
+    subtitle: "First Python commands",
     beforeMissionIndex: 0,
     missionsRange: "1-5",
     steps: [
       {
         type: "lesson",
-        title: "O que é Python?",
-        text: "Python é uma linguagem de programação. Você escreve instruções, e o computador executa uma por uma.",
-        retryText: "Pense em Python como uma forma de conversar com o computador por comandos escritos. Cada comando precisa ser claro.",
+        title: "What is Python?",
+        text: "Python is a programming language. You write instructions, and the computer executes them one by one.",
+        retryText: "Think of Python as a way to talk to the computer through written commands. Each command needs to be clear.",
       },
       {
         type: "lesson",
-        title: "Instruções",
-        text: "Uma instrução é uma ordem pequena. O computador não adivinha intenção. Ele segue exatamente o que foi escrito.",
-        retryText: "Uma linha de código pode ser como uma ordem: faça isso agora. Se a ordem estiver errada, o resultado também sai errado.",
+        title: "Instructions",
+        text: "An instruction is a small command. The computer doesn't guess intent. It follows exactly what was written.",
+        retryText: "A line of code can be like a command: do this now. If the command is wrong, the result will be wrong too.",
       },
       {
         type: "check",
-        question: "Python é usado para:",
+        question: "Python is used to:",
         options: [
-          { label: "A", text: "escrever instruções para o computador", correct: true },
-          { label: "B", text: "decorar a tela do computador", correct: false },
-          { label: "C", text: "ligar cabos físicos", correct: false },
+          { label: "A", text: "write instructions for the computer", correct: true },
+          { label: "B", text: "decorate the computer screen", correct: false },
+          { label: "C", text: "connect physical cables", correct: false },
         ],
-        successText: "Certo. Python permite escrever instruções para o computador executar.",
-        failText: "Quase. Python não é decoração nem cabo físico. É uma linguagem para escrever instruções.",
+        successText: "Correct. Python lets you write instructions for the computer to execute.",
+        failText: "Almost. Python isn't decoration or a physical cable. It's a language for writing instructions.",
       },
       {
         type: "lesson",
-        title: "Texto e aspas",
-        text: "Quando queremos que Python trate algo como texto, normalmente usamos aspas. As aspas dizem: isto é uma mensagem.",
-        retryText: "Sem aspas, Python tenta entender a palavra como nome de alguma coisa. Com aspas, ele entende como texto.",
+        title: "Text and quotes",
+        text: "When we want Python to treat something as text, we usually use quotes. Quotes say: this is a message.",
+        retryText: "Without quotes, Python tries to understand the word as the name of something. With quotes, it understands it as text.",
       },
       {
         type: "lesson",
-        title: "Mostrar na tela",
-        text: "Uma das primeiras ideias é pedir que o programa mostre uma mensagem. Em Python, print é o comando básico para isso.",
-        retryText: "print é uma forma simples de enviar uma mensagem para o console. Ele ajuda você a ver o resultado do programa.",
+        title: "Showing on screen",
+        text: "One of the first ideas is asking the program to show a message. In Python, print is the basic command for that.",
+        retryText: "print is a simple way to send a message to the console. It helps you see the result of the program.",
       },
     ],
   },
   {
     id: "briefing_002",
-    title: "Preparação do Bloco 02",
-    subtitle: "Variáveis e valores",
+    title: "Block 02 Briefing",
+    subtitle: "Variables and values",
     beforeMissionIndex: 5,
     missionsRange: "6-10",
     steps: [
       {
         type: "lesson",
-        title: "Guardar informação",
-        text: "Uma variável é um nome que guarda um valor. Você usa esse nome depois para recuperar a informação.",
-        retryText: "Imagine uma etiqueta em uma caixa. A etiqueta é o nome da variável. O que está dentro é o valor.",
+        title: "Storing information",
+        text: "A variable is a name that holds a value. You use that name later to retrieve the information.",
+        retryText: "Imagine a label on a box. The label is the variable's name. What's inside is the value.",
       },
       {
         type: "lesson",
-        title: "Atribuição",
-        text: "Em Python, o sinal de igual coloca um valor dentro de um nome. Isso se chama atribuição.",
-        retryText: "Quando você escreve nome = valor, está dizendo: guarde este valor neste nome.",
+        title: "Assignment",
+        text: "In Python, the equal sign puts a value inside a name. This is called assignment.",
+        retryText: "When you write name = value, you're saying: store this value in this name.",
       },
       {
         type: "check",
-        question: "Em uma variável, o sinal = significa:",
+        question: "In a variable, the = sign means:",
         options: [
-          { label: "A", text: "guardar um valor em um nome", correct: true },
-          { label: "B", text: "mostrar uma tela", correct: false },
-          { label: "C", text: "apagar o programa", correct: false },
+          { label: "A", text: "store a value in a name", correct: true },
+          { label: "B", text: "show a screen", correct: false },
+          { label: "C", text: "delete the program", correct: false },
         ],
-        successText: "Certo. O sinal de igual atribui um valor a um nome.",
-        failText: "Ainda não. Aqui o igual serve para guardar um valor em uma variável.",
+        successText: "Correct. The equal sign assigns a value to a name.",
+        failText: "Not quite. Here, equal is used to store a value in a variable.",
       },
       {
         type: "lesson",
-        title: "Usar o valor",
-        text: "Depois que uma variável existe, você pode usar o nome dela em comandos. O Python busca o valor guardado.",
-        retryText: "Você não precisa repetir o valor toda hora. Use o nome da variável, e Python pega o valor dela.",
+        title: "Using the value",
+        text: "Once a variable exists, you can use its name in commands. Python looks up the stored value.",
+        retryText: "You don't need to repeat the value every time. Use the variable's name, and Python fetches its value.",
       },
     ],
   },
   {
     id: "briefing_003",
-    title: "Preparação do Bloco 03",
-    subtitle: "Decisões",
+    title: "Block 03 Briefing",
+    subtitle: "Decisions",
     beforeMissionIndex: 10,
     missionsRange: "11-15",
     steps: [
       {
         type: "lesson",
-        title: "Condição",
-        text: "Uma condição é uma pergunta com resposta verdadeira ou falsa. Programas usam isso para escolher caminhos.",
-        retryText: "Pense em uma porta: se a condição for verdadeira, o programa entra. Se for falsa, ele segue outro caminho.",
+        title: "Condition",
+        text: "A condition is a question with a true or false answer. Programs use this to choose paths.",
+        retryText: "Think of a door: if the condition is true, the program goes through. If it's false, it takes another path.",
       },
       {
         type: "lesson",
         title: "If",
-        text: "O if executa um bloco apenas quando a condição é verdadeira. A indentação mostra o que pertence a esse bloco.",
-        retryText: "if significa se. Se algo for verdadeiro, execute as linhas indentadas abaixo.",
+        text: "The if runs a block only when the condition is true. Indentation shows what belongs to that block.",
+        retryText: "if means: if something is true, run the indented lines below.",
       },
       {
         type: "check",
-        question: "Um if serve para:",
+        question: "An if is used to:",
         options: [
-          { label: "A", text: "tomar uma decisão no programa", correct: true },
-          { label: "B", text: "trocar a fonte do editor", correct: false },
-          { label: "C", text: "criar som ambiente", correct: false },
+          { label: "A", text: "make a decision in the program", correct: true },
+          { label: "B", text: "change the editor font", correct: false },
+          { label: "C", text: "create ambient sound", correct: false },
         ],
-        successText: "Certo. O if cria caminhos diferentes no programa.",
-        failText: "Quase. O if não muda o visual. Ele decide se um bloco deve executar.",
+        successText: "Correct. The if creates different paths in the program.",
+        failText: "Almost. The if doesn't change the visuals. It decides whether a block should run.",
       },
       {
         type: "lesson",
-        title: "Comparações",
-        text: "Comparações como maior que, menor que ou igual a geram respostas verdadeiras ou falsas.",
-        retryText: "Comparar é perguntar: isto é maior? isto é igual? A resposta ajuda o programa a decidir.",
+        title: "Comparisons",
+        text: "Comparisons like greater than, less than, or equal to produce true or false answers.",
+        retryText: "Comparing is asking: is this bigger? is this equal? The answer helps the program decide.",
       },
     ],
   },
   {
     id: "briefing_004",
-    title: "Preparação do Bloco 04",
-    subtitle: "Repetições",
+    title: "Block 04 Briefing",
+    subtitle: "Repetition",
     beforeMissionIndex: 15,
     missionsRange: "16-20",
     steps: [
       {
         type: "lesson",
-        title: "Repetir ações",
-        text: "Programas muitas vezes precisam repetir uma ação. Loops evitam copiar a mesma linha várias vezes.",
-        retryText: "Quando uma tarefa se repete, um loop ajuda o computador a fazer isso em sequência.",
+        title: "Repeating actions",
+        text: "Programs often need to repeat an action. Loops avoid copying the same line over and over.",
+        retryText: "When a task repeats, a loop helps the computer do it in sequence.",
       },
       {
         type: "lesson",
         title: "For",
-        text: "O for percorre uma sequência. A cada volta, ele trabalha com um item ou número da sequência.",
-        retryText: "Pense no for como uma esteira: cada item passa uma vez, e o bloco de código roda para ele.",
+        text: "The for goes through a sequence. On each pass, it works with one item or number from the sequence.",
+        retryText: "Think of the for as a conveyor belt: each item passes once, and the code block runs for it.",
       },
       {
         type: "check",
-        question: "Um loop ajuda principalmente a:",
+        question: "A loop mainly helps you:",
         options: [
-          { label: "A", text: "repetir ações sem copiar código", correct: true },
-          { label: "B", text: "desligar o monitor", correct: false },
-          { label: "C", text: "mudar o nome do usuário", correct: false },
+          { label: "A", text: "repeat actions without copying code", correct: true },
+          { label: "B", text: "turn off the monitor", correct: false },
+          { label: "C", text: "change the user's name", correct: false },
         ],
-        successText: "Certo. Loops repetem ações de forma organizada.",
-        failText: "Ainda não. Loop é sobre repetição de código, não sobre interface.",
+        successText: "Correct. Loops repeat actions in an organized way.",
+        failText: "Not quite. Loop is about repeating code, not about the interface.",
       },
       {
         type: "lesson",
-        title: "Indentação",
-        text: "As linhas indentadas pertencem ao loop. Isso mostra ao Python o que deve repetir.",
-        retryText: "A indentação é o recuo no começo da linha. Ela marca o bloco que fica dentro do loop.",
+        title: "Indentation",
+        text: "Indented lines belong to the loop. This shows Python what should repeat.",
+        retryText: "Indentation is the space at the start of the line. It marks the block that's inside the loop.",
       },
     ],
   },
   {
     id: "briefing_005",
-    title: "Preparação do Bloco 05",
-    subtitle: "Listas",
+    title: "Block 05 Briefing",
+    subtitle: "Lists",
     beforeMissionIndex: 20,
     missionsRange: "21-25",
     steps: [
       {
         type: "lesson",
-        title: "Vários valores",
-        text: "Uma lista guarda vários valores em uma ordem. Cada valor é um item.",
-        retryText: "Lista é como uma prateleira: vários itens ficam juntos, cada um em uma posição.",
+        title: "Multiple values",
+        text: "A list holds several values in order. Each value is an item.",
+        retryText: "A list is like a shelf: several items sit together, each one in a position.",
       },
       {
         type: "lesson",
-        title: "Posição",
-        text: "Itens de lista têm posição. Em Python, a primeira posição costuma ser zero.",
-        retryText: "O primeiro item fica na posição 0, o segundo na posição 1, e assim por diante.",
+        title: "Position",
+        text: "List items have a position. In Python, the first position is usually zero.",
+        retryText: "The first item sits at position 0, the second at position 1, and so on.",
       },
       {
         type: "check",
-        question: "Uma lista serve para:",
+        question: "A list is used to:",
         options: [
-          { label: "A", text: "guardar vários valores em ordem", correct: true },
-          { label: "B", text: "salvar senha online", correct: false },
-          { label: "C", text: "aumentar volume do som", correct: false },
+          { label: "A", text: "store several values in order", correct: true },
+          { label: "B", text: "save a password online", correct: false },
+          { label: "C", text: "increase the sound volume", correct: false },
         ],
-        successText: "Certo. Listas organizam vários valores.",
-        failText: "Quase. Lista é uma estrutura para guardar vários valores.",
+        successText: "Correct. Lists organize several values.",
+        failText: "Almost. A list is a structure for storing several values.",
       },
     ],
   },
   {
     id: "briefing_006",
-    title: "Preparação do Bloco 06",
-    subtitle: "Funções",
+    title: "Block 06 Briefing",
+    subtitle: "Functions",
     beforeMissionIndex: 25,
     missionsRange: "26-30",
     steps: [
       {
         type: "lesson",
-        title: "Código com nome",
-        text: "Uma função é um bloco de código com nome. Você cria uma vez e chama quando precisar.",
-        retryText: "Função é como uma ferramenta: tem um nome e executa uma tarefa quando você chama.",
+        title: "Named code",
+        text: "A function is a block of code with a name. You create it once and call it whenever you need it.",
+        retryText: "A function is like a tool: it has a name and performs a task when you call it.",
       },
       {
         type: "lesson",
-        title: "Organização",
-        text: "Funções ajudam a evitar repetição e deixam o programa mais organizado.",
-        retryText: "Quando uma tarefa aparece muitas vezes, colocar essa tarefa em uma função deixa tudo mais limpo.",
+        title: "Organization",
+        text: "Functions help avoid repetition and keep the program more organized.",
+        retryText: "When a task shows up many times, putting it in a function keeps everything cleaner.",
       },
       {
         type: "check",
-        question: "Uma função ajuda a:",
+        question: "A function helps you:",
         options: [
-          { label: "A", text: "organizar e reutilizar código", correct: true },
-          { label: "B", text: "criar uma imagem nova", correct: false },
-          { label: "C", text: "instalar Python sozinha", correct: false },
+          { label: "A", text: "organize and reuse code", correct: true },
+          { label: "B", text: "create a new image", correct: false },
+          { label: "C", text: "install Python by itself", correct: false },
         ],
-        successText: "Certo. Funções organizam tarefas reutilizáveis.",
-        failText: "Ainda não. Função é sobre organizar código com nome.",
+        successText: "Correct. Functions organize reusable tasks.",
+        failText: "Not quite. A function is about organizing code with a name.",
       },
     ],
   },
@@ -515,21 +515,21 @@ const missions = [
     id: "mission_001",
     level: 1,
     title: "Mission 01 — First Output",
-    description: "Primeiro passo: faça o programa escrever uma mensagem no console.",
-    objective: "Use print() para mostrar exatamente: Hello, Mompy!",
-    starterCode: "# escreva aqui\n",
+    description: "First step: make the program write a message to the console.",
+    objective: "Use print() to show exactly: Hello, Mompy!",
+    starterCode: "# write here\n",
     expectedOutput: "Hello, Mompy!",
-    help: 'Use aspas dentro do print: print("Hello, Mompy!")',
+    help: 'Use quotes inside print: print("Hello, Mompy!")',
     blocks: [
       [
         {
-          text: "Primeiro passo: faça o programa escrever uma mensagem no console.",
+          text: "First step: make the program write a message to the console.",
         },
       ],
       [
-        { text: "Escreva um " },
+        { text: "Write a " },
         { text: "print()", tag: "code" },
-        { text: " que mostre exatamente: " },
+        { text: " that shows exactly: " },
         { text: "Hello, Mompy!", tag: "strong" },
       ],
     ],
@@ -538,58 +538,58 @@ const missions = [
     id: "mission_002",
     level: 2,
     title: "Mission 02 — Variable",
-    description: "Variáveis guardam valores para você usar depois.",
-    objective: 'Crie name = "Mompy" e depois mostre name com print().',
+    description: "Variables store values for you to use later.",
+    objective: 'Create name = "Mompy" and then show name with print().',
     starterCode: 'name = "Mompy"\n',
     expectedOutput: "Mompy",
-    help: 'Depois de criar a variável, use print(name). Não coloque name entre aspas no print.',
+    help: 'After creating the variable, use print(name). Do not put name in quotes inside print.',
   },
   {
     id: "mission_003",
     level: 3,
     title: "Mission 03 — Sum",
-    description: "Python consegue fazer contas simples direto no código.",
-    objective: "Some 2 + 3 e mostre o resultado no console.",
+    description: "Python can do simple math directly in the code.",
+    objective: "Add 2 + 3 and show the result in the console.",
     starterCode: "a = 2\nb = 3\n",
     expectedOutput: "5",
-    help: "Você pode usar print(a + b) depois de criar as variáveis.",
+    help: "You can use print(a + b) after creating the variables.",
   },
   {
     id: "mission_004",
     level: 4,
     title: "Mission 04 — If",
-    description: "O if executa um bloco de código apenas quando uma condição é verdadeira.",
-    objective: 'Use if para mostrar exatamente: Ready',
+    description: "The if runs a block of code only when a condition is true.",
+    objective: 'Use if to show exactly: Ready',
     starterCode: "power = True\n",
     expectedOutput: "Ready",
-    help: 'Use if power: e, dentro dele, print("Ready").',
+    help: 'Use if power: and, inside it, print("Ready").',
   },
   {
     id: "mission_005",
     level: 5,
     title: "Mission 05 — For Loop",
-    description: "O for repete comandos para uma sequência de valores.",
-    objective: "Use range(3) para mostrar 0, 1 e 2.",
+    description: "The for repeats commands for a sequence of values.",
+    objective: "Use range(3) to show 0, 1, and 2.",
     starterCode: "for i in range(3):\n    ",
     expectedOutput: "0\n1\n2",
-    help: "Dentro do for, use print(i). A linha do print precisa ficar indentada.",
+    help: "Inside the for, use print(i). The print line needs to be indented.",
   },
   {
     id: "mission_006",
     level: 6,
     title: "Mission 06 — List Item",
-    description: "Listas guardam vários valores em ordem.",
-    objective: 'Crie uma lista com "onion", "terminal", "python" e mostre o segundo item.',
+    description: "Lists store several values in order.",
+    objective: 'Create a list with "onion", "terminal", "python" and show the second item.',
     starterCode: 'items = ["onion", "terminal", "python"]\n',
     expectedOutput: "terminal",
-    help: "O primeiro item é índice 0. O segundo item é items[1].",
+    help: "The first item is index 0. The second item is items[1].",
   },
   {
     id: "mission_007",
     level: 7,
     title: "Mission 07 — Length",
-    description: "len() conta quantos itens ou caracteres existem em um valor.",
-    objective: 'Mostre o tamanho da palavra "Mompy".',
+    description: "len() counts how many items or characters exist in a value.",
+    objective: 'Show the length of the word "Mompy".',
     starterCode: 'word = "Mompy"\n',
     expectedOutput: "5",
     help: "Use print(len(word)) ou print(len(\"Mompy\")).",
@@ -598,48 +598,48 @@ const missions = [
     id: "mission_008",
     level: 8,
     title: "Mission 08 — Function",
-    description: "Funções guardam uma pequena tarefa para reutilizar depois.",
-    objective: 'Crie greet(user) e mostre: Hello, Mompy',
+    description: "Functions store a small task to reuse later.",
+    objective: 'Create greet(user) and show: Hello, Mompy',
     starterCode: "def greet(user):\n    ",
     expectedOutput: "Hello, Mompy",
-    help: 'Retorne ou imprima "Hello, " + user, depois chame greet("Mompy").',
+    help: 'Return or print "Hello, " + user, then call greet("Mompy").',
   },
   {
     id: "mission_009",
     level: 9,
     title: "Mission 09 — Boolean",
-    description: "Booleanos representam verdadeiro ou falso.",
-    objective: "Crie is_ready = True e mostre esse valor.",
+    description: "Booleans represent true or false.",
+    objective: "Create is_ready = True and show that value.",
     starterCode: "is_ready = True\n",
     expectedOutput: "True",
-    help: "Use print(is_ready). Em Python, True começa com T maiúsculo.",
+    help: "Use print(is_ready). In Python, True starts with a capital T.",
   },
   {
     id: "mission_010",
     level: 10,
     title: "Mission 10 — Uppercase",
-    description: "Strings têm métodos que transformam texto.",
-    objective: 'Transforme "mompy" em letras maiúsculas.',
+    description: "Strings have methods that transform text.",
+    objective: 'Turn "mompy" into uppercase letters.',
     starterCode: 'name = "mompy"\n',
     expectedOutput: "MOMPY",
-    help: "Use name.upper() dentro do print.",
+    help: "Use name.upper() inside print.",
   },
   {
     id: "mission_011",
     level: 11,
     title: "Mission 11 — Append",
-    description: "append() adiciona um item no final de uma lista.",
-    objective: "Adicione 4 em [1, 2, 3] e mostre a lista.",
+    description: "append() adds an item to the end of a list.",
+    objective: "Add 4 to [1, 2, 3] and show the list.",
     starterCode: "numbers = [1, 2, 3]\n",
     expectedOutput: "[1, 2, 3, 4]",
-    help: "Use numbers.append(4), depois print(numbers).",
+    help: "Use numbers.append(4), then print(numbers).",
   },
   {
     id: "mission_012",
     level: 12,
     title: "Mission 12 — Dictionary",
-    description: "Dicionários guardam valores com nomes de chave.",
-    objective: 'Crie um dicionário com name = "Mompy" e mostre esse valor.',
+    description: "Dictionaries store values with key names.",
+    objective: 'Create a dictionary with name = "Mompy" and show that value.',
     starterCode: 'profile = {"name": "Mompy"}\n',
     expectedOutput: "Mompy",
     help: 'Use print(profile["name"]).',
@@ -648,18 +648,18 @@ const missions = [
     id: "mission_013",
     level: 13,
     title: "Mission 13 — While",
-    description: "while repete enquanto uma condição continuar verdadeira.",
-    objective: "Use while para mostrar 0, 1 e 2.",
+    description: "while repeats as long as a condition stays true.",
+    objective: "Use while to show 0, 1, and 2.",
     starterCode: "count = 0\nwhile count < 3:\n    ",
     expectedOutput: "0\n1\n2",
-    help: "Dentro do while, use print(count) e depois count += 1.",
+    help: "Inside the while, use print(count) and then count += 1.",
   },
   {
     id: "mission_014",
     level: 14,
     title: "Mission 14 — F-String",
-    description: "f-strings colocam variáveis dentro de textos.",
-    objective: 'Com user = "Mackson", mostre: Hello, Mackson',
+    description: "f-strings place variables inside text.",
+    objective: 'With user = "Mackson", show: Hello, Mackson',
     starterCode: 'user = "Mackson"\n',
     expectedOutput: "Hello, Mackson",
     help: 'Use print(f"Hello, {user}").',
@@ -668,8 +668,8 @@ const missions = [
     id: "mission_015",
     level: 15,
     title: "Mission 15 — Comparison",
-    description: "Comparações retornam True ou False.",
-    objective: "Mostre se 10 é maior que 3.",
+    description: "Comparisons return True or False.",
+    objective: "Show whether 10 is greater than 3.",
     starterCode: "",
     expectedOutput: "True",
     help: "Use print(10 > 3).",
@@ -678,8 +678,8 @@ const missions = [
     id: "mission_016",
     level: 16,
     title: "Mission 16 — Modulo",
-    description: "O operador % mostra o resto de uma divisão.",
-    objective: "Mostre o resto de 8 dividido por 2.",
+    description: "The % operator shows the remainder of a division.",
+    objective: "Show the remainder of 8 divided by 2.",
     starterCode: "",
     expectedOutput: "0",
     help: "Use print(8 % 2).",
@@ -688,8 +688,8 @@ const missions = [
     id: "mission_017",
     level: 17,
     title: "Mission 17 — List Comprehension",
-    description: "List comprehensions criam listas novas em uma linha.",
-    objective: "Dobre [1, 2, 3] e mostre [2, 4, 6].",
+    description: "List comprehensions create new lists in a single line.",
+    objective: "Double [1, 2, 3] and show [2, 4, 6].",
     starterCode: "numbers = [1, 2, 3]\n",
     expectedOutput: "[2, 4, 6]",
     help: "Use print([n * 2 for n in numbers]).",
@@ -698,18 +698,18 @@ const missions = [
     id: "mission_018",
     level: 18,
     title: "Mission 18 — Return Value",
-    description: "Uma função pode devolver um resultado com return.",
-    objective: "Crie add(a, b) e mostre add(2, 3).",
+    description: "A function can return a result with return.",
+    objective: "Create add(a, b) and show add(2, 3).",
     starterCode: "def add(a, b):\n    ",
     expectedOutput: "5",
-    help: "A função deve retornar a + b. Depois use print(add(2, 3)).",
+    help: "The function should return a + b. Then use print(add(2, 3)).",
   },
   {
     id: "mission_019",
     level: 19,
     title: "Mission 19 — Split",
-    description: "split() separa uma frase em uma lista de palavras.",
-    objective: 'Separe "Python is fun" em palavras e mostre a lista.',
+    description: "split() breaks a sentence into a list of words.",
+    objective: 'Split "Python is fun" into words and show the list.',
     starterCode: 'phrase = "Python is fun"\n',
     expectedOutput: "['Python', 'is', 'fun']",
     help: "Use print(phrase.split()).",
@@ -718,11 +718,11 @@ const missions = [
     id: "mission_020",
     level: 20,
     title: "Mission 20 — Small Loop",
-    description: "Você já consegue combinar loop, texto e método de string.",
-    objective: 'Mostre as letras de "py" em maiúsculas, uma por linha.',
+    description: "You can now combine a loop, text, and a string method.",
+    objective: 'Show the letters of "py" in uppercase, one per line.',
     starterCode: 'for letter in "py":\n    ',
     expectedOutput: "P\nY",
-    help: "Dentro do for, use print(letter.upper()).",
+    help: "Inside the for, use print(letter.upper()).",
   },
 ];
 
@@ -834,9 +834,9 @@ const startTerminalExamples = [
 ];
 
 const onboardingIntroLines = [
-  '>>> print("Bem-vindo ao Mompy")',
-  "Bem-vindo ao Mompy",
-  '>>> nome = input("Qual é o seu primeiro nome? ")',
+  '>>> print("Welcome to Mompy")',
+  "Welcome to Mompy",
+  '>>> name = input("What is your first name? ")',
 ];
 
 function wait(ms) {
@@ -1417,7 +1417,7 @@ async function resetProgress(options = {}) {
   if (trainingStarted && !options.keepMissionView) {
     openMissionOrBriefing({
       intro: false,
-      outputMessage: "Progresso resetado. Missão 01 carregada.",
+      outputMessage: "Progress reset. Mission 01 loaded.",
     });
   }
 }
@@ -1550,7 +1550,7 @@ function renderMompyCompletionPrompt() {
   const text = document.createElement("div");
   text.className = "mompy-screen-text";
 
-  ["Missão concluída.", "Avançar?"].forEach((line) => {
+  ["Mission complete.", "Continue?"].forEach((line) => {
     const paragraph = document.createElement("p");
     paragraph.textContent = line;
     text.append(paragraph);
@@ -1561,12 +1561,12 @@ function renderMompyCompletionPrompt() {
 
   const repeatButton = document.createElement("button");
   repeatButton.type = "button";
-  repeatButton.textContent = "Repetir";
+  repeatButton.textContent = "Retry";
   repeatButton.addEventListener("click", repeatMission);
 
   const nextButton = document.createElement("button");
   nextButton.type = "button";
-  nextButton.textContent = "Próxima missão";
+  nextButton.textContent = "Next mission";
   nextButton.addEventListener("click", goToNextMission);
 
   actionShell.append(repeatButton, nextButton);
@@ -1591,7 +1591,7 @@ function showLearningBriefing(briefingId) {
   setMompyState("briefing");
   editor.value = "";
   updateLineNumbers();
-  output.textContent = "Mompy: Aula pronta.";
+  output.textContent = "Mompy: Lesson ready.";
   renderBriefingIntro(briefing);
 }
 
@@ -1603,7 +1603,7 @@ function renderBriefingIntro(briefing) {
     ],
     actions: [
       {
-        label: "Aprender",
+        label: "Learn",
         primary: true,
         onClick: () => {
           activeBriefingStepIndex = 0;
@@ -1612,7 +1612,7 @@ function renderBriefingIntro(briefing) {
         },
       },
       {
-        label: "Pular",
+        label: "Skip",
         onClick: () => skipBriefing(briefing.id),
       },
     ],
@@ -1641,12 +1641,12 @@ function renderBriefingStep(briefing, stepIndex) {
     lines: [step.text],
     actions: [
       {
-        label: "Entendi",
+        label: "Got it",
         primary: true,
         onClick: handleBriefingUnderstood,
       },
       {
-        label: "Não entendi",
+        label: "I don't understand",
         onClick: handleBriefingNotUnderstood,
       },
     ],
@@ -1668,12 +1668,12 @@ function renderBriefingRetry(briefing, stepIndex) {
     lines: [step.retryText || step.text],
     actions: [
       {
-        label: "Entendi",
+        label: "Got it",
         primary: true,
         onClick: handleBriefingUnderstood,
       },
       {
-        label: "Não entendi",
+        label: "I don't understand",
         onClick: handleBriefingNotUnderstood,
       },
     ],
@@ -1692,7 +1692,7 @@ function renderBriefingCheck(briefing, stepIndex, feedback = "") {
   setMompyState("briefing");
   renderMompyScreenPanel({
     title: step.question,
-    lines: [feedback || "Escolha a resposta correta."],
+    lines: [feedback || "Choose the correct answer."],
     variant: "check",
     actions: step.options.map((option) => ({
       label: `${option.label} ${option.text}`,
@@ -1731,11 +1731,11 @@ function handleBriefingCheckAnswer(briefing, stepIndex, option) {
     audioManager.playSuccess();
     setMompyState("briefing");
     renderMompyScreenPanel({
-      title: "Resposta correta",
+      title: "Correct answer",
       lines: [step.successText],
       actions: [
         {
-          label: "Entendi",
+          label: "Got it",
           primary: true,
           onClick: () => renderBriefingStep(briefing, stepIndex + 1),
         },
@@ -1767,11 +1767,11 @@ function completeBriefing(briefingId) {
   activeBriefingRetry = false;
   setMompyState("briefing");
   renderMompyScreenPanel({
-    title: "Preparação concluída",
+    title: "Briefing complete",
     lines: [
-      "Preparação concluída.",
-      "Conceitos carregados.",
-      "Boa sorte, trainee.",
+      "Briefing complete.",
+      "Concepts loaded.",
+      "Good luck, trainee.",
     ],
     actions: [],
   });
@@ -1915,7 +1915,7 @@ function readStoredUserProfile() {
 
     return {
       firstName,
-      language: profile.language || "pt-BR",
+      language: profile.language || "en-US",
       levelPreference: profile.levelPreference || "beginner",
       email: profile.email || "",
     };
@@ -1939,7 +1939,7 @@ function loadUserProfile() {
 async function saveUserProfile(firstName) {
   const profile = {
     firstName: normalizeName(firstName),
-    language: "pt-BR",
+    language: "en-US",
     levelPreference: "beginner",
     email: "",
   };
@@ -2081,7 +2081,7 @@ async function submitOnboardingName() {
   const firstName = normalizeName(onboardingNameInput.value);
 
   if (!firstName) {
-    onboardingError.textContent = "Digite seu primeiro nome.";
+    onboardingError.textContent = "Type your first name.";
     onboardingNameInput.focus();
     return;
   }
@@ -2094,7 +2094,7 @@ async function submitOnboardingName() {
     onboardingTerminalOutput.textContent += "\n";
   }
 
-  onboardingTerminalOutput.textContent += `> ${firstName}\n>>> print(nome)\n${firstName}\n\nPerfil salvo.\nCarregando workspace...`;
+  onboardingTerminalOutput.textContent += `> ${firstName}\n>>> print(name)\n${firstName}\n\nProfile saved.\nLoading workspace...`;
   await saveUserProfile(firstName);
   await wait(720);
   closeOnboarding();
@@ -2310,18 +2310,18 @@ async function startFreshTraining() {
 
 function confirmStartOver() {
   openModal({
-    title: "Começar do zero",
-    body: "<p>Você já tem progresso salvo.<br>Deseja começar do zero?</p>",
+    title: "Start from scratch",
+    body: "<p>You already have saved progress.<br>Do you want to start from scratch?</p>",
     actions: [
       {
-        label: "Cancelar",
+        label: "Cancel",
         onClick: () => {
           closeModal();
           restoreAfterModal();
         },
       },
       {
-        label: "Começar do zero",
+        label: "Start from scratch",
         primary: true,
         onClick: () => {
           closeModal();
@@ -2390,7 +2390,7 @@ function buildMissionNodes(mission) {
 
   const blocks = mission.blocks || [
     [{ text: mission.description }],
-    [{ text: `Objetivo: ${mission.objective}` }],
+    [{ text: `Goal: ${mission.objective}` }],
   ];
 
   blocks.forEach((block) => {
@@ -2426,7 +2426,7 @@ function renderMission(mission) {
 }
 
 function missionIntroText(mission) {
-  return `Mompy: ${mission.objective}\nAtalho: Ctrl+Enter também executa.`;
+  return `Mompy: ${mission.objective}\nShortcut: Ctrl+Enter also runs.`;
 }
 
 function renderCurrentMission(options = {}) {
@@ -2582,10 +2582,10 @@ function failMission(result) {
   output.textContent = [
     `> ${result.output}`,
     "",
-    "Ainda não foi dessa vez.",
-    "Verifique o objetivo da missão e tente novamente.",
+    "Not quite this time.",
+    "Check the mission's goal and try again.",
     "",
-    `Dica: ${result.detail}`,
+    `Tip: ${result.detail}`,
   ].join("\n");
   audioManager.playError();
   setMompyState("error", { returnToIdle: 3200 });
@@ -2600,7 +2600,7 @@ function repeatMission() {
   setMompyState("idle");
   editor.value = currentMission().starterCode || "";
   updateLineNumbers();
-  output.textContent = "Missão reiniciada. Tente novamente.";
+  output.textContent = "Mission restarted. Try again.";
   editor.focus();
 }
 
@@ -2613,8 +2613,8 @@ function goToNextMission() {
     setMissionActionsEnabled(false);
     setMompyState("complete");
     output.textContent = [
-      "Todas as missões disponíveis foram concluídas.",
-      "Novas missões serão adicionadas em breve.",
+      "All available missions are complete.",
+      "New missions will be added soon.",
     ].join("\n");
     saveProgress();
     return;
@@ -2644,11 +2644,11 @@ async function validateCode(code) {
 
   const mission = currentMission();
   const trimmed = code.trim();
-  if (!trimmed || trimmed === "# escreva aqui") {
+  if (!trimmed || trimmed === "# write here") {
     return {
       ok: false,
-      output: "Nenhum código para executar.",
-      detail: mission.help || "Escreva o código pedido no editor.",
+      output: "No code to run.",
+      detail: mission.help || "Write the requested code in the editor.",
     };
   }
 
@@ -2658,7 +2658,7 @@ async function validateCode(code) {
       ok: Boolean(backendValidation.correct),
       output: backendValidation.actual_output || backendValidation.expected_output || mission.expectedOutput,
       detail: backendValidation.correct
-        ? backendValidation.message || "Missão concluída."
+        ? backendValidation.message || "Mission complete."
         : backendValidation.runtime_error || backendValidation.hints?.[0] || backendValidation.message || mission.help,
     };
   }
@@ -2666,8 +2666,8 @@ async function validateCode(code) {
   const printed = extractPrintOutput(code);
   return {
     ok: false,
-    output: printed || "Ainda não foi dessa vez.",
-    detail: "Abra o Mompy pelo Python para usar a validação real das missões.",
+    output: printed || "Not quite this time.",
+    detail: "Open Mompy through Python to use real mission validation.",
   };
 }
 
@@ -2679,7 +2679,7 @@ async function runCode() {
   finishMissionIntro();
   const code = editor.value;
   runButton.disabled = true;
-  output.textContent = "Executando validação...";
+  output.textContent = "Running validation...";
   audioManager.playRun();
   setMompyState("talking");
 
@@ -2749,23 +2749,23 @@ function showBackConfirmation() {
   setMompyState("idle");
 
   if (currentMissionIndex <= 0) {
-    output.textContent = "Mompy: Você já está na primeira missão.";
+    output.textContent = "Mompy: You're already on the first mission.";
     return;
   }
 
   openModal({
-    title: "Voltar missão",
-    body: "<p>Tem certeza que deseja voltar para a missão anterior?</p>",
+    title: "Go back a mission",
+    body: "<p>Are you sure you want to go back to the previous mission?</p>",
     actions: [
       {
-        label: "Cancelar",
+        label: "Cancel",
         onClick: () => {
           closeModal();
           setMompyState("idle");
         },
       },
       {
-        label: "Confirmar",
+        label: "Confirm",
         primary: true,
         onClick: () => {
           closeModal();
@@ -2787,14 +2787,14 @@ function showHelp() {
   setMompyState("talking");
   const mission = currentMission();
   openModal({
-    title: "Ajuda da missão",
+    title: "Mission help",
     body: `
       <p>${mission.help}</p>
-      <p><strong>Objetivo:</strong> ${mission.objective}</p>
+      <p><strong>Goal:</strong> ${mission.objective}</p>
     `,
     actions: [
       {
-        label: "Entendi",
+        label: "Got it",
         primary: true,
         onClick: () => {
           closeModal();
@@ -2813,64 +2813,64 @@ function settingMeter(settingName) {
   const value = settingsState[settingName];
   return `
     <div class="setting-stepper">
-      <button class="setting-step" type="button" data-setting-step="${settingName}" data-delta="-10" aria-label="Diminuir">-</button>
+      <button class="setting-step" type="button" data-setting-step="${settingName}" data-delta="-10" aria-label="Decrease">-</button>
       <span class="setting-meter" data-setting-meter="${settingName}" style="--value: ${value}%">
         <span data-setting-value="${settingName}">${value}%</span>
       </span>
-      <button class="setting-step" type="button" data-setting-step="${settingName}" data-delta="10" aria-label="Aumentar">+</button>
+      <button class="setting-step" type="button" data-setting-step="${settingName}" data-delta="10" aria-label="Increase">+</button>
     </div>
   `;
 }
 
 function updateStatusText() {
   if (!updateStatusCache) {
-    return "Não verificado";
+    return "Not checked";
   }
 
   if (updateStatusCache.error) {
-    return "Verificação indisponível";
+    return "Check unavailable";
   }
 
   if (updateStatusCache.update_available) {
-    return `Nova versão ${updateStatusCache.latest_version}`;
+    return `New version ${updateStatusCache.latest_version}`;
   }
 
-  return "Atualizado";
+  return "Up to date";
 }
 
 function renderSettingsBody() {
   return `
     <div class="settings-grid">
       <section class="settings-section">
-        <h3>Atalhos</h3>
+        <h3>Shortcuts</h3>
         <div class="settings-row"><span><code>Ctrl + Enter</code></span><span class="settings-control">Run</span></div>
         <div class="settings-row"><span><code>F1</code></span><span class="settings-control">Help</span></div>
-        <div class="settings-row"><span><code>Esc</code></span><span class="settings-control">Fechar</span></div>
+        <div class="settings-row"><span><code>Esc</code></span><span class="settings-control">Close</span></div>
       </section>
 
       <section class="settings-section">
-        <h3>Áudio</h3>
+        <h3>Audio</h3>
         <div class="settings-row">
-          <span>Música ambiente</span>
+          <span>Ambient music</span>
           <button class="settings-control settings-toggle" type="button" data-setting-toggle="ambientMusic" aria-pressed="${settingsState.ambientMusic}">
             ${toggleLabel(settingsState.ambientMusic)}
           </button>
         </div>
-        <div class="settings-row"><span>Volume da música</span>${settingMeter("musicVolume")}</div>
+        <div class="settings-row"><span>Music volume</span>${settingMeter("musicVolume")}</div>
         <div class="settings-row">
-          <span>Efeitos sonoros</span>
+          <span>Sound effects</span>
           <button class="settings-control settings-toggle" type="button" data-setting-toggle="soundEffects" aria-pressed="${settingsState.soundEffects}">
             ${toggleLabel(settingsState.soundEffects)}
           </button>
         </div>
-        <div class="settings-row"><span>Volume dos efeitos</span>${settingMeter("effectsVolume")}</div>
+        <div class="settings-row"><span>Effects volume</span>${settingMeter("effectsVolume")}</div>
       </section>
 
       <section class="settings-section">
         <h3>Interface</h3>
-        <div class="settings-row"><span>Brilho CRT</span>${settingMeter("crtBrightness")}</div>
+        <div class="settings-row"><span>CRT brightness</span>${settingMeter("crtBrightness")}</div>
         <div class="settings-row">
-          <span>Animações do Mompy</span>
+          <span>Mompy animations</span>
           <button class="settings-control settings-toggle" type="button" data-setting-toggle="mompyAnimations" aria-pressed="${settingsState.mompyAnimations}">
             ${toggleLabel(settingsState.mompyAnimations)}
           </button>
@@ -2880,40 +2880,40 @@ function renderSettingsBody() {
       <section class="settings-section">
         <h3>Progress</h3>
         <div class="settings-row">
-          <span>Missões concluídas</span>
+          <span>Missions completed</span>
           <span class="settings-control">${completedMissionIds.length} / ${PLANNED_TOTAL_MISSIONS}</span>
         </div>
         <div class="settings-row">
-          <span>Missão atual</span>
+          <span>Current mission</span>
           <span class="settings-control">${String(currentMissionIndex + 1).padStart(2, "0")}</span>
         </div>
         <div class="settings-row">
-          <span>Progresso local</span>
+          <span>Local progress</span>
           <button id="resetProgressButton" class="settings-inline-button" type="button">Reset progress</button>
         </div>
       </section>
 
       <section class="settings-section">
-        <h3>Conta</h3>
+        <h3>Account</h3>
         <div class="settings-row">
-          <span>Usuário atual</span>
+          <span>Current user</span>
           <span class="settings-control">${currentUser.name}</span>
         </div>
         <div class="settings-row">
-          <span>Sessão</span>
-          <button id="logoutUserButton" class="settings-inline-button" type="button">Sair do usuário</button>
+          <span>Session</span>
+          <button id="logoutUserButton" class="settings-inline-button" type="button">Log out</button>
         </div>
       </section>
 
       <section class="settings-section">
-        <h3>Atualizações</h3>
+        <h3>Updates</h3>
         <div class="settings-row">
-          <span>Versão instalada</span>
+          <span>Installed version</span>
           <span class="settings-control">v${appVersion}</span>
         </div>
         <div class="settings-row">
           <span id="updateStatusText">${updateStatusText()}</span>
-          <button id="checkUpdatesButton" class="settings-inline-button" type="button">Verificar updates</button>
+          <button id="checkUpdatesButton" class="settings-inline-button" type="button">Check for updates</button>
         </div>
       </section>
     </div>
@@ -2985,11 +2985,11 @@ async function checkUpdatesFromSettings() {
 
   if (button) {
     button.disabled = true;
-    button.textContent = "Verificando";
+    button.textContent = "Checking";
   }
 
   if (statusText) {
-    statusText.textContent = "Consultando GitHub Releases";
+    statusText.textContent = "Querying GitHub Releases";
   }
 
   updateStatusCache = await callPythonBackend("get_update_status");
@@ -3000,7 +3000,7 @@ async function checkUpdatesFromSettings() {
 
   if (button) {
     button.disabled = false;
-    button.textContent = updateStatusCache?.update_available ? "Abrir release" : "Verificar updates";
+    button.textContent = updateStatusCache?.update_available ? "Open release" : "Check for updates";
   }
 }
 
@@ -3012,7 +3012,7 @@ function showSettings() {
   }
 
   openModal({
-    title: "Configurações",
+    title: "Settings",
     body: renderSettingsBody(),
     actions: [
       {
@@ -3026,15 +3026,15 @@ function showSettings() {
 
 function confirmExitApp() {
   openModal({
-    title: "Sair do app",
-    body: "<p>Tem certeza que deseja sair?</p>",
+    title: "Exit app",
+    body: "<p>Are you sure you want to exit?</p>",
     actions: [
       {
-        label: "Cancelar",
+        label: "Cancel",
         onClick: showSettings,
       },
       {
-        label: "Sair",
+        label: "Exit",
         primary: true,
         onClick: () => {
           closeModal();
@@ -3047,15 +3047,15 @@ function confirmExitApp() {
 
 function confirmLogoutUser() {
   openModal({
-    title: "Sair do usuário",
-    body: "<p>Deseja sair deste usuário?</p>",
+    title: "Log out",
+    body: "<p>Do you want to log out of this user?</p>",
     actions: [
       {
-        label: "Cancelar",
+        label: "Cancel",
         onClick: showSettings,
       },
       {
-        label: "Sair do usuário",
+        label: "Log out",
         primary: true,
         onClick: () => {
           logoutUser();
@@ -3070,10 +3070,10 @@ function confirmLogoutUser() {
 function confirmResetProgress() {
   openModal({
     title: "Reset progress",
-    body: "<p>Tem certeza que deseja resetar o progresso das missões?</p>",
+    body: "<p>Are you sure you want to reset your mission progress?</p>",
     actions: [
       {
-        label: "Cancelar",
+        label: "Cancel",
         onClick: showSettings,
       },
       {
@@ -3084,7 +3084,7 @@ function confirmResetProgress() {
           closeModal();
 
           if (trainingStarted) {
-            output.textContent = "Progresso resetado.";
+            output.textContent = "Progress reset.";
             editor.focus();
           } else {
             showStartScreen();
@@ -3096,7 +3096,7 @@ function confirmResetProgress() {
 }
 
 function logoutUser() {
-  console.log("Sair do usuário atual");
+  console.log("Logging out current user");
   clearUserProfile();
 }
 
@@ -3115,7 +3115,7 @@ function exitApp() {
   startMompySprite.src = ASSETS.idle;
 
   if (output) {
-    output.textContent = "Mompy: Saindo do app.";
+    output.textContent = "Mompy: Exiting app.";
   }
 
   if (document.fullscreenElement) {
@@ -3133,7 +3133,7 @@ async function toggleFullscreen() {
       await document.exitFullscreen();
     }
   } catch (error) {
-    const message = `Mompy: Não consegui alterar a tela cheia.\n${error.message}`;
+    const message = `Mompy: Couldn't change fullscreen mode.\n${error.message}`;
 
     if (trainingStarted) {
       output.textContent = message;
@@ -3153,7 +3153,7 @@ function updateFullscreenButton() {
   fullscreenButton.classList.toggle("is-fullscreen", isFullscreen);
   fullscreenButton.setAttribute(
     "aria-label",
-    isFullscreen ? "Sair da tela cheia" : "Expandir janela",
+    isFullscreen ? "Exit fullscreen" : "Expand window",
   );
 }
 

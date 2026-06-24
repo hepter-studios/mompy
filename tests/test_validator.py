@@ -51,7 +51,7 @@ class ValidatorTests(unittest.TestCase):
             return_value={
                 "ok": False,
                 "output": "",
-                "error": "Execucao finalizada sem resposta.",
+                "error": "Execution finished with no response.",
                 "timeout": False,
                 "implemented": True,
             },
@@ -89,7 +89,7 @@ class ValidatorTests(unittest.TestCase):
     def test_syntax_error_returns_hint(self):
         result = validate_mission("mission_001", 'print("Hello, Mompy!"')
         self.assertFalse(result["correct"])
-        self.assertIn("sintaxe", result["hints"][0])
+        self.assertIn("syntax", result["hints"][0])
 
     def test_concepts_are_ordered_for_beginners(self):
         block_concepts = {

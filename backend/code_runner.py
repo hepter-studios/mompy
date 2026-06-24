@@ -93,13 +93,13 @@ class SafetyIssue:
 def _find_safety_issue(tree: ast.AST) -> SafetyIssue | None:
     for node in ast.walk(tree):
         if isinstance(node, BLOCKED_NODES):
-            return SafetyIssue("Este recurso ainda nao e permitido nas missoes.")
+            return SafetyIssue("This feature is not allowed in missions yet.")
 
         if isinstance(node, ast.Name) and node.id in BLOCKED_NAMES:
-            return SafetyIssue(f"O nome '{node.id}' nao pode ser usado aqui.")
+            return SafetyIssue(f"The name '{node.id}' cannot be used here.")
 
         if isinstance(node, ast.Attribute) and node.attr.startswith("__"):
-            return SafetyIssue("Acesso interno com __ nao e permitido.")
+            return SafetyIssue("Internal access with __ is not allowed.")
 
     return None
 
@@ -141,7 +141,7 @@ def run_user_code_safely(user_code: str, timeout: float = TIMEOUT_SECONDS) -> di
         return {
             "ok": False,
             "output": "",
-            "error": "Codigo muito longo para esta missao.",
+            "error": "Code is too long for this mission.",
             "timeout": False,
             "implemented": True,
         }
@@ -179,7 +179,7 @@ def run_user_code_safely(user_code: str, timeout: float = TIMEOUT_SECONDS) -> di
         return {
             "ok": False,
             "output": "",
-            "error": "Tempo limite excedido.",
+            "error": "Time limit exceeded.",
             "timeout": True,
             "implemented": True,
         }
@@ -190,7 +190,7 @@ def run_user_code_safely(user_code: str, timeout: float = TIMEOUT_SECONDS) -> di
         result = {
             "ok": False,
             "output": "",
-            "error": "Execucao finalizada sem resposta.",
+            "error": "Execution finished with no response.",
             "timeout": False,
         }
 

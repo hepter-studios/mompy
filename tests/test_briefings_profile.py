@@ -10,7 +10,7 @@ class BriefingProfileTests(unittest.TestCase):
     def test_briefings_cover_current_blocks(self):
         briefings = get_briefings()
         self.assertGreaterEqual(len(briefings), 6)
-        self.assertEqual(briefing_for_mission_index(0)["subtitle"], "Primeiros comandos em Python")
+        self.assertEqual(briefing_for_mission_index(0)["subtitle"], "First Python Commands")
 
     def test_profile_name_is_sanitized(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="./css/styles.css?v=47" />
   </head>
   <body>
-    <section id="loadingScreen" class="loading-screen" aria-label="Carregando Mompy" aria-live="polite">
+    <section id="loadingScreen" class="loading-screen" aria-label="Loading Mompy" aria-live="polite">
       <div class="loading-shell">
         <div class="loading-visual">
           <img
@@ -33,7 +33,7 @@
                 <img src="./assets/hepterakt_boot_logo_green.png" alt="Hepter Studio" draggable="false" />
               </div>
             </div>
-            <div class="loading-bar" aria-label="Carregando">
+            <div class="loading-bar" aria-label="Loading">
               <div id="loadingProgress" class="loading-progress"></div>
             </div>
             <p class="loading-text">Loading...</p>
@@ -46,8 +46,8 @@
       <section class="machine" aria-label="Mompy workspace">
         <div class="overlay">
           <header class="app-header">
-            <div class="level-panel" aria-label="Nível atual">
-              <span class="level-label">Nivel</span>
+            <div class="level-panel" aria-label="Current level">
+              <span class="level-label">Level</span>
               <span id="levelValue" class="level-value">01</span>
               <span class="level-track" aria-hidden="true">
                 <span id="levelFill" class="level-fill"></span>
@@ -55,17 +55,17 @@
             </div>
             <img class="brand-logo" src="./assets/name_mompy.png" alt="Mompy" draggable="false" />
             <div class="header-actions">
-              <button id="settingsButton" class="top-icon-button" type="button" aria-label="Configurações">
+              <button id="settingsButton" class="top-icon-button" type="button" aria-label="Settings">
                 <span class="top-icon-mask settings-mask" aria-hidden="true"></span>
               </button>
-              <button id="fullscreenButton" class="top-icon-button fullscreen-toggle" type="button" aria-label="Expandir janela">
+              <button id="fullscreenButton" class="top-icon-button fullscreen-toggle" type="button" aria-label="Expand window">
                 <span class="top-icon-mask fullscreen-expand-mask" aria-hidden="true"></span>
                 <span class="top-icon-mask fullscreen-restore-mask" aria-hidden="true"></span>
               </button>
             </div>
           </header>
 
-          <section id="startScreen" class="start-screen" aria-label="Tela de entrada Mompy">
+          <section id="startScreen" class="start-screen" aria-label="Mompy start screen">
             <div class="start-mascot-panel" aria-label="Mompy">
               <div class="start-mompy-wrapper">
                 <img
@@ -82,7 +82,7 @@
               </div>
             </div>
 
-            <section class="start-main-panel" aria-label="Console de treinamento Python">
+            <section class="start-main-panel" aria-label="Python training console">
               <h1>Python Training Console</h1>
               <div class="start-actions">
                 <button id="startButton" class="start-command-button" type="button">
@@ -105,7 +105,7 @@
               </div>
             </section>
 
-            <section class="start-stats-bar" aria-label="Informações do usuário">
+            <section class="start-stats-bar" aria-label="User information">
               <article class="start-stat">
                 <div class="start-stat-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" focusable="false">
@@ -161,8 +161,8 @@
               />
               <div class="onboarding-terminal">
                 <pre id="onboardingTerminalOutput" aria-live="polite"></pre>
-                <h2 id="onboardingTitle" class="onboarding-title">Primeiro acesso</h2>
-                <label class="onboarding-label" for="onboardingNameInput">Qual é o seu primeiro nome?</label>
+                <h2 id="onboardingTitle" class="onboarding-title">First visit</h2>
+                <label class="onboarding-label" for="onboardingNameInput">What's your first name?</label>
                 <div class="onboarding-input-shell">
                   <span aria-hidden="true">&gt;</span>
                   <input
@@ -171,7 +171,7 @@
                     maxlength="24"
                     autocomplete="off"
                     spellcheck="false"
-                    placeholder="Digite aqui seu primeiro nome"
+                    placeholder="Type your first name here"
                   />
                 </div>
                 <p id="onboardingError" class="onboarding-error" aria-live="polite"></p>
@@ -190,34 +190,34 @@
             />
             <div id="mompyScreenMessage" class="mompy-screen-message" hidden>
               <div class="mompy-screen-text">
-                <p>Missão concluída.</p>
-                <p>Avançar?</p>
+                <p>Mission complete.</p>
+                <p>Continue?</p>
               </div>
               <div class="mompy-screen-actions">
-                <button id="repeatMissionButton" type="button">Repetir</button>
-                <button id="nextMissionButton" type="button">Próxima missão</button>
+                <button id="repeatMissionButton" type="button">Retry</button>
+                <button id="nextMissionButton" type="button">Next mission</button>
               </div>
             </div>
           </section>
 
-          <section class="mission-panel" aria-label="Missão atual">
+          <section class="mission-panel" aria-label="Current mission">
             <p class="panel-label">Mission</p>
             <article class="mission-copy" id="missionCopy">
               <h2>Print output</h2>
               <p>
-                Primeiro passo: faça o programa escrever uma mensagem no console.
+                First step: make the program write a message to the console.
               </p>
               <p>
-                Escreva um <code>print()</code> que mostre exatamente:
+                Write a <code>print()</code> that shows exactly:
                 <strong>Hello, Mompy!</strong>
               </p>
             </article>
           </section>
 
-          <section class="editor-panel" aria-label="Editor de código">
+          <section class="editor-panel" aria-label="Code editor">
             <div class="editor-topline">
               <p class="panel-label">Code editor</p>
-              <div class="editor-actions" aria-label="Ações do editor">
+              <div class="editor-actions" aria-label="Editor actions">
                 <button id="backButton" class="editor-button" type="button">← Back</button>
                 <button id="helpButton" class="editor-button" type="button">? Help</button>
                 <button id="runButton" class="editor-button run-button" type="button">▶ Run</button>
@@ -231,20 +231,20 @@
                 spellcheck="false"
                 autocomplete="off"
                 autocapitalize="off"
-                aria-label="Editor de código Python"
-              ># escreva aqui
+                aria-label="Python code editor"
+              ># write here
 </textarea>
             </div>
           </section>
 
           <section class="output-panel" aria-label="Output">
             <p class="panel-label">Output</p>
-            <pre id="outputConsole" aria-live="polite">Mompy pronto. Escreva o código e clique em Run.</pre>
+            <pre id="outputConsole" aria-live="polite">Mompy ready. Write the code and click Run.</pre>
           </section>
 
           <div id="modalBackdrop" class="modal-backdrop" hidden>
             <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-              <button id="modalCloseButton" class="modal-close-button" type="button" aria-label="Fechar">X</button>
+              <button id="modalCloseButton" class="modal-close-button" type="button" aria-label="Close">X</button>
               <h2 id="modalTitle"></h2>
               <div id="modalBody" class="modal-body"></div>
               <div id="modalActions" class="modal-actions"></div>

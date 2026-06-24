@@ -67,17 +67,17 @@ def _ok(mission_id: str) -> ValidationResult:
     mission = MISSIONS_BY_ID[mission_id]
     return ValidationResult(
         correct=True,
-        message="Certo. A resposta tem a estrutura esperada.",
+        message="Correct. The answer has the expected structure.",
         expected_output=mission.expected_output,
     )
 
 
 def _fail(mission_id: str, *hints: str) -> ValidationResult:
     mission = MISSIONS_BY_ID.get(mission_id)
-    fallback = mission.help if mission else "Revise a estrutura do codigo."
+    fallback = mission.help if mission else "Review the code structure."
     return ValidationResult(
         correct=False,
-        message="Ainda nao. Ajuste o codigo e tente de novo.",
+        message="Not yet. Adjust the code and try again.",
         hints=tuple(hints or (fallback,)),
         expected_output=mission.expected_output if mission else None,
     )
@@ -90,10 +90,10 @@ def _with_execution(result: ValidationResult, mission_id: str, user_code: str) -
 
     if not execution.get("ok"):
         error_message = str(execution.get("error") or "")
-        if error_message == "Execucao finalizada sem resposta." and result.correct:
+        if error_message == "Execution finished with no response." and result.correct:
             return ValidationResult(
                 correct=True,
-                message="Certo. A resposta tem a estrutura esperada.",
+                message="Correct. The answer has the expected structure.",
                 hints=result.hints,
                 expected_output=mission.expected_output,
                 actual_output=mission.expected_output,
@@ -101,8 +101,8 @@ def _with_execution(result: ValidationResult, mission_id: str, user_code: str) -
 
         return ValidationResult(
             correct=False,
-            message="O codigo ainda nao executou corretamente.",
-            hints=(error_message or "Revise o codigo e tente novamente.",),
+            message="The code hasn't run correctly yet.",
+            hints=(error_message or "Review the code and try again.",),
             expected_output=mission.expected_output,
             actual_output=actual_output,
             runtime_error=error_message,
@@ -111,15 +111,15 @@ def _with_execution(result: ValidationResult, mission_id: str, user_code: str) -
     if actual_output.strip() != mission.expected_output.strip():
         return ValidationResult(
             correct=False,
-            message="A estrutura parece boa, mas o output ainda nao bate.",
-            hints=(f"Esperado: {mission.expected_output}",),
+            message="The structure looks good, but the output doesn't match yet.",
+            hints=(f"Expected: {mission.expected_output}",),
             expected_output=mission.expected_output,
             actual_output=actual_output,
         )
 
     return ValidationResult(
         correct=result.correct,
-        message="Certo. O codigo executou e gerou o output esperado.",
+        message="Correct. The code ran and produced the expected output.",
         hints=result.hints,
         expected_output=mission.expected_output,
         actual_output=actual_output,
@@ -145,55 +145,55 @@ def _mission_005(code: str) -> ValidationResult:
         ),
     ):
         return _ok("mission_005")
-    return _fail("mission_005", 'Use dois prints: print("First") e print("Second").')
+    return _fail("mission_005", 'Use two prints: print("First") and print("Second").')
 
 
 def _mission_006(code: str) -> ValidationResult:
     if matches_any(code, (r"name\s*=\s*[\"']Mompy[\"'][\s\S]*print\s*\(\s*name\s*\)",)):
         return _ok("mission_006")
-    return _fail("mission_006", 'Crie name = "Mompy" e depois use print(name).')
+    return _fail("mission_006", 'Create name = "Mompy" and then use print(name).')
 
 
 def _mission_007(code: str) -> ValidationResult:
     if matches_any(code, (r"level\s*=\s*1[\s\S]*print\s*\(\s*level\s*\)",)):
         return _ok("mission_007")
-    return _fail("mission_007", "Crie level = 1 e depois use print(level).")
+    return _fail("mission_007", "Create level = 1 and then use print(level).")
 
 
 def _mission_008(code: str) -> ValidationResult:
     if matches_any(code, (r"mode\s*=\s*[\"']off[\"'][\s\S]*mode\s*=\s*[\"']on[\"'][\s\S]*print\s*\(\s*mode\s*\)",)):
         return _ok("mission_008")
-    return _fail("mission_008", 'Troque para mode = "on" antes de usar print(mode).')
+    return _fail("mission_008", 'Switch to mode = "on" before using print(mode).')
 
 
 def _mission_009(code: str) -> ValidationResult:
     if matches_any(code, (r"a\s*=\s*2[\s\S]*b\s*=\s*3[\s\S]*print\s*\(\s*(a\s*\+\s*b|b\s*\+\s*a)\s*\)",)):
         return _ok("mission_009")
-    return _fail("mission_009", "Use print(a + b) depois de criar a e b.")
+    return _fail("mission_009", "Use print(a + b) after creating a and b.")
 
 
 def _mission_010(code: str) -> ValidationResult:
     if matches_any(code, (r"message\s*=\s*[\"']Ready[\"'][\s\S]*print\s*\(\s*message\s*\)",)):
         return _ok("mission_010")
-    return _fail("mission_010", 'Crie message = "Ready" e depois use print(message).')
+    return _fail("mission_010", 'Create message = "Ready" and then use print(message).')
 
 
 def _mission_011(code: str) -> ValidationResult:
     if matches_any(code, (r"power\s*=\s*True[\s\S]*if\s+power\s*:\s*[\s\S]*print\s*\(\s*[\"']Ready[\"']\s*\)",)):
         return _ok("mission_011")
-    return _fail("mission_011", 'Use if power: e dentro dele print("Ready").')
+    return _fail("mission_011", 'Use if power: and inside it print("Ready").')
 
 
 def _mission_012(code: str) -> ValidationResult:
     if matches_any(code, (r"temperature\s*=\s*10[\s\S]*if\s+temperature\s*>\s*5\s*:\s*[\s\S]*print\s*\(\s*[\"']Warm[\"']\s*\)",)):
         return _ok("mission_012")
-    return _fail("mission_012", 'Use if temperature > 5: e dentro dele print("Warm").')
+    return _fail("mission_012", 'Use if temperature > 5: and inside it print("Warm").')
 
 
 def _mission_013(code: str) -> ValidationResult:
     if matches_any(code, (r"code\s*=\s*[\"']py[\"'][\s\S]*if\s+code\s*==\s*[\"']py[\"']\s*:\s*[\s\S]*print\s*\(\s*[\"']Python[\"']\s*\)",)):
         return _ok("mission_013")
-    return _fail("mission_013", 'Use if code == "py": e dentro dele print("Python").')
+    return _fail("mission_013", 'Use if code == "py": and inside it print("Python").')
 
 
 def _mission_014(code: str) -> ValidationResult:
@@ -204,37 +204,37 @@ def _mission_014(code: str) -> ValidationResult:
         ),
     ):
         return _ok("mission_014")
-    return _fail("mission_014", 'Use if score >= 2: para Pass e else: para print("Try again").')
+    return _fail("mission_014", 'Use if score >= 2: for Pass and else: for print("Try again").')
 
 
 def _mission_015(code: str) -> ValidationResult:
     if matches_any(code, (r"count\s*=\s*3[\s\S]*if\s+count\s*<=\s*3\s*:\s*[\s\S]*print\s*\(\s*[\"']Inside[\"']\s*\)",)):
         return _ok("mission_015")
-    return _fail("mission_015", 'Use if count <= 3: e dentro dele print("Inside").')
+    return _fail("mission_015", 'Use if count <= 3: and inside it print("Inside").')
 
 
 def _mission_016(code: str) -> ValidationResult:
     if matches_any(code, (r"for\s+i\s+in\s+range\s*\(\s*3\s*\)\s*:\s*[\s\S]*print\s*\(\s*i\s*\)",)):
         return _ok("mission_016")
-    return _fail("mission_016", "Use for i in range(3): e print(i) indentado.")
+    return _fail("mission_016", "Use for i in range(3): and print(i) indented.")
 
 
 def _mission_017(code: str) -> ValidationResult:
     if matches_any(code, (r"for\s+i\s+in\s+range\s*\(\s*2\s*\)\s*:\s*[\s\S]*print\s*\(\s*[\"']Mompy[\"']\s*\)",)):
         return _ok("mission_017")
-    return _fail("mission_017", 'Use for i in range(2): e dentro dele print("Mompy").')
+    return _fail("mission_017", 'Use for i in range(2): and inside it print("Mompy").')
 
 
 def _mission_018(code: str) -> ValidationResult:
     if matches_any(code, (r"for\s+number\s+in\s+range\s*\(\s*1\s*,\s*4\s*\)\s*:\s*[\s\S]*print\s*\(\s*number\s*\)",)):
         return _ok("mission_018")
-    return _fail("mission_018", "Use for number in range(1, 4): e print(number).")
+    return _fail("mission_018", "Use for number in range(1, 4): and print(number).")
 
 
 def _mission_019(code: str) -> ValidationResult:
     if matches_any(code, (r"for\s+letter\s+in\s+[\"']py[\"']\s*:\s*[\s\S]*print\s*\(\s*letter\s*\)",)):
         return _ok("mission_019")
-    return _fail("mission_019", 'Use for letter in "py": e print(letter).')
+    return _fail("mission_019", 'Use for letter in "py": and print(letter).')
 
 
 def _mission_020(code: str) -> ValidationResult:
@@ -246,31 +246,31 @@ def _mission_020(code: str) -> ValidationResult:
         ),
     ):
         return _ok("mission_020")
-    return _fail("mission_020", "Atualize total dentro do for e mostre print(total) depois.")
+    return _fail("mission_020", "Update total inside the for and show print(total) afterward.")
 
 
 def _mission_021(code: str) -> ValidationResult:
     if matches_any(code, (r"items\s*=\s*\[\s*[\"']onion[\"']\s*,\s*[\"']terminal[\"']\s*,\s*[\"']python[\"']\s*\][\s\S]*print\s*\(\s*items\s*\)",)):
         return _ok("mission_021")
-    return _fail("mission_021", 'Crie items = ["onion", "terminal", "python"] e use print(items).')
+    return _fail("mission_021", 'Create items = ["onion", "terminal", "python"] and use print(items).')
 
 
 def _mission_022(code: str) -> ValidationResult:
     if matches_any(code, (r"items\s*=\s*\[[\s\S]*[\"']onion[\"'][\s\S]*[\"']terminal[\"'][\s\S]*[\"']python[\"'][\s\S]*\][\s\S]*print\s*\(\s*items\s*\[\s*1\s*\]\s*\)",)):
         return _ok("mission_022")
-    return _fail("mission_022", "O segundo item e items[1].")
+    return _fail("mission_022", "The second item is items[1].")
 
 
 def _mission_023(code: str) -> ValidationResult:
     if matches_any(code, (r"numbers\s*=\s*\[\s*1\s*,\s*2\s*,\s*3\s*\][\s\S]*numbers\.append\s*\(\s*4\s*\)[\s\S]*print\s*\(\s*numbers\s*\)",)):
         return _ok("mission_023")
-    return _fail("mission_023", "Use numbers.append(4), depois print(numbers).")
+    return _fail("mission_023", "Use numbers.append(4), then print(numbers).")
 
 
 def _mission_024(code: str) -> ValidationResult:
     if matches_any(code, (r"items\s*=\s*\[\s*[\"']onion[\"']\s*,\s*[\"']python[\"']\s*\][\s\S]*for\s+item\s+in\s+items\s*:\s*[\s\S]*print\s*\(\s*item\s*\)",)):
         return _ok("mission_024")
-    return _fail("mission_024", "Use for item in items: e dentro dele print(item).")
+    return _fail("mission_024", "Use for item in items: and inside it print(item).")
 
 
 def _mission_025(code: str) -> ValidationResult:
@@ -282,31 +282,31 @@ def _mission_025(code: str) -> ValidationResult:
 def _mission_026(code: str) -> ValidationResult:
     if matches_any(code, (r"def\s+say_hello\s*\(\s*\)\s*:\s*[\s\S]*print\s*\(\s*[\"']Hello[\"']\s*\)[\s\S]*say_hello\s*\(\s*\)",)):
         return _ok("mission_026")
-    return _fail("mission_026", 'Crie say_hello(), use print("Hello") dentro e chame say_hello().')
+    return _fail("mission_026", 'Create say_hello(), use print("Hello") inside, and call say_hello().')
 
 
 def _mission_027(code: str) -> ValidationResult:
     if matches_any(code, (r"def\s+greet\s*\(\s*user\s*\)\s*:\s*[\s\S]*print\s*\(\s*[\"']Hello,\s*[\"']\s*\+\s*user\s*\)[\s\S]*greet\s*\(\s*[\"']Mompy[\"']\s*\)",)):
         return _ok("mission_027")
-    return _fail("mission_027", 'Use print("Hello, " + user) dentro e chame greet("Mompy").')
+    return _fail("mission_027", 'Use print("Hello, " + user) inside and call greet("Mompy").')
 
 
 def _mission_028(code: str) -> ValidationResult:
     if matches_any(code, (r"def\s+add\s*\(\s*a\s*,\s*b\s*\)\s*:\s*[\s\S]*return\s+a\s*\+\s*b[\s\S]*print\s*\(\s*add\s*\(\s*2\s*,\s*3\s*\)\s*\)",)):
         return _ok("mission_028")
-    return _fail("mission_028", "Retorne a + b e mostre print(add(2, 3)).")
+    return _fail("mission_028", "Return a + b and show print(add(2, 3)).")
 
 
 def _mission_029(code: str) -> ValidationResult:
     if matches_any(code, (r"def\s+make_message\s*\(\s*user\s*\)\s*:\s*[\s\S]*return\s+[\"']Hello,\s*[\"']\s*\+\s*user[\s\S]*print\s*\(\s*make_message\s*\(\s*[\"']Mackson[\"']\s*\)\s*\)",)):
         return _ok("mission_029")
-    return _fail("mission_029", 'Retorne "Hello, " + user e mostre make_message("Mackson").')
+    return _fail("mission_029", 'Return "Hello, " + user and show make_message("Mackson").')
 
 
 def _mission_030(code: str) -> ValidationResult:
     if matches_any(code, (r"def\s+double\s*\(\s*n\s*\)\s*:\s*[\s\S]*return\s+n\s*\*\s*2[\s\S]*print\s*\(\s*double\s*\(\s*4\s*\)\s*\)",)):
         return _ok("mission_030")
-    return _fail("mission_030", "Retorne n * 2 e mostre print(double(4)).")
+    return _fail("mission_030", "Return n * 2 and show print(double(4)).")
 
 
 VALIDATORS: dict[str, Callable[[str], ValidationResult]] = {
@@ -348,22 +348,22 @@ def validate_mission(mission_id: str, user_code: str) -> dict:
     if mission is None:
         return ValidationResult(
             correct=False,
-            message="Missao desconhecida.",
-            hints=("Verifique o id da missao antes de validar.",),
+            message="Unknown mission.",
+            hints=("Check the mission id before validating.",),
         ).to_dict()
 
     if not user_code or not user_code.strip():
-        return _fail(mission_id, "Escreva algum codigo antes de rodar.").to_dict()
+        return _fail(mission_id, "Write some code before running.").to_dict()
 
     if parse_python(user_code) is None:
-        return _fail(mission_id, "Existe um erro de sintaxe. Confira parenteses, aspas e indentacao.").to_dict()
+        return _fail(mission_id, "There is a syntax error. Check parentheses, quotes, and indentation.").to_dict()
 
     validator = VALIDATORS.get(mission_id)
     if validator is None:
         return ValidationResult(
             correct=False,
-            message="Validador ainda nao implementado para esta missao.",
-            hints=("A estrutura ja esta pronta para adicionar esta validacao.",),
+            message="Validator not implemented for this mission yet.",
+            hints=("The structure is ready for this validation to be added.",),
             expected_output=mission.expected_output,
         ).to_dict()
 
