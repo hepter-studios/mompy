@@ -19,9 +19,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: narayann7/star-history-action@v1.0.4
-        with:
-          repos: hepter-studios/mompy
-          width: 900
-          font-family: Inter
-          readme-format: png
+      - name: Render Mompy star history
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          STAR_HISTORY_REPO: hepter-studios/mompy
+        run: python .github/scripts/render_star_history.py
+
+      - name: Commit generated chart
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/star-history/mompy-star-history.svg
+          if git diff --cached --quiet; then
+            echo "No star history changes."
+            exit 0
+          fi
+          git commit -m "chore: update star history [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main

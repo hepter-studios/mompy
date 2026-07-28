@@ -486,10 +486,12 @@ Release rule:
 </p>
 
 <!-- star-history:start -->
-[![Star History](https://raw.githubusercontent.com/hepter-studios/mompy/main/assets/star-history/star-history.png)](https://star-history.com/#hepter-studios/mompy&Date)
+<p align="center">
+  <a href="https://www.star-history.com/?repos=hepter-studios%2Fmompy&type=date&legend=top-left">
+    <img src="assets/star-history/mompy-star-history.svg" alt="Mompy star history" width="760" />
+  </a>
+</p>
 <!-- star-history:end -->
-
-[View the Mompy star history](https://www.star-history.com/?repos=hepter-studios%2Fmompy&type=date&legend=top-left)
 
 ### ⚡ Contributors
 
