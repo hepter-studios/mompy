@@ -119,6 +119,18 @@ python main.py --check
 
 ---
 
+## ⭐ Estatísticas De Estrelas
+
+<p>
+  <a href="https://github.com/hepter-studios/mompy/stargazers">
+    <img src="https://img.shields.io/github/stars/hepter-studios/mompy?style=for-the-badge&logo=github&label=Estrelas%20no%20GitHub&labelColor=101510&color=58ff18" alt="Estrelas do Mompy no GitHub" />
+  </a>
+</p>
+
+[Ver o histórico de estrelas do Mompy](https://www.star-history.com/#hepter-studios/mompy&Date)
+
+---
+
 ## 📜 Licença
 
 As informações de licença estão disponíveis em [LICENSE](LICENSE).

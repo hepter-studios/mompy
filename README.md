@@ -479,13 +479,13 @@ Release rule:
 
 ## ⭐ Star Stats
 
-<a href="https://www.star-history.com/?repos=hepter-studios%2Fmompy&type=date&legend=top-left">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=hepter-studios/mompy&type=date&theme=dark&legend=top-left" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=hepter-studios/mompy&type=date&legend=top-left" />
-    <img alt="Mompy Star History Chart" src="https://api.star-history.com/chart?repos=hepter-studios/mompy&type=date&legend=top-left" />
-  </picture>
-</a>
+<p>
+  <a href="https://github.com/hepter-studios/mompy/stargazers">
+    <img src="https://img.shields.io/github/stars/hepter-studios/mompy?style=for-the-badge&logo=github&label=GitHub%20Stars&labelColor=101510&color=58ff18" alt="Mompy stars on GitHub" />
+  </a>
+</p>
+
+[View the Mompy star history](https://www.star-history.com/#hepter-studios/mompy&Date)
 
 ### ⚡ Contributors
 
