@@ -22,3 +22,6 @@ jobs:
       - uses: narayann7/star-history-action@v1.0.4
         with:
           repos: hepter-studios/mompy
+          width: 900
+          font-family: Inter
+          readme-format: png
