@@ -485,7 +485,10 @@ Release rule:
   </a>
 </p>
 
-[View the Mompy star history](https://www.star-history.com/#hepter-studios/mompy&Date)
+<!-- star-history:start -->
+<!-- star-history:end -->
+
+[View the Mompy star history](https://www.star-history.com/?repos=hepter-studios%2Fmompy&type=date&legend=top-left)
 
 ### ⚡ Contributors
 

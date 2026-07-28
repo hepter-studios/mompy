@@ -127,7 +127,7 @@ python main.py --check
   </a>
 </p>
 
-[Ver o histórico de estrelas do Mompy](https://www.star-history.com/#hepter-studios/mompy&Date)
+[Ver o histórico de estrelas do Mompy](https://www.star-history.com/?repos=hepter-studios%2Fmompy&type=date&legend=top-left)
 
 ---
 
