@@ -41,29 +41,29 @@
 Download the latest official build from the [GitHub Releases page](https://github.com/hepter-studios/mompy/releases).
 
 <p>
-  <a href="https://github.com/hepter-studios/mompy/releases/tag/v0.1.1">
-    <img alt="Mompy v0.1.1" src="https://img.shields.io/badge/latest-v0.1.1-8cff3a?style=for-the-badge">
+  <a href="https://github.com/hepter-studios/mompy/releases/tag/v0.1.2">
+    <img alt="Mompy v0.1.2" src="https://img.shields.io/badge/latest-v0.1.2-8cff3a?style=for-the-badge">
   </a>
-  <a href="https://github.com/hepter-studios/mompy/releases/download/v0.1.1/MompySetup-v0.1.1.exe">
+  <a href="https://github.com/hepter-studios/mompy/releases/download/v0.1.2/MompySetup-v0.1.2.exe">
     <img alt="Windows installer" src="https://img.shields.io/badge/windows-installer-2f3136?style=for-the-badge&logo=windows&logoColor=white">
   </a>
-  <a href="https://github.com/hepter-studios/mompy/releases/download/v0.1.1/Mompy-windows-x64.zip">
+  <a href="https://github.com/hepter-studios/mompy/releases/download/v0.1.2/Mompy-windows-x64.zip">
     <img alt="Portable zip" src="https://img.shields.io/badge/portable-zip-2f3136?style=for-the-badge&logo=github&logoColor=white">
   </a>
 </p>
 
 Latest release:
 
-- [Mompy v0.1.1](https://github.com/hepter-studios/mompy/releases/tag/v0.1.1)
-- Recommended Windows installer: [MompySetup-v0.1.1.exe](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/MompySetup-v0.1.1.exe)
-- Portable Windows zip: [Mompy-windows-x64.zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/Mompy-windows-x64.zip)
+- [Mompy v0.1.2](https://github.com/hepter-studios/mompy/releases/tag/v0.1.2)
+- Recommended Windows installer: [MompySetup-v0.1.2.exe](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/MompySetup-v0.1.2.exe)
+- Portable Windows zip: [Mompy-windows-x64.zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/Mompy-windows-x64.zip)
 
 Current platform status:
 
 | Platform | Status | Link |
 | --- | --- | --- |
-| Windows installer | Available in Releases | [Download setup](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/MompySetup-v0.1.1.exe) |
-| Windows portable zip | Available in Releases | [Download zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/Mompy-windows-x64.zip) |
+| Windows installer | Available in Releases | [Download setup](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/MompySetup-v0.1.2.exe) |
+| Windows portable zip | Available in Releases | [Download zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/Mompy-windows-x64.zip) |
 | macOS | Planned | [Roadmap](#-roadmap) |
 | Linux | Planned | [Roadmap](#-roadmap) |
 
@@ -347,7 +347,7 @@ Build output:
 ```txt
 dist/Mompy/Mompy.exe
 dist/Mompy-windows-x64.zip
-dist/MompySetup-v0.1.1.exe
+dist/MompySetup-v0.1.2.exe
 ```
 
 Build artifacts such as `.exe`, `.zip`, `.msi`, `.dmg` or `.AppImage` should not be committed directly to the repository. They should be attached to a [GitHub Release](https://github.com/hepter-studios/mompy/releases).
@@ -374,14 +374,14 @@ Check backend startup:
 python main.py --check
 ```
 
-The `v0.1.1` Windows package was locally checked with:
+The `v0.1.2` Windows package was locally checked with:
 
 - `python -m unittest discover -s tests`
 - `python main.py --check`
 - `node --check frontend/js/app.js`
 - `dist/Mompy/Mompy.exe --check`
 - desktop executable startup smoke test
-- installer install smoke test
+- installer install and in-place update smoke test
 - installed executable startup smoke test
 
 ---
@@ -392,7 +392,7 @@ Mompy is intended to be easy to verify:
 
 - source code is public in the [repository](https://github.com/hepter-studios/mompy);
 - official downloads are attached to [GitHub Releases](https://github.com/hepter-studios/mompy/releases);
-- the latest release is [Mompy v0.1.1](https://github.com/hepter-studios/mompy/releases/tag/v0.1.1);
+- the latest release is [Mompy v0.1.2](https://github.com/hepter-studios/mompy/releases/tag/v0.1.2);
 - release assets are stored by GitHub, not pasted into the repository;
 - issue tracking happens in [GitHub Issues](https://github.com/hepter-studios/mompy/issues);
 - security guidance is in [SECURITY.md](SECURITY.md);
@@ -408,9 +408,9 @@ Official builds are distributed through [GitHub Releases](https://github.com/hep
 
 Current official release:
 
-- [Mompy v0.1.1](https://github.com/hepter-studios/mompy/releases/tag/v0.1.1)
-- [Windows installer asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/MompySetup-v0.1.1.exe)
-- [Windows x64 portable zip asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.1/Mompy-windows-x64.zip)
+- [Mompy v0.1.2](https://github.com/hepter-studios/mompy/releases/tag/v0.1.2)
+- [Windows installer asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/MompySetup-v0.1.2.exe)
+- [Windows x64 portable zip asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/Mompy-windows-x64.zip)
 
 Release rule:
 
@@ -431,7 +431,7 @@ Release rule:
 | 10.4 - migrate mission validation to Python | Done |
 | 10.5 - safer learner-code execution | Done |
 | 10.6 - progress, XP and levels through Python | Done |
-| 10.7 - package as installable Python desktop app | Done for Windows v0.1.1 |
+| 10.7 - package as installable Python desktop app | Done for Windows v0.1.2 |
 | macOS package | Planned |
 | Linux package | Planned |
 | more lessons and missions | Planned |
@@ -460,7 +460,7 @@ Release rule:
 | Website | [mompy.co](https://mompy.co) |
 | Repository | [github.com/hepter-studios/mompy](https://github.com/hepter-studios/mompy) |
 | Releases | [GitHub Releases](https://github.com/hepter-studios/mompy/releases) |
-| Latest release | [Mompy v0.1.1](https://github.com/hepter-studios/mompy/releases/tag/v0.1.1) |
+| Latest release | [Mompy v0.1.2](https://github.com/hepter-studios/mompy/releases/tag/v0.1.2) |
 | Discord | [discord.gg/fqxvyGFyfa](https://discord.gg/fqxvyGFyfa) |
 | Sponsor | [GitHub Sponsors](https://github.com/sponsors/macksonvictor) |
 | Sponsor guide | [SPONSOR.md](SPONSOR.md) |
