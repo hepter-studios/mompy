@@ -1261,6 +1261,117 @@ textarea::selection {
   scrollbar-color: rgba(149, 255, 77, 0.32) transparent;
 }
 
+.diagnostic-report {
+  display: grid;
+  gap: 0.42cqw;
+  padding-left: 0.8cqw;
+  border-left: 2px solid currentColor;
+  color: var(--danger);
+}
+
+.diagnostic-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8cqw;
+}
+
+.diagnostic-heading h3 {
+  min-width: 0;
+  margin: 0;
+  color: inherit;
+  font-size: 0.98cqw;
+  line-height: 1.25;
+}
+
+.diagnostic-report p {
+  margin: 0;
+}
+
+.diagnostic-summary {
+  color: var(--text);
+}
+
+.diagnostic-suggestion {
+  color: var(--muted);
+}
+
+.diagnostic-suggestion strong,
+.diagnostic-expected strong,
+.diagnostic-actual strong {
+  color: var(--crt);
+}
+
+.diagnostic-location {
+  flex: 0 0 auto;
+  padding: 0.24cqw 0.42cqw;
+  border: 1px solid rgba(255, 151, 132, 0.48);
+  border-radius: 2px;
+  background: rgba(46, 10, 7, 0.56);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.74cqw;
+}
+
+.diagnostic-location:hover,
+.diagnostic-location:focus-visible {
+  outline: none;
+  border-color: currentColor;
+  background: rgba(76, 18, 12, 0.72);
+}
+
+.diagnostic-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7cqw;
+  padding-top: 0.34cqw;
+  border-top: 1px solid rgba(149, 255, 77, 0.18);
+  color: var(--muted);
+}
+
+.diagnostic-comparison p {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.diagnostic-report.has-comparison {
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr;
+  column-gap: 1.1cqw;
+  row-gap: 0.18cqw;
+}
+
+.diagnostic-report.has-comparison .diagnostic-heading,
+.diagnostic-report.has-comparison .diagnostic-summary,
+.diagnostic-report.has-comparison .diagnostic-suggestion {
+  grid-column: 1;
+}
+
+.diagnostic-report.has-comparison .diagnostic-heading {
+  grid-row: 1;
+}
+
+.diagnostic-report.has-comparison .diagnostic-summary {
+  grid-row: 2;
+}
+
+.diagnostic-report.has-comparison .diagnostic-suggestion {
+  grid-row: 3;
+}
+
+.diagnostic-report.has-comparison .diagnostic-comparison {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  grid-template-columns: 1fr;
+  align-content: center;
+  gap: 0.28cqw;
+  padding-top: 0;
+  padding-left: 1cqw;
+  border-top: 0;
+  border-left: 1px solid rgba(149, 255, 77, 0.18);
+}
+
 .is-error #outputConsole {
   color: var(--danger);
 }
@@ -1371,6 +1482,41 @@ textarea::selection {
   color: var(--crt);
   font-weight: 800;
   text-align: right;
+}
+
+.language-selector {
+  min-width: 11.8cqw;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.3cqw;
+}
+
+.language-option {
+  appearance: none;
+  min-height: 1.7cqw;
+  padding: 0.3cqw 0.5cqw;
+  border: 1px solid rgba(149, 255, 77, 0.28);
+  border-radius: 0.16cqw;
+  background: rgba(5, 12, 5, 0.68);
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.68cqw;
+  font-weight: 800;
+}
+
+.language-option[aria-pressed="true"] {
+  border-color: rgba(149, 255, 77, 0.78);
+  background: rgba(52, 122, 20, 0.42);
+  color: var(--crt);
+  box-shadow: inset 0 0 0.7cqw rgba(149, 255, 77, 0.1);
+}
+
+.language-option:hover,
+.language-option:focus-visible {
+  outline: none;
+  border-color: rgba(149, 255, 77, 0.82);
+  color: var(--crt);
 }
 
 button.settings-control,

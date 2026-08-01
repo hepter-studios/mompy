@@ -20,9 +20,298 @@ const ASSETS = {
 const USER_PROFILE_KEY = "mompy_user_profile_v1";
 const PROGRESS_KEY = "mompy_progress_v1";
 const BRIEFING_PROGRESS_KEY = "mompy_briefing_progress_v1";
+const LANGUAGE_KEY = "mompy_language_v1";
 const DEFAULT_USER_NAME = "Guest";
 const PLANNED_TOTAL_MISSIONS = 30;
 const FALLBACK_APP_VERSION = "0.1.2";
+const SUPPORTED_LANGUAGES = ["en-US", "pt-BR"];
+
+const UI_TEXT = {
+  "en-US": {
+    loadingMompy: "Loading Mompy",
+    loading: "Loading...",
+    currentLevel: "Current level",
+    level: "Level",
+    settings: "Settings",
+    expandWindow: "Expand window",
+    restoreWindow: "Restore window",
+    trainingConsole: "Python Training Console",
+    start: "Start",
+    continue: "Continue",
+    userInformation: "User information",
+    user: "User",
+    beginner: "Beginner",
+    missionsCompleted: "Missions completed",
+    firstVisit: "First visit",
+    firstNameQuestion: "What's your first name?",
+    firstNamePlaceholder: "Type your first name here",
+    missionComplete: "Mission complete.",
+    continueQuestion: "Continue?",
+    retry: "Retry",
+    nextMission: "Next mission",
+    currentMission: "Current mission",
+    mission: "Mission",
+    codeEditor: "Code editor",
+    editorActions: "Editor actions",
+    back: "Back",
+    help: "Help",
+    run: "Run",
+    output: "Output",
+    readyOutput: "Mompy ready. Write the code and click Run.",
+    close: "Close",
+    gotIt: "Got it",
+    dontUnderstand: "I don't understand",
+    chooseCorrect: "Choose the correct answer.",
+    correctAnswer: "Correct answer",
+    missionHelp: "Mission help",
+    goal: "Goal",
+    decrease: "Decrease",
+    increase: "Increase",
+    on: "ON",
+    off: "OFF",
+    shortcuts: "Shortcuts",
+    audio: "Audio",
+    ambientMusic: "Ambient music",
+    musicVolume: "Music volume",
+    soundEffects: "Sound effects",
+    effectsVolume: "Effects volume",
+    interface: "Interface",
+    language: "Language",
+    crtBrightness: "CRT brightness",
+    mompyAnimations: "Mompy animations",
+    progress: "Progress",
+    currentMissionSetting: "Current mission",
+    localProgress: "Local progress",
+    resetProgress: "Reset progress",
+    account: "Account",
+    currentUser: "Current user",
+    session: "Session",
+    logOut: "Log out",
+    updates: "Updates",
+    installedVersion: "Installed version",
+    checkUpdates: "Check for updates",
+    checking: "Checking",
+    openRelease: "Open release",
+    queryingReleases: "Querying GitHub Releases",
+    notChecked: "Not checked",
+    checkUnavailable: "Check unavailable",
+    newVersion: "New version {version}",
+    upToDate: "Up to date",
+    exit: "Exit",
+    runShortcut: "Run",
+    closeShortcut: "Close",
+    lessonReady: "Lesson ready.",
+    learn: "Learn",
+    skip: "Skip",
+    briefingComplete: "Briefing complete",
+    conceptsLoaded: "Concepts loaded.",
+    goodLuck: "Good luck, trainee.",
+    shortcutAlsoRuns: "Shortcut: Ctrl+Enter also runs.",
+  },
+  "pt-BR": {
+    loadingMompy: "Carregando o Mompy",
+    loading: "Carregando...",
+    currentLevel: "Nível atual",
+    level: "Nível",
+    settings: "Configurações",
+    expandWindow: "Expandir janela",
+    restoreWindow: "Restaurar janela",
+    trainingConsole: "Console de Treinamento Python",
+    start: "Começar",
+    continue: "Continuar",
+    userInformation: "Informações do usuário",
+    user: "Usuário",
+    beginner: "Iniciante",
+    missionsCompleted: "Missões concluídas",
+    firstVisit: "Primeira visita",
+    firstNameQuestion: "Qual é o seu primeiro nome?",
+    firstNamePlaceholder: "Digite seu primeiro nome aqui",
+    missionComplete: "Missão concluída.",
+    continueQuestion: "Continuar?",
+    retry: "Tentar novamente",
+    nextMission: "Próxima missão",
+    currentMission: "Missão atual",
+    mission: "Missão",
+    codeEditor: "Editor de código",
+    editorActions: "Ações do editor",
+    back: "Voltar",
+    help: "Ajuda",
+    run: "Executar",
+    output: "Saída",
+    readyOutput: "Mompy pronto. Escreva o código e clique em Executar.",
+    close: "Fechar",
+    gotIt: "Entendi",
+    dontUnderstand: "Não entendi",
+    chooseCorrect: "Escolha a resposta correta.",
+    correctAnswer: "Resposta correta",
+    missionHelp: "Ajuda da missão",
+    goal: "Objetivo",
+    decrease: "Diminuir",
+    increase: "Aumentar",
+    on: "LIGADO",
+    off: "DESLIGADO",
+    shortcuts: "Atalhos",
+    audio: "Áudio",
+    ambientMusic: "Música ambiente",
+    musicVolume: "Volume da música",
+    soundEffects: "Efeitos sonoros",
+    effectsVolume: "Volume dos efeitos",
+    interface: "Interface",
+    language: "Idioma",
+    crtBrightness: "Brilho do CRT",
+    mompyAnimations: "Animações do Mompy",
+    progress: "Progresso",
+    currentMissionSetting: "Missão atual",
+    localProgress: "Progresso local",
+    resetProgress: "Redefinir progresso",
+    account: "Conta",
+    currentUser: "Usuário atual",
+    session: "Sessão",
+    logOut: "Sair da conta",
+    updates: "Atualizações",
+    installedVersion: "Versão instalada",
+    checkUpdates: "Verificar atualizações",
+    checking: "Verificando",
+    openRelease: "Abrir versão",
+    queryingReleases: "Consultando versões no GitHub",
+    notChecked: "Não verificado",
+    checkUnavailable: "Verificação indisponível",
+    newVersion: "Nova versão {version}",
+    upToDate: "Atualizado",
+    exit: "Exit",
+    runShortcut: "Executar",
+    closeShortcut: "Fechar",
+    lessonReady: "Aula pronta.",
+    learn: "Aprender",
+    skip: "Pular",
+    briefingComplete: "Apresentação concluída",
+    conceptsLoaded: "Conceitos carregados.",
+    goodLuck: "Boa sorte, aprendiz.",
+    shortcutAlsoRuns: "Atalho: Ctrl+Enter também executa.",
+  },
+};
+
+let currentLanguage = "en-US";
+
+function normalizeLanguage(language) {
+  return SUPPORTED_LANGUAGES.includes(language) ? language : "en-US";
+}
+
+function t(key, replacements = {}) {
+  const template = UI_TEXT[currentLanguage]?.[key] || UI_TEXT["en-US"][key] || key;
+  return Object.entries(replacements).reduce(
+    (text, [name, value]) => text.replaceAll(`{${name}}`, String(value)),
+    template,
+  );
+}
+
+function applyStaticTranslations() {
+  const readyMessages = Object.values(UI_TEXT).map((messages) => messages.readyOutput);
+  const outputElement = document.querySelector("#outputConsole");
+  const shouldTranslateReadyOutput = outputElement
+    && readyMessages.includes(outputElement.textContent.trim());
+
+  document.documentElement.lang = currentLanguage === "pt-BR" ? "pt-BR" : "en";
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    element.textContent = t(element.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
+    element.setAttribute("aria-label", t(element.dataset.i18nAriaLabel));
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+    element.setAttribute("placeholder", t(element.dataset.i18nPlaceholder));
+  });
+  if (shouldTranslateReadyOutput) {
+    outputElement.textContent = t("readyOutput");
+  }
+}
+
+function applyLanguage(language, { persist = true } = {}) {
+  currentLanguage = normalizeLanguage(language);
+  settingsState.language = currentLanguage;
+  if (persist) {
+    localStorage.setItem(LANGUAGE_KEY, currentLanguage);
+  }
+  applyStaticTranslations();
+  renderStartUserInfo();
+
+  if (
+    typeof currentMissionIndex === "number"
+    && missions.length >= PLANNED_TOTAL_MISSIONS
+    && !activeBriefingId
+  ) {
+    renderMission(currentMission());
+  }
+}
+
+function getLocalizedContent() {
+  return window.MOMPY_CONTENT_I18N?.[currentLanguage] || null;
+}
+
+function localizeMission(mission) {
+  if (!mission || missions.length < PLANNED_TOTAL_MISSIONS) {
+    return mission;
+  }
+
+  const copy = getLocalizedContent()?.missions?.[mission.id];
+
+  if (!copy) {
+    return mission;
+  }
+
+  return {
+    ...mission,
+    title: copy[0],
+    description: copy[1],
+    objective: copy[2],
+    help: copy[3],
+    blocks: [
+      [{ text: copy[1] }],
+      [{ text: `${t("goal")}: ${copy[2]}` }],
+    ],
+  };
+}
+
+function localizeBriefing(briefing) {
+  const copy = briefing && getLocalizedContent()?.briefings?.[briefing.id];
+
+  if (!copy) {
+    return briefing;
+  }
+
+  return {
+    ...briefing,
+    title: copy.title,
+    subtitle: copy.subtitle,
+    steps: briefing.steps.map((step, index) => {
+      const localizedStep = copy.steps[index];
+
+      if (!localizedStep) {
+        return { ...step };
+      }
+
+      if (Array.isArray(localizedStep)) {
+        return {
+          ...step,
+          title: localizedStep[0],
+          text: localizedStep[1],
+          retryText: localizedStep[2],
+        };
+      }
+
+      return {
+        ...step,
+        question: localizedStep.question,
+        successText: localizedStep.successText,
+        failText: localizedStep.failText,
+        options: step.options.map((option, optionIndex) => ({
+          ...option,
+          text: localizedStep.options?.[optionIndex] || option.text,
+        })),
+      };
+    }),
+  };
+}
 
 const defaultProgressState = {
   currentMissionIndex: 0,
@@ -42,6 +331,7 @@ const currentUser = {
 };
 
 const settingsState = {
+  language: "en-US",
   ambientMusic: true,
   musicVolume: 10,
   soundEffects: true,
@@ -182,6 +472,11 @@ function applyPythonProfile(profile) {
   }
 
   const firstName = normalizeName(profile.name);
+  const storedLanguage = localStorage.getItem(LANGUAGE_KEY);
+  const profileLanguage = firstName === DEFAULT_USER_NAME && storedLanguage
+    ? storedLanguage
+    : profile.language;
+  applyLanguage(profileLanguage || "en-US");
 
   if (!firstName || firstName === DEFAULT_USER_NAME) {
     localStorage.removeItem(USER_PROFILE_KEY);
@@ -192,7 +487,7 @@ function applyPythonProfile(profile) {
 
   const frontendProfile = {
     firstName,
-    language: profile.language || "en-US",
+    language: currentLanguage,
     levelPreference: profile.level_preference || profile.levelPreference || "beginner",
     email: profile.email || "",
   };
@@ -801,6 +1096,8 @@ let activeBriefingId = null;
 let activeBriefingStepIndex = 0;
 let activeBriefingRetry = false;
 let briefingFinalTimer = null;
+const briefingOptionOrder = new Map();
+let previousCorrectBriefingOptionIndex = -1;
 
 const startTerminalWelcome = [
   '>>> print("Welcome")',
@@ -1191,7 +1488,7 @@ function startLoadingSequence() {
 }
 
 function currentMission() {
-  return missions[currentMissionIndex];
+  return localizeMission(missions[currentMissionIndex]);
 }
 
 function clampMissionIndex(index) {
@@ -1471,7 +1768,8 @@ function escapeHtml(value) {
 }
 
 function getBriefingForMission(missionIndex) {
-  return learningBriefings.find((briefing) => briefing.beforeMissionIndex === missionIndex) || null;
+  const briefing = learningBriefings.find((item) => item.beforeMissionIndex === missionIndex) || null;
+  return localizeBriefing(briefing);
 }
 
 function shouldShowBriefingBeforeMission(missionIndex) {
@@ -1485,7 +1783,8 @@ function shouldShowBriefingBeforeMission(missionIndex) {
 }
 
 function findBriefingById(briefingId) {
-  return learningBriefings.find((briefing) => briefing.id === briefingId) || null;
+  const briefing = learningBriefings.find((item) => item.id === briefingId) || null;
+  return localizeBriefing(briefing);
 }
 
 function renderMompyScreenPanel({ title, lines = [], actions = [], variant = "" }) {
@@ -1550,7 +1849,7 @@ function renderMompyCompletionPrompt() {
   const text = document.createElement("div");
   text.className = "mompy-screen-text";
 
-  ["Mission complete.", "Continue?"].forEach((line) => {
+  [t("missionComplete"), t("continueQuestion")].forEach((line) => {
     const paragraph = document.createElement("p");
     paragraph.textContent = line;
     text.append(paragraph);
@@ -1561,12 +1860,12 @@ function renderMompyCompletionPrompt() {
 
   const repeatButton = document.createElement("button");
   repeatButton.type = "button";
-  repeatButton.textContent = "Retry";
+  repeatButton.textContent = t("retry");
   repeatButton.addEventListener("click", repeatMission);
 
   const nextButton = document.createElement("button");
   nextButton.type = "button";
-  nextButton.textContent = "Next mission";
+  nextButton.textContent = t("nextMission");
   nextButton.addEventListener("click", goToNextMission);
 
   actionShell.append(repeatButton, nextButton);
@@ -1591,7 +1890,7 @@ function showLearningBriefing(briefingId) {
   setMompyState("briefing");
   editor.value = "";
   updateLineNumbers();
-  output.textContent = "Mompy: Lesson ready.";
+  output.textContent = `Mompy: ${t("lessonReady")}`;
   renderBriefingIntro(briefing);
 }
 
@@ -1603,7 +1902,7 @@ function renderBriefingIntro(briefing) {
     ],
     actions: [
       {
-        label: "Learn",
+        label: t("learn"),
         primary: true,
         onClick: () => {
           activeBriefingStepIndex = 0;
@@ -1612,7 +1911,7 @@ function renderBriefingIntro(briefing) {
         },
       },
       {
-        label: "Skip",
+        label: t("skip"),
         onClick: () => skipBriefing(briefing.id),
       },
     ],
@@ -1641,12 +1940,12 @@ function renderBriefingStep(briefing, stepIndex) {
     lines: [step.text],
     actions: [
       {
-        label: "Got it",
+        label: t("gotIt"),
         primary: true,
         onClick: handleBriefingUnderstood,
       },
       {
-        label: "I don't understand",
+        label: t("dontUnderstand"),
         onClick: handleBriefingNotUnderstood,
       },
     ],
@@ -1668,16 +1967,53 @@ function renderBriefingRetry(briefing, stepIndex) {
     lines: [step.retryText || step.text],
     actions: [
       {
-        label: "Got it",
+        label: t("gotIt"),
         primary: true,
         onClick: handleBriefingUnderstood,
       },
       {
-        label: "I don't understand",
+        label: t("dontUnderstand"),
         onClick: handleBriefingNotUnderstood,
       },
     ],
   });
+}
+
+function getDisplayBriefingOptions(briefingId, stepIndex, options) {
+  const key = `${briefingId}:${stepIndex}`;
+
+  if (briefingOptionOrder.has(key)) {
+    return briefingOptionOrder.get(key);
+  }
+
+  const source = Array.isArray(options) ? options.map((option) => ({ ...option })) : [];
+  const correctOptions = source.filter((option) => option.correct);
+  const correctOption = correctOptions[0];
+  const incorrectOptions = source.filter((option) => !option.correct);
+
+  if (correctOptions.length !== 1 || source.length < 2) {
+    return source;
+  }
+
+  let correctIndex = Math.floor(Math.random() * source.length);
+  if (correctIndex === previousCorrectBriefingOptionIndex) {
+    correctIndex = (correctIndex + 1 + Math.floor(Math.random() * (source.length - 1))) % source.length;
+  }
+
+  previousCorrectBriefingOptionIndex = correctIndex;
+  const displayed = [];
+  let incorrectIndex = 0;
+
+  for (let index = 0; index < source.length; index += 1) {
+    displayed.push(index === correctIndex ? correctOption : incorrectOptions[incorrectIndex++]);
+  }
+
+  const labeled = displayed.map((option, index) => ({
+    ...option,
+    label: `${String.fromCharCode(65 + index)}.`,
+  }));
+  briefingOptionOrder.set(key, labeled);
+  return labeled;
 }
 
 function renderBriefingCheck(briefing, stepIndex, feedback = "") {
@@ -1692,9 +2028,9 @@ function renderBriefingCheck(briefing, stepIndex, feedback = "") {
   setMompyState("briefing");
   renderMompyScreenPanel({
     title: step.question,
-    lines: [feedback || "Choose the correct answer."],
+    lines: [feedback || t("chooseCorrect")],
     variant: "check",
-    actions: step.options.map((option) => ({
+    actions: getDisplayBriefingOptions(briefing.id, stepIndex, step.options).map((option) => ({
       label: `${option.label} ${option.text}`,
       primary: false,
       onClick: () => handleBriefingCheckAnswer(briefing, stepIndex, option),
@@ -1731,11 +2067,11 @@ function handleBriefingCheckAnswer(briefing, stepIndex, option) {
     audioManager.playSuccess();
     setMompyState("briefing");
     renderMompyScreenPanel({
-      title: "Correct answer",
+      title: t("correctAnswer"),
       lines: [step.successText],
       actions: [
         {
-          label: "Got it",
+          label: t("gotIt"),
           primary: true,
           onClick: () => renderBriefingStep(briefing, stepIndex + 1),
         },
@@ -1767,11 +2103,11 @@ function completeBriefing(briefingId) {
   activeBriefingRetry = false;
   setMompyState("briefing");
   renderMompyScreenPanel({
-    title: "Briefing complete",
+    title: t("briefingComplete"),
     lines: [
-      "Briefing complete.",
-      "Concepts loaded.",
-      "Good luck, trainee.",
+      `${t("briefingComplete")}.`,
+      t("conceptsLoaded"),
+      t("goodLuck"),
     ],
     actions: [],
   });
@@ -1915,7 +2251,7 @@ function readStoredUserProfile() {
 
     return {
       firstName,
-      language: profile.language || "en-US",
+      language: normalizeLanguage(profile.language),
       levelPreference: profile.levelPreference || "beginner",
       email: profile.email || "",
     };
@@ -1933,6 +2269,7 @@ function applyUserProfile(profile) {
 function loadUserProfile() {
   const profile = readStoredUserProfile();
   applyUserProfile(profile);
+  applyLanguage(profile?.language || localStorage.getItem(LANGUAGE_KEY) || "en-US");
   return profile;
 }
 
@@ -1958,6 +2295,30 @@ async function saveUserProfile(firstName) {
   return applyPythonProfile(savedProfile) || profile;
 }
 
+async function savePreferredLanguage(language) {
+  applyLanguage(language);
+
+  if (!currentProfile) {
+    return currentLanguage;
+  }
+
+  const profile = {
+    ...currentProfile,
+    language: currentLanguage,
+  };
+  localStorage.setItem(USER_PROFILE_KEY, JSON.stringify(profile));
+  applyUserProfile(profile);
+
+  const savedProfile = await callPythonBackend("save_profile", {
+    name: profile.firstName,
+    language: currentLanguage,
+    level_preference: profile.levelPreference,
+    email: profile.email,
+  });
+  applyPythonProfile(savedProfile);
+  return currentLanguage;
+}
+
 function clearUserProfile() {
   localStorage.removeItem(USER_PROFILE_KEY);
   applyUserProfile(null);
@@ -1967,7 +2328,9 @@ function clearUserProfile() {
 
 function renderStartUserInfo() {
   startUserName.textContent = currentUser.name;
-  startUserLevel.textContent = currentUser.level;
+  startUserLevel.textContent = currentLanguage === "pt-BR"
+    ? currentUser.level.replace("Beginner", "Iniciante")
+    : currentUser.level.replace("Iniciante", "Beginner");
   startMissionCount.textContent = `${currentUser.missionsCompleted} / ${currentUser.totalMissions}`;
 }
 
@@ -2426,7 +2789,7 @@ function renderMission(mission) {
 }
 
 function missionIntroText(mission) {
-  return `Mompy: ${mission.objective}\nShortcut: Ctrl+Enter also runs.`;
+  return `Mompy: ${mission.objective}\n${t("shortcutAlsoRuns")}`;
 }
 
 function renderCurrentMission(options = {}) {
@@ -2578,15 +2941,108 @@ function completeMission(result) {
   }, 1500);
 }
 
+function editorOffsetAt(lineNumber, columnNumber = 1) {
+  const lines = editor.value.split("\n");
+  const safeLine = Math.max(1, Math.min(Number(lineNumber) || 1, lines.length));
+  const lineText = lines[safeLine - 1] || "";
+  const safeColumn = Math.max(1, Math.min(Number(columnNumber) || 1, lineText.length + 1));
+  const previousLength = lines
+    .slice(0, safeLine - 1)
+    .reduce((total, line) => total + line.length + 1, 0);
+  return previousLength + safeColumn - 1;
+}
+
+function focusDiagnosticLocation(diagnostic) {
+  if (!diagnostic?.line) {
+    return;
+  }
+
+  const start = editorOffsetAt(diagnostic.line, diagnostic.column || 1);
+  const endLine = diagnostic.end_line || diagnostic.line;
+  let end = editorOffsetAt(endLine, diagnostic.end_column || diagnostic.column || 1);
+
+  if (end <= start) {
+    const sourceLength = String(diagnostic.source_line || "").length;
+    end = sourceLength > 0
+      ? editorOffsetAt(diagnostic.line, sourceLength + 1)
+      : Math.min(start + 1, editor.value.length);
+  }
+
+  editor.focus();
+  editor.setSelectionRange(start, end);
+}
+
+function appendDiagnosticText(parent, className, label, value) {
+  if (!value) {
+    return;
+  }
+
+  const paragraph = document.createElement("p");
+  paragraph.className = className;
+
+  if (label) {
+    const strong = document.createElement("strong");
+    strong.textContent = label;
+    paragraph.append(strong, document.createTextNode(" "));
+  }
+
+  paragraph.append(document.createTextNode(String(value)));
+  parent.append(paragraph);
+}
+
+function renderDiagnostic(result) {
+  const diagnostic = result.diagnostics?.[0] || {
+    category: "mission",
+    title: "The mission is not complete yet",
+    summary: result.message || "Check the mission goal and try again.",
+    suggestion: result.detail,
+  };
+
+  output.replaceChildren();
+
+  const report = document.createElement("article");
+  report.className = `diagnostic-report diagnostic-${diagnostic.category || "mission"}`;
+
+  const heading = document.createElement("div");
+  heading.className = "diagnostic-heading";
+
+  const title = document.createElement("h3");
+  title.textContent = diagnostic.title || "Check this attempt";
+  heading.append(title);
+
+  if (diagnostic.line) {
+    const location = document.createElement("button");
+    location.type = "button";
+    location.className = "diagnostic-location";
+    location.textContent = `Line ${diagnostic.line}${diagnostic.column ? `, column ${diagnostic.column}` : ""}`;
+    location.addEventListener("click", () => focusDiagnosticLocation(diagnostic));
+    heading.append(location);
+  }
+
+  report.append(heading);
+  appendDiagnosticText(report, "diagnostic-summary", "", diagnostic.summary || result.message);
+  appendDiagnosticText(report, "diagnostic-suggestion", "Try this:", diagnostic.suggestion || result.detail);
+
+  const expected = diagnostic.expected ?? result.expectedOutput;
+  const actual = diagnostic.actual ?? result.actualOutput;
+  if (diagnostic.category === "output" && (expected != null || actual != null)) {
+    const comparison = document.createElement("div");
+    comparison.className = "diagnostic-comparison";
+    appendDiagnosticText(comparison, "diagnostic-expected", "Expected:", expected || "(no output)");
+    appendDiagnosticText(comparison, "diagnostic-actual", "Received:", actual || "(no output)");
+    report.append(comparison);
+    report.classList.add("has-comparison");
+  }
+
+  output.append(report);
+
+  if (diagnostic.line) {
+    window.setTimeout(() => focusDiagnosticLocation(diagnostic), 0);
+  }
+}
+
 function failMission(result) {
-  output.textContent = [
-    `> ${result.output}`,
-    "",
-    "Not quite this time.",
-    "Check the mission's goal and try again.",
-    "",
-    `Tip: ${result.detail}`,
-  ].join("\n");
+  renderDiagnostic(result);
   audioManager.playError();
   setMompyState("error", { returnToIdle: 3200 });
 }
@@ -2648,6 +3104,15 @@ async function validateCode(code) {
     return {
       ok: false,
       output: "No code to run.",
+      diagnostics: [
+        {
+          category: "mission",
+          code: "empty_editor",
+          title: "Write the mission code first",
+          summary: "The editor does not contain any Python code yet.",
+          suggestion: mission.help || "Write the requested code in the editor.",
+        },
+      ],
       detail: mission.help || "Write the requested code in the editor.",
     };
   }
@@ -2657,6 +3122,10 @@ async function validateCode(code) {
     return {
       ok: Boolean(backendValidation.correct),
       output: backendValidation.actual_output || backendValidation.expected_output || mission.expectedOutput,
+      actualOutput: backendValidation.actual_output,
+      expectedOutput: backendValidation.expected_output || mission.expectedOutput,
+      message: backendValidation.message,
+      diagnostics: Array.isArray(backendValidation.diagnostics) ? backendValidation.diagnostics : [],
       detail: backendValidation.correct
         ? backendValidation.message || "Mission complete."
         : backendValidation.runtime_error || backendValidation.hints?.[0] || backendValidation.message || mission.help,
@@ -2667,6 +3136,9 @@ async function validateCode(code) {
   return {
     ok: false,
     output: printed || "Not quite this time.",
+    actualOutput: printed,
+    expectedOutput: mission.expectedOutput,
+    diagnostics: [],
     detail: "Open Mompy through Python to use real mission validation.",
   };
 }
@@ -2692,7 +3164,7 @@ async function runCode() {
 
     failMission(result);
   } catch (error) {
-    output.textContent = `Falha inesperada:\n${error.message}`;
+    output.textContent = `Unexpected validation error:\n${error.message}`;
     audioManager.playError();
     setMompyState("error", { returnToIdle: 3200 });
   } finally {
@@ -2787,14 +3259,14 @@ function showHelp() {
   setMompyState("talking");
   const mission = currentMission();
   openModal({
-    title: "Mission help",
+    title: t("missionHelp"),
     body: `
       <p>${mission.help}</p>
-      <p><strong>Goal:</strong> ${mission.objective}</p>
+      <p><strong>${t("goal")}:</strong> ${mission.objective}</p>
     `,
     actions: [
       {
-        label: "Got it",
+        label: t("gotIt"),
         primary: true,
         onClick: () => {
           closeModal();
@@ -2806,71 +3278,78 @@ function showHelp() {
 }
 
 function toggleLabel(value) {
-  return value ? "ON" : "OFF";
+  return value ? t("on") : t("off");
 }
 
 function settingMeter(settingName) {
   const value = settingsState[settingName];
   return `
     <div class="setting-stepper">
-      <button class="setting-step" type="button" data-setting-step="${settingName}" data-delta="-10" aria-label="Decrease">-</button>
+      <button class="setting-step" type="button" data-setting-step="${settingName}" data-delta="-10" aria-label="${t("decrease")}">-</button>
       <span class="setting-meter" data-setting-meter="${settingName}" style="--value: ${value}%">
         <span data-setting-value="${settingName}">${value}%</span>
       </span>
-      <button class="setting-step" type="button" data-setting-step="${settingName}" data-delta="10" aria-label="Increase">+</button>
+      <button class="setting-step" type="button" data-setting-step="${settingName}" data-delta="10" aria-label="${t("increase")}">+</button>
     </div>
   `;
 }
 
 function updateStatusText() {
   if (!updateStatusCache) {
-    return "Not checked";
+    return t("notChecked");
   }
 
   if (updateStatusCache.error) {
-    return "Check unavailable";
+    return t("checkUnavailable");
   }
 
   if (updateStatusCache.update_available) {
-    return `New version ${updateStatusCache.latest_version}`;
+    return t("newVersion", { version: updateStatusCache.latest_version });
   }
 
-  return "Up to date";
+  return t("upToDate");
 }
 
 function renderSettingsBody() {
   return `
     <div class="settings-grid">
       <section class="settings-section">
-        <h3>Shortcuts</h3>
-        <div class="settings-row"><span><code>Ctrl + Enter</code></span><span class="settings-control">Run</span></div>
-        <div class="settings-row"><span><code>F1</code></span><span class="settings-control">Help</span></div>
-        <div class="settings-row"><span><code>Esc</code></span><span class="settings-control">Close</span></div>
+        <h3>${t("shortcuts")}</h3>
+        <div class="settings-row"><span><code>Ctrl + Enter</code></span><span class="settings-control">${t("runShortcut")}</span></div>
+        <div class="settings-row"><span><code>F1</code></span><span class="settings-control">${t("help")}</span></div>
+        <div class="settings-row"><span><code>Esc</code></span><span class="settings-control">${t("closeShortcut")}</span></div>
       </section>
 
       <section class="settings-section">
-        <h3>Audio</h3>
+        <h3>${t("audio")}</h3>
         <div class="settings-row">
-          <span>Ambient music</span>
+          <span>${t("ambientMusic")}</span>
           <button class="settings-control settings-toggle" type="button" data-setting-toggle="ambientMusic" aria-pressed="${settingsState.ambientMusic}">
             ${toggleLabel(settingsState.ambientMusic)}
           </button>
         </div>
-        <div class="settings-row"><span>Music volume</span>${settingMeter("musicVolume")}</div>
+        <div class="settings-row"><span>${t("musicVolume")}</span>${settingMeter("musicVolume")}</div>
         <div class="settings-row">
-          <span>Sound effects</span>
+          <span>${t("soundEffects")}</span>
           <button class="settings-control settings-toggle" type="button" data-setting-toggle="soundEffects" aria-pressed="${settingsState.soundEffects}">
             ${toggleLabel(settingsState.soundEffects)}
           </button>
         </div>
-        <div class="settings-row"><span>Effects volume</span>${settingMeter("effectsVolume")}</div>
+        <div class="settings-row"><span>${t("effectsVolume")}</span>${settingMeter("effectsVolume")}</div>
       </section>
 
       <section class="settings-section">
-        <h3>Interface</h3>
-        <div class="settings-row"><span>CRT brightness</span>${settingMeter("crtBrightness")}</div>
+        <h3>${t("interface")}</h3>
+        <div class="settings-row settings-language-row">
+          <span>${t("language")}</span>
+          <div class="language-selector" role="group" aria-label="${t("language")}">
+            <button class="language-option" type="button" data-language-option="en-US" aria-pressed="${currentLanguage === "en-US"}">English</button>
+            <button class="language-option" type="button" data-language-option="pt-BR" aria-pressed="${currentLanguage === "pt-BR"}">Português</button>
+          </div>
+        </div>
+        <div class="settings-row"><span>${t("crtBrightness")}</span>${settingMeter("crtBrightness")}</div>
         <div class="settings-row">
-          <span>Mompy animations</span>
+          <span>${t("mompyAnimations")}</span>
           <button class="settings-control settings-toggle" type="button" data-setting-toggle="mompyAnimations" aria-pressed="${settingsState.mompyAnimations}">
             ${toggleLabel(settingsState.mompyAnimations)}
           </button>
@@ -2878,42 +3357,42 @@ function renderSettingsBody() {
       </section>
 
       <section class="settings-section">
-        <h3>Progress</h3>
+        <h3>${t("progress")}</h3>
         <div class="settings-row">
-          <span>Missions completed</span>
+          <span>${t("missionsCompleted")}</span>
           <span class="settings-control">${completedMissionIds.length} / ${PLANNED_TOTAL_MISSIONS}</span>
         </div>
         <div class="settings-row">
-          <span>Current mission</span>
+          <span>${t("currentMissionSetting")}</span>
           <span class="settings-control">${String(currentMissionIndex + 1).padStart(2, "0")}</span>
         </div>
         <div class="settings-row">
-          <span>Local progress</span>
-          <button id="resetProgressButton" class="settings-inline-button" type="button">Reset progress</button>
+          <span>${t("localProgress")}</span>
+          <button id="resetProgressButton" class="settings-inline-button" type="button">${t("resetProgress")}</button>
         </div>
       </section>
 
       <section class="settings-section">
-        <h3>Account</h3>
+        <h3>${t("account")}</h3>
         <div class="settings-row">
-          <span>Current user</span>
+          <span>${t("currentUser")}</span>
           <span class="settings-control">${currentUser.name}</span>
         </div>
         <div class="settings-row">
-          <span>Session</span>
-          <button id="logoutUserButton" class="settings-inline-button" type="button">Log out</button>
+          <span>${t("session")}</span>
+          <button id="logoutUserButton" class="settings-inline-button" type="button">${t("logOut")}</button>
         </div>
       </section>
 
       <section class="settings-section">
-        <h3>Updates</h3>
+        <h3>${t("updates")}</h3>
         <div class="settings-row">
-          <span>Installed version</span>
+          <span>${t("installedVersion")}</span>
           <span class="settings-control">v${appVersion}</span>
         </div>
         <div class="settings-row">
           <span id="updateStatusText">${updateStatusText()}</span>
-          <button id="checkUpdatesButton" class="settings-inline-button" type="button">Check for updates</button>
+          <button id="checkUpdatesButton" class="settings-inline-button" type="button">${t("checkUpdates")}</button>
         </div>
       </section>
     </div>
@@ -2934,6 +3413,15 @@ function updateSettingView(settingName) {
 }
 
 function bindSettingsControls() {
+  modalBody.querySelectorAll("[data-language-option]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      await savePreferredLanguage(button.dataset.languageOption);
+      modalTitle.textContent = t("settings");
+      modalBody.innerHTML = renderSettingsBody();
+      bindSettingsControls();
+    });
+  });
+
   modalBody.querySelectorAll("[data-setting-toggle]").forEach((button) => {
     button.addEventListener("click", () => {
       const settingName = button.dataset.settingToggle;
@@ -2985,11 +3473,11 @@ async function checkUpdatesFromSettings() {
 
   if (button) {
     button.disabled = true;
-    button.textContent = "Checking";
+    button.textContent = t("checking");
   }
 
   if (statusText) {
-    statusText.textContent = "Querying GitHub Releases";
+    statusText.textContent = t("queryingReleases");
   }
 
   updateStatusCache = await callPythonBackend("get_update_status");
@@ -3000,7 +3488,7 @@ async function checkUpdatesFromSettings() {
 
   if (button) {
     button.disabled = false;
-    button.textContent = updateStatusCache?.update_available ? "Open release" : "Check for updates";
+    button.textContent = updateStatusCache?.update_available ? t("openRelease") : t("checkUpdates");
   }
 }
 
@@ -3012,11 +3500,11 @@ function showSettings() {
   }
 
   openModal({
-    title: "Settings",
+    title: t("settings"),
     body: renderSettingsBody(),
     actions: [
       {
-        label: "Exit",
+        label: t("exit"),
         onClick: confirmExitApp,
       },
     ],
@@ -3223,6 +3711,22 @@ modalBackdrop.addEventListener("click", (event) => {
     restoreAfterModal();
   }
 });
+
+document.addEventListener("pointerdown", (event) => {
+  if (modalBackdrop.hidden) {
+    return;
+  }
+
+  const modal = modalBackdrop.querySelector(".modal");
+  if (!(event.target instanceof Node) || modal?.contains(event.target)) {
+    return;
+  }
+
+  event.preventDefault();
+  event.stopPropagation();
+  closeModal();
+  restoreAfterModal();
+}, true);
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !modalBackdrop.hidden) {

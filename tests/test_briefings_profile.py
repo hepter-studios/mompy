@@ -19,6 +19,22 @@ class BriefingProfileTests(unittest.TestCase):
             self.assertEqual(profile["name"], "Mackson Victor")
             self.assertEqual(load_profile(path)["name"], "Mackson Victor")
 
+    def test_new_profile_starts_in_english(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "profile.json"
+            profile = save_profile({"name": "Mackson"}, path)
+            self.assertEqual(profile["language"], "en-US")
+
+    def test_profile_persists_supported_language_only(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "profile.json"
+            profile = save_profile({"name": "Mackson", "language": "pt-BR"}, path)
+            self.assertEqual(profile["language"], "pt-BR")
+            self.assertEqual(load_profile(path)["language"], "pt-BR")
+
+            profile = save_profile({"language": "es-ES"}, path)
+            self.assertEqual(profile["language"], "en-US")
+
     def test_profile_save_persists_session_metadata(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "profile.json"

@@ -8,10 +8,10 @@
     <link rel="icon" href="./assets/mompy_idle.ico" sizes="any" />
     <link rel="shortcut icon" href="./assets/mompy_idle.ico" />
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./css/styles.css?v=47" />
+    <link rel="stylesheet" href="./css/styles.css?v=49" />
   </head>
   <body>
-    <section id="loadingScreen" class="loading-screen" aria-label="Loading Mompy" aria-live="polite">
+    <section id="loadingScreen" class="loading-screen" aria-label="Loading Mompy" data-i18n-aria-label="loadingMompy" aria-live="polite">
       <div class="loading-shell">
         <div class="loading-visual">
           <img
@@ -33,10 +33,10 @@
                 <img src="./assets/hepterakt_boot_logo_green.png" alt="Hepter Studio" draggable="false" />
               </div>
             </div>
-            <div class="loading-bar" aria-label="Loading">
+            <div class="loading-bar" aria-label="Loading" data-i18n-aria-label="loading">
               <div id="loadingProgress" class="loading-progress"></div>
             </div>
-            <p class="loading-text">Loading...</p>
+            <p class="loading-text" data-i18n="loading">Loading...</p>
           </div>
         </div>
       </div>
@@ -46,8 +46,8 @@
       <section class="machine" aria-label="Mompy workspace">
         <div class="overlay">
           <header class="app-header">
-            <div class="level-panel" aria-label="Current level">
-              <span class="level-label">Level</span>
+            <div class="level-panel" aria-label="Current level" data-i18n-aria-label="currentLevel">
+              <span class="level-label" data-i18n="level">Level</span>
               <span id="levelValue" class="level-value">01</span>
               <span class="level-track" aria-hidden="true">
                 <span id="levelFill" class="level-fill"></span>
@@ -55,10 +55,10 @@
             </div>
             <img class="brand-logo" src="./assets/name_mompy.png" alt="Mompy" draggable="false" />
             <div class="header-actions">
-              <button id="settingsButton" class="top-icon-button" type="button" aria-label="Settings">
+              <button id="settingsButton" class="top-icon-button" type="button" aria-label="Settings" data-i18n-aria-label="settings">
                 <span class="top-icon-mask settings-mask" aria-hidden="true"></span>
               </button>
-              <button id="fullscreenButton" class="top-icon-button fullscreen-toggle" type="button" aria-label="Expand window">
+              <button id="fullscreenButton" class="top-icon-button fullscreen-toggle" type="button" aria-label="Expand window" data-i18n-aria-label="expandWindow">
                 <span class="top-icon-mask fullscreen-expand-mask" aria-hidden="true"></span>
                 <span class="top-icon-mask fullscreen-restore-mask" aria-hidden="true"></span>
               </button>
@@ -82,8 +82,8 @@
               </div>
             </div>
 
-            <section class="start-main-panel" aria-label="Python training console">
-              <h1>Python Training Console</h1>
+            <section class="start-main-panel" aria-label="Python training console" data-i18n-aria-label="trainingConsole">
+              <h1 data-i18n="trainingConsole">Python Training Console</h1>
               <div class="start-actions">
                 <button id="startButton" class="start-command-button" type="button">
                   <span class="start-command-icon" aria-hidden="true">
@@ -91,7 +91,7 @@
                       <path d="M7 4v16l12-8z"></path>
                     </svg>
                   </span>
-                  <span>Start</span>
+                  <span data-i18n="start">Start</span>
                 </button>
                 <button id="continueButton" class="start-command-button" type="button">
                   <span class="start-command-icon" aria-hidden="true">
@@ -100,12 +100,12 @@
                       <path class="continue-play" d="M10 5v14l9-7z"></path>
                     </svg>
                   </span>
-                  <span>Continue</span>
+                  <span data-i18n="continue">Continue</span>
                 </button>
               </div>
             </section>
 
-            <section class="start-stats-bar" aria-label="User information">
+            <section class="start-stats-bar" aria-label="User information" data-i18n-aria-label="userInformation">
               <article class="start-stat">
                 <div class="start-stat-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" focusable="false">
@@ -115,7 +115,7 @@
                   </svg>
                 </div>
                 <div class="start-stat-text">
-                  <span class="start-stat-label">User</span>
+                  <span class="start-stat-label" data-i18n="user">User</span>
                   <span id="startUserName" class="start-stat-value">Mackson Victor</span>
                 </div>
               </article>
@@ -130,7 +130,7 @@
                   </svg>
                 </div>
                 <div class="start-stat-text">
-                  <span class="start-stat-label">Level</span>
+                  <span class="start-stat-label" data-i18n="level">Level</span>
                   <span id="startUserLevel" class="start-stat-value">01 · Beginner</span>
                 </div>
               </article>
@@ -144,7 +144,7 @@
                   </svg>
                 </div>
                 <div class="start-stat-text">
-                  <span class="start-stat-label">Missions completed</span>
+                  <span class="start-stat-label" data-i18n="missionsCompleted">Missions completed</span>
                   <span id="startMissionCount" class="start-stat-value">0 / 30</span>
                 </div>
               </article>
@@ -161,8 +161,8 @@
               />
               <div class="onboarding-terminal">
                 <pre id="onboardingTerminalOutput" aria-live="polite"></pre>
-                <h2 id="onboardingTitle" class="onboarding-title">First visit</h2>
-                <label class="onboarding-label" for="onboardingNameInput">What's your first name?</label>
+                <h2 id="onboardingTitle" class="onboarding-title" data-i18n="firstVisit">First visit</h2>
+                <label class="onboarding-label" for="onboardingNameInput" data-i18n="firstNameQuestion">What's your first name?</label>
                 <div class="onboarding-input-shell">
                   <span aria-hidden="true">&gt;</span>
                   <input
@@ -172,10 +172,11 @@
                     autocomplete="off"
                     spellcheck="false"
                     placeholder="Type your first name here"
+                    data-i18n-placeholder="firstNamePlaceholder"
                   />
                 </div>
                 <p id="onboardingError" class="onboarding-error" aria-live="polite"></p>
-                <button id="onboardingContinueButton" class="onboarding-button" type="button">Continue</button>
+                <button id="onboardingContinueButton" class="onboarding-button" type="button" data-i18n="continue">Continue</button>
               </div>
             </section>
           </div>
@@ -190,18 +191,18 @@
             />
             <div id="mompyScreenMessage" class="mompy-screen-message" hidden>
               <div class="mompy-screen-text">
-                <p>Mission complete.</p>
-                <p>Continue?</p>
+                <p data-i18n="missionComplete">Mission complete.</p>
+                <p data-i18n="continueQuestion">Continue?</p>
               </div>
               <div class="mompy-screen-actions">
-                <button id="repeatMissionButton" type="button">Retry</button>
-                <button id="nextMissionButton" type="button">Next mission</button>
+                <button id="repeatMissionButton" type="button" data-i18n="retry">Retry</button>
+                <button id="nextMissionButton" type="button" data-i18n="nextMission">Next mission</button>
               </div>
             </div>
           </section>
 
-          <section class="mission-panel" aria-label="Current mission">
-            <p class="panel-label">Mission</p>
+          <section class="mission-panel" aria-label="Current mission" data-i18n-aria-label="currentMission">
+            <p class="panel-label" data-i18n="mission">Mission</p>
             <article class="mission-copy" id="missionCopy">
               <h2>Print output</h2>
               <p>
@@ -214,13 +215,13 @@
             </article>
           </section>
 
-          <section class="editor-panel" aria-label="Code editor">
+          <section class="editor-panel" aria-label="Code editor" data-i18n-aria-label="codeEditor">
             <div class="editor-topline">
-              <p class="panel-label">Code editor</p>
-              <div class="editor-actions" aria-label="Editor actions">
-                <button id="backButton" class="editor-button" type="button">← Back</button>
-                <button id="helpButton" class="editor-button" type="button">? Help</button>
-                <button id="runButton" class="editor-button run-button" type="button">▶ Run</button>
+              <p class="panel-label" data-i18n="codeEditor">Code editor</p>
+              <div class="editor-actions" aria-label="Editor actions" data-i18n-aria-label="editorActions">
+                <button id="backButton" class="editor-button" type="button">← <span data-i18n="back">Back</span></button>
+                <button id="helpButton" class="editor-button" type="button">? <span data-i18n="help">Help</span></button>
+                <button id="runButton" class="editor-button run-button" type="button">▶ <span data-i18n="run">Run</span></button>
               </div>
             </div>
 
@@ -237,14 +238,14 @@
             </div>
           </section>
 
-          <section class="output-panel" aria-label="Output">
-            <p class="panel-label">Output</p>
-            <pre id="outputConsole" aria-live="polite">Mompy ready. Write the code and click Run.</pre>
+          <section class="output-panel" aria-label="Output" data-i18n-aria-label="output">
+            <p class="panel-label" data-i18n="output">Output</p>
+            <div id="outputConsole" class="output-console" aria-live="polite">Mompy ready. Write the code and click Run.</div>
           </section>
 
           <div id="modalBackdrop" class="modal-backdrop" hidden>
             <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-              <button id="modalCloseButton" class="modal-close-button" type="button" aria-label="Close">X</button>
+              <button id="modalCloseButton" class="modal-close-button" type="button" aria-label="Close" data-i18n-aria-label="close">X</button>
               <h2 id="modalTitle"></h2>
               <div id="modalBody" class="modal-body"></div>
               <div id="modalActions" class="modal-actions"></div>
@@ -254,6 +255,7 @@
       </section>
     </main>
 
-    <script src="./js/app.js?v=50"></script>
+    <script src="./js/content-i18n.js?v=1"></script>
+    <script src="./js/app.js?v=54"></script>
   </body>
 </html>

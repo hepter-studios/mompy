@@ -10,8 +10,10 @@ from .storage import read_json, resolve_data_path, write_json
 
 
 PROFILE_PATH = resolve_data_path("profile.json")
+SUPPORTED_LANGUAGES = ("en-US", "pt-BR")
 DEFAULT_PROFILE = {
     "name": "Guest",
+    "language": "en-US",
     "created_at": None,
     "last_seen_at": None,
     "settings": {
@@ -21,6 +23,11 @@ DEFAULT_PROFILE = {
         "sfx_volume": 0.45,
     },
 }
+
+
+def normalize_language(language: object) -> str:
+    """Return one of the two languages supported by the Mompy interface."""
+    return str(language) if language in SUPPORTED_LANGUAGES else DEFAULT_PROFILE["language"]
 
 
 def _timestamp() -> str:
@@ -41,6 +48,7 @@ def load_profile(path: Path = PROFILE_PATH) -> dict:
     merged = deepcopy(DEFAULT_PROFILE)
     merged.update(profile)
     merged["name"] = _clean_name(str(merged.get("name", "")))
+    merged["language"] = normalize_language(merged.get("language"))
     settings = deepcopy(DEFAULT_PROFILE["settings"])
     if isinstance(profile.get("settings"), dict):
         settings.update(profile["settings"])
@@ -64,6 +72,7 @@ def save_profile(profile: dict, path: Path = PROFILE_PATH) -> dict:
         settings.update(incoming_settings)
     current["settings"] = settings
     current["name"] = _clean_name(str(current.get("name", "")))
+    current["language"] = normalize_language(current.get("language"))
     if not current.get("created_at"):
         current["created_at"] = _timestamp()
     current["last_seen_at"] = _timestamp()
