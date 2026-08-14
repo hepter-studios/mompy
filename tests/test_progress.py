@@ -2,7 +2,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from backend.progress import complete_mission, load_progress, reset_progress, set_current_mission_index
+from backend.progress import (
+    complete_mission,
+    load_progress,
+    reset_progress,
+    set_current_mission_index,
+    submit_mission_result,
+)
 
 
 class ProgressTests(unittest.TestCase):
@@ -13,6 +19,9 @@ class ProgressTests(unittest.TestCase):
             self.assertEqual(progress["current_mission_index"], 0)
             self.assertEqual(progress["completed_mission_ids"], [])
             self.assertEqual(progress["total_xp"], 0)
+            self.assertEqual(progress["mission_stats"], {})
+            self.assertEqual(progress["total_stars"], 0)
+            self.assertEqual(progress["current_streak"], 0)
 
     def test_complete_mission_adds_xp_once(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -53,7 +62,107 @@ class ProgressTests(unittest.TestCase):
             )
             progress = load_progress(path)
             self.assertEqual(progress["completed_mission_ids"], ["mission_001"])
-            self.assertEqual(progress["current_mission_index"], 29)
+            self.assertEqual(progress["current_mission_index"], 39)
+
+    def test_old_progress_is_migrated_without_losing_completion(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress.json"
+            path.write_text(
+                '{"completed_mission_ids":["mission_001"],"current_mission_index":1}',
+                encoding="utf-8",
+            )
+            progress = load_progress(path)
+            stats = progress["mission_stats"]["mission_001"]
+            self.assertEqual(stats["stars"], 1)
+            self.assertTrue(stats["migrated"])
+            self.assertEqual(progress["total_stars"], 1)
+
+    def test_first_try_completion_awards_three_stars_and_streak(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress.json"
+            result = submit_mission_result("mission_001", correct=True, path=path)
+            reward = result["reward"]
+            self.assertTrue(reward["first_completion"])
+            self.assertEqual(reward["stars"], 3)
+            self.assertEqual(reward["xp_awarded"], 35)
+            self.assertEqual(reward["current_streak"], 1)
+            self.assertIn("first_mission", reward["new_achievements"])
+            self.assertIn("perfect_mission", reward["new_achievements"])
+            self.assertEqual(result["progress"]["active_days"], 1)
+
+    def test_long_term_achievements_use_distinct_active_days(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress.json"
+            path.write_text(
+                '{"active_dates":["2026-01-01","2026-01-02","2026-01-03",'
+                '"2026-01-04","2026-01-05","2026-01-06","2026-01-07"]}',
+                encoding="utf-8",
+            )
+            progress = load_progress(path)
+            self.assertEqual(progress["active_days"], 7)
+            self.assertIn("steady_start", progress["achievements"])
+            self.assertIn("returning_learner", progress["achievements"])
+            self.assertNotIn("dedicated_learner", progress["achievements"])
+            self.assertNotIn("veteran_learner", progress["achievements"])
+
+    def test_twenty_achievements_have_reachable_progression(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress.json"
+            for index in range(1, 31):
+                result = submit_mission_result(f"mission_{index:03d}", correct=True, path=path)
+
+            achievements = result["progress"]["achievements"]
+            self.assertIn("mission_thirty", achievements)
+            self.assertIn("star_collector_60", achievements)
+            self.assertIn("three_blocks", achievements)
+            self.assertIn("six_blocks", achievements)
+            self.assertIn("clean_streak_10", achievements)
+            self.assertNotIn("path_complete", achievements)
+            self.assertNotIn("star_master_100", achievements)
+
+    def test_first_block_requires_its_actual_five_missions(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress.json"
+            for index in range(6, 11):
+                result = submit_mission_result(f"mission_{index:03d}", correct=True, path=path)
+
+            self.assertIn("mission_five", result["progress"]["achievements"])
+            self.assertNotIn("first_block", result["progress"]["achievements"])
+
+    def test_retry_then_completion_awards_two_stars_without_streak(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress.json"
+            submit_mission_result("mission_001", correct=False, path=path)
+            result = submit_mission_result("mission_001", correct=True, path=path)
+            self.assertEqual(result["reward"]["stars"], 2)
+            self.assertEqual(result["reward"]["current_streak"], 0)
+            self.assertEqual(result["progress"]["total_attempts"], 2)
+
+    def test_hint_reduces_first_try_reward_to_two_stars(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress.json"
+            result = submit_mission_result("mission_001", correct=True, hint_used=True, path=path)
+            self.assertEqual(result["reward"]["stars"], 2)
+
+    def test_replaying_completed_mission_does_not_duplicate_xp_or_streak(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress.json"
+            submit_mission_result("mission_001", correct=True, path=path)
+            replay = submit_mission_result("mission_001", correct=True, path=path)
+            self.assertFalse(replay["reward"]["first_completion"])
+            self.assertEqual(replay["reward"]["xp_awarded"], 0)
+            self.assertEqual(replay["progress"]["total_xp"], 35)
+            self.assertEqual(replay["progress"]["current_streak"], 1)
+
+    def test_completing_fifth_mission_finishes_first_block(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress.json"
+            for index in range(1, 6):
+                result = submit_mission_result(f"mission_{index:03d}", correct=True, path=path)
+            self.assertTrue(result["reward"]["block_completed"])
+            self.assertEqual(result["reward"]["block"]["stars"], 15)
+            self.assertEqual(result["reward"]["unlocked_block"], 2)
+            self.assertIn("first_block", result["reward"]["new_achievements"])
 
 
 if __name__ == "__main__":

@@ -41,29 +41,29 @@
 Download the latest official build from the [GitHub Releases page](https://github.com/hepter-studios/mompy/releases).
 
 <p>
-  <a href="https://github.com/hepter-studios/mompy/releases/tag/v0.1.2">
-    <img alt="Mompy v0.1.2" src="https://img.shields.io/badge/latest-v0.1.2-8cff3a?style=for-the-badge">
+  <a href="https://github.com/hepter-studios/mompy/releases/tag/v0.1.3">
+    <img alt="Mompy v0.1.3" src="https://img.shields.io/badge/latest-v0.1.3-8cff3a?style=for-the-badge">
   </a>
-  <a href="https://github.com/hepter-studios/mompy/releases/download/v0.1.2/MompySetup-v0.1.2.exe">
+  <a href="https://github.com/hepter-studios/mompy/releases/download/v0.1.3/MompySetup-v0.1.3.exe">
     <img alt="Windows installer" src="https://img.shields.io/badge/windows-installer-2f3136?style=for-the-badge&logo=windows&logoColor=white">
   </a>
-  <a href="https://github.com/hepter-studios/mompy/releases/download/v0.1.2/Mompy-windows-x64.zip">
+  <a href="https://github.com/hepter-studios/mompy/releases/download/v0.1.3/Mompy-windows-x64.zip">
     <img alt="Portable zip" src="https://img.shields.io/badge/portable-zip-2f3136?style=for-the-badge&logo=github&logoColor=white">
   </a>
 </p>
 
 Latest release:
 
-- [Mompy v0.1.2](https://github.com/hepter-studios/mompy/releases/tag/v0.1.2)
-- Recommended Windows installer: [MompySetup-v0.1.2.exe](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/MompySetup-v0.1.2.exe)
-- Portable Windows zip: [Mompy-windows-x64.zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/Mompy-windows-x64.zip)
+- [Mompy v0.1.3](https://github.com/hepter-studios/mompy/releases/tag/v0.1.3)
+- Recommended Windows installer: [MompySetup-v0.1.3.exe](https://github.com/hepter-studios/mompy/releases/download/v0.1.3/MompySetup-v0.1.3.exe)
+- Portable Windows zip: [Mompy-windows-x64.zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.3/Mompy-windows-x64.zip)
 
 Current platform status:
 
 | Platform | Status | Link |
 | --- | --- | --- |
-| Windows installer | Available in Releases | [Download setup](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/MompySetup-v0.1.2.exe) |
-| Windows portable zip | Available in Releases | [Download zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/Mompy-windows-x64.zip) |
+| Windows installer | Available in Releases | [Download setup](https://github.com/hepter-studios/mompy/releases/download/v0.1.3/MompySetup-v0.1.3.exe) |
+| Windows portable zip | Available in Releases | [Download zip](https://github.com/hepter-studios/mompy/releases/download/v0.1.3/Mompy-windows-x64.zip) |
 | macOS | Planned | [Roadmap](#-roadmap) |
 | Linux | Planned | [Roadmap](#-roadmap) |
 
@@ -159,7 +159,7 @@ Join the Mompy community, report bugs, suggest improvements or ask for help thro
 Mompy turns Python practice into a focused desktop flow. Instead of opening with a blank editor, it gives learners a retro CRT training console with:
 
 - guided lessons before each block of missions;
-- 30 beginner-friendly missions;
+- 40 beginner-friendly missions;
 - real Python validation in the backend;
 - learner-code execution in a separate process with conservative limits;
 - progress, XP and level handled by Python;
@@ -180,6 +180,8 @@ Many beginner tools jump too quickly into concepts such as `if`, loops or functi
 4. Repeat actions.
 5. Work with multiple values.
 6. Organize code with functions.
+7. Organize keyed data with dictionaries.
+8. Repeat while a condition remains true.
 
 Each mission should only ask for concepts that were already introduced in a previous guided lesson.
 
@@ -195,6 +197,8 @@ Each mission should only ask for concepts that were already introduced in a prev
 | 04 | 16-20 | Repetition | `for`, `range`, loop variable, indentation |
 | 05 | 21-25 | Lists | brackets, items, commas, indexes, iterating over lists |
 | 06 | 26-30 | Functions | `def`, calls, parameters, `return`, indentation |
+| 07 | 31-35 | Dictionaries | keys, values, bracket access, updates, safe lookup with `get` |
+| 08 | 36-40 | While loops | conditions, counters, updates, accumulators, list traversal |
 
 ---
 
@@ -347,7 +351,7 @@ Build output:
 ```txt
 dist/Mompy/Mompy.exe
 dist/Mompy-windows-x64.zip
-dist/MompySetup-v0.1.2.exe
+dist/MompySetup-v0.1.3.exe
 ```
 
 Build artifacts such as `.exe`, `.zip`, `.msi`, `.dmg` or `.AppImage` should not be committed directly to the repository. They should be attached to a [GitHub Release](https://github.com/hepter-studios/mompy/releases).
@@ -374,7 +378,7 @@ Check backend startup:
 python main.py --check
 ```
 
-The `v0.1.2` Windows package was locally checked with:
+The `v0.1.3` Windows package is checked by the tagged release workflow with:
 
 - `python -m unittest discover -s tests`
 - `python main.py --check`
@@ -392,7 +396,7 @@ Mompy is intended to be easy to verify:
 
 - source code is public in the [repository](https://github.com/hepter-studios/mompy);
 - official downloads are attached to [GitHub Releases](https://github.com/hepter-studios/mompy/releases);
-- the latest release is [Mompy v0.1.2](https://github.com/hepter-studios/mompy/releases/tag/v0.1.2);
+- the latest release is [Mompy v0.1.3](https://github.com/hepter-studios/mompy/releases/tag/v0.1.3);
 - release assets are stored by GitHub, not pasted into the repository;
 - issue tracking happens in [GitHub Issues](https://github.com/hepter-studios/mompy/issues);
 - security guidance is in [SECURITY.md](SECURITY.md);
@@ -408,9 +412,9 @@ Official builds are distributed through [GitHub Releases](https://github.com/hep
 
 Current official release:
 
-- [Mompy v0.1.2](https://github.com/hepter-studios/mompy/releases/tag/v0.1.2)
-- [Windows installer asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/MompySetup-v0.1.2.exe)
-- [Windows x64 portable zip asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/Mompy-windows-x64.zip)
+- [Mompy v0.1.3](https://github.com/hepter-studios/mompy/releases/tag/v0.1.3)
+- [Windows installer asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.3/MompySetup-v0.1.3.exe)
+- [Windows x64 portable zip asset](https://github.com/hepter-studios/mompy/releases/download/v0.1.3/Mompy-windows-x64.zip)
 
 Release rule:
 
@@ -431,7 +435,7 @@ Release rule:
 | 10.4 - migrate mission validation to Python | Done |
 | 10.5 - safer learner-code execution | Done |
 | 10.6 - progress, XP and levels through Python | Done |
-| 10.7 - package as installable Python desktop app | Done for Windows v0.1.2 |
+| 10.7 - package as installable Python desktop app | Done for Windows v0.1.3 |
 | macOS package | Planned |
 | Linux package | Planned |
 | more lessons and missions | Planned |
@@ -460,7 +464,7 @@ Release rule:
 | Website | [mompy.co](https://mompy.co) |
 | Repository | [github.com/hepter-studios/mompy](https://github.com/hepter-studios/mompy) |
 | Releases | [GitHub Releases](https://github.com/hepter-studios/mompy/releases) |
-| Latest release | [Mompy v0.1.2](https://github.com/hepter-studios/mompy/releases/tag/v0.1.2) |
+| Latest release | [Mompy v0.1.3](https://github.com/hepter-studios/mompy/releases/tag/v0.1.3) |
 | Discord | [discord.gg/fqxvyGFyfa](https://discord.gg/fqxvyGFyfa) |
 | Sponsor | [GitHub Sponsors](https://github.com/sponsors/macksonvictor) |
 | Sponsor guide | [SPONSOR.md](SPONSOR.md) |

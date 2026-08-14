@@ -8,7 +8,7 @@
     <link rel="icon" href="./assets/mompy_idle.ico" sizes="any" />
     <link rel="shortcut icon" href="./assets/mompy_idle.ico" />
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./css/styles.css?v=49" />
+    <link rel="stylesheet" href="./css/styles.css?v=57" />
   </head>
   <body>
     <section id="loadingScreen" class="loading-screen" aria-label="Loading Mompy" data-i18n-aria-label="loadingMompy" aria-live="polite">
@@ -55,6 +55,9 @@
             </div>
             <img class="brand-logo" src="./assets/name_mompy.png" alt="Mompy" draggable="false" />
             <div class="header-actions">
+              <button id="achievementsButton" class="top-icon-button" type="button" aria-label="Achievements" data-i18n-aria-label="achievements">
+                <span class="achievement-star-icon" aria-hidden="true">&#9733;</span>
+              </button>
               <button id="settingsButton" class="top-icon-button" type="button" aria-label="Settings" data-i18n-aria-label="settings">
                 <span class="top-icon-mask settings-mask" aria-hidden="true"></span>
               </button>
@@ -71,7 +74,7 @@
                 <img
                   id="startMompySprite"
                   class="start-mompy-sprite"
-                  src="./assets/mompy_idle.png"
+                  src="./assets/mompy_idle.png?v=2"
                   alt="Mompy"
                   draggable="false"
                 />
@@ -145,7 +148,7 @@
                 </div>
                 <div class="start-stat-text">
                   <span class="start-stat-label" data-i18n="missionsCompleted">Missions completed</span>
-                  <span id="startMissionCount" class="start-stat-value">0 / 30</span>
+                  <span id="startMissionCount" class="start-stat-value">0 / 40</span>
                 </div>
               </article>
             </section>
@@ -185,11 +188,17 @@
             <img
               id="mompySprite"
               class="mompy-sprite"
-              src="./assets/mompy_idle.png"
+              src="./assets/mompy_idle.png?v=2"
               alt="Mompy"
               draggable="false"
             />
-            <div id="mompyScreenMessage" class="mompy-screen-message" hidden>
+            <div
+              id="mompyScreenMessage"
+              class="mompy-screen-message"
+              aria-live="polite"
+              aria-atomic="true"
+              hidden
+            >
               <div class="mompy-screen-text">
                 <p data-i18n="missionComplete">Mission complete.</p>
                 <p data-i18n="continueQuestion">Continue?</p>
@@ -256,6 +265,6 @@
     </main>
 
     <script src="./js/content-i18n.js?v=1"></script>
-    <script src="./js/app.js?v=54"></script>
+    <script src="./js/app.js?v=81"></script>
   </body>
 </html>

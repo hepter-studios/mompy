@@ -6,7 +6,6 @@ import argparse
 import http.server
 import json
 import multiprocessing
-import socketserver
 import sys
 from pathlib import Path
 from urllib.parse import urlparse
@@ -33,6 +32,12 @@ def serve_frontend(port: int = 8770) -> None:
 
         def __init__(self, *args, **kwargs):
             super().__init__(*args, directory=str(FRONTEND_DIR), **kwargs)
+
+        def end_headers(self) -> None:
+            self.send_header("Cache-Control", "no-store, no-cache, must-revalidate")
+            self.send_header("Pragma", "no-cache")
+            self.send_header("Expires", "0")
+            super().end_headers()
 
         def send_json(self, payload: dict, status: int = 200) -> None:
             body = json.dumps(payload).encode("utf-8")
@@ -96,6 +101,15 @@ def serve_frontend(port: int = 8770) -> None:
                         )
                     )
                     return
+                if route == "/api/mission/submit":
+                    self.send_json(
+                        self.api.submit_mission(
+                            str(payload.get("mission_id", "")),
+                            str(payload.get("user_code", "")),
+                            bool(payload.get("hint_used", False)),
+                        )
+                    )
+                    return
                 if route == "/api/complete":
                     self.send_json(self.api.complete_mission(str(payload.get("mission_id", ""))))
                     return
@@ -122,7 +136,7 @@ def serve_frontend(port: int = 8770) -> None:
 
             self.send_json({"error": "Unknown API route."}, status=404)
 
-    with socketserver.TCPServer(("127.0.0.1", port), FrontendHandler) as server:
+    with http.server.ThreadingHTTPServer(("127.0.0.1", port), FrontendHandler) as server:
         print(f"Mompy frontend running at http://127.0.0.1:{port}/")
         server.serve_forever()
 

@@ -9,7 +9,14 @@ from .code_runner import run_user_code_safely
 from .lessons import get_lessons
 from .missions import get_current_mission, get_mission, get_missions
 from .profile import load_profile, logout_profile, save_profile
-from .progress import complete_mission, load_progress, reset_progress, set_current_mission_index
+from .storage import PROGRESS_PATH
+from .progress import (
+    complete_mission,
+    load_progress,
+    reset_progress,
+    set_current_mission_index,
+    submit_mission_result,
+)
 from .updater import check_for_updates
 from .validator import validate_mission
 from .version import APP_VERSION
@@ -25,7 +32,7 @@ class MompyAPI:
         return {
             "backend": {
                 "name": "Mompy Python Backend",
-                "phase": "10.6",
+                "phase": "11.0",
                 "connected": True,
                 "version": APP_VERSION,
             },
@@ -78,6 +85,17 @@ class MompyAPI:
     def validate_mission(self, mission_id: str, user_code: str) -> dict:
         return validate_mission(mission_id, user_code)
 
+    def submit_mission(self, mission_id: str, user_code: str, hint_used: bool = False) -> dict:
+        validation = self.validate_mission(mission_id, user_code)
+        path = self.progress_path or PROGRESS_PATH
+        progression = submit_mission_result(
+            mission_id,
+            correct=bool(validation["correct"]),
+            hint_used=bool(hint_used),
+            path=path,
+        )
+        return {"validation": validation, **progression}
+
     def complete_mission(self, mission_id: str) -> dict:
         if get_mission(mission_id) is None:
             raise ValueError(f"Unknown mission id: {mission_id}")
@@ -99,7 +117,8 @@ class MompyAPI:
         return run_user_code_safely(user_code)
 
     def check_answer(self, mission_id: str, user_code: str) -> dict:
-        validation = self.validate_mission(mission_id, user_code)
-        if validation["correct"]:
-            validation["progress"] = self.complete_mission(mission_id)
+        result = self.submit_mission(mission_id, user_code)
+        validation = result["validation"]
+        validation["progress"] = result["progress"]
+        validation["reward"] = result["reward"]
         return validation

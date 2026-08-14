@@ -37,6 +37,16 @@ class ValidatorTests(unittest.TestCase):
         "mission_028": "def add(a, b):\n    return a + b\nprint(add(2, 3))",
         "mission_029": 'def make_message(user):\n    return "Hello, " + user\nprint(make_message("Mackson"))',
         "mission_030": "def double(n):\n    return n * 2\nprint(double(4))",
+        "mission_031": 'profile = {"name": "Mompy", "level": 1}\nprint(profile)',
+        "mission_032": 'profile = {"name": "Mompy", "level": 1}\nprint(profile["name"])',
+        "mission_033": 'profile = {"name": "Mompy"}\nprofile["language"] = "Python"\nprint(profile["language"])',
+        "mission_034": 'profile = {"level": 1}\nprofile["level"] = 2\nprint(profile["level"])',
+        "mission_035": 'profile = {"name": "Mompy"}\nprint(profile.get("mode", "offline"))',
+        "mission_036": "count = 1\nwhile count <= 3:\n    print(count)\n    count += 1",
+        "mission_037": "count = 3\nwhile count > 0:\n    print(count)\n    count -= 1",
+        "mission_038": "total = 0\ncount = 1\nwhile count <= 4:\n    total += count\n    count += 1\nprint(total)",
+        "mission_039": "number = 0\nwhile number <= 4:\n    print(number)\n    number += 2",
+        "mission_040": 'steps = ["learn", "practice", "build"]\nindex = 0\nwhile index < len(steps):\n    print(steps[index])\n    index += 1',
     }
 
     ALTERNATIVE_SOLUTIONS = {
@@ -65,6 +75,16 @@ class ValidatorTests(unittest.TestCase):
         "mission_028": "def combine(left, right):\n    return right + left\nprint(combine(2, 3))",
         "mission_029": 'def message_for(name):\n    return f"Hello, {name}"\nprint(message_for("Mackson"))',
         "mission_030": "def twice(value):\n    return 2 * value\nprint(twice(4))",
+        "mission_031": 'learner = {"name": "Mompy", "level": 1}\nprint(learner)',
+        "mission_032": 'learner = {"name": "Mompy", "level": 1}\nprint(learner["name"])',
+        "mission_033": 'learner = {"name": "Mompy"}\nlearner["language"] = "Python"\nprint(learner["language"])',
+        "mission_034": 'learner = {"level": 1}\nlearner["level"] = 2\nprint(learner["level"])',
+        "mission_035": 'learner = {"name": "Mompy"}\nmode = learner.get("mode", "offline")\nprint(mode)',
+        "mission_036": "step = 1\nwhile step <= 3:\n    print(step)\n    step = step + 1",
+        "mission_037": "remaining = 3\nwhile remaining > 0:\n    print(remaining)\n    remaining = remaining - 1",
+        "mission_038": "answer = 0\nvalue = 1\nwhile value <= 4:\n    answer = answer + value\n    value = value + 1\nprint(answer)",
+        "mission_039": "value = 0\nwhile value <= 4:\n    print(value)\n    value = value + 2",
+        "mission_040": 'actions = ["learn", "practice", "build"]\nposition = 0\nwhile position < len(actions):\n    print(actions[position])\n    position = position + 1',
     }
 
     INVALID_SHORTCUTS = {
@@ -75,6 +95,10 @@ class ValidatorTests(unittest.TestCase):
         "mission_021": 'print(["onion", "terminal", "python"])',
         "mission_026": 'print("Hello")',
         "mission_030": "print(8)",
+        "mission_031": 'print({"name": "Mompy", "level": 1})',
+        "mission_035": 'print("offline")',
+        "mission_036": "print(1)\nprint(2)\nprint(3)",
+        "mission_040": 'print("learn")\nprint("practice")\nprint("build")',
     }
 
     def test_first_mission_accepts_exact_print(self):
@@ -115,7 +139,7 @@ class ValidatorTests(unittest.TestCase):
         )
 
     def test_all_current_missions_accept_reference_solution(self):
-        self.assertEqual(len(MISSIONS), 30)
+        self.assertEqual(len(MISSIONS), 40)
         for mission_id, code in self.VALID_SOLUTIONS.items():
             with self.subTest(mission_id=mission_id):
                 result = validate_mission(mission_id, code)
@@ -188,6 +212,8 @@ class ValidatorTests(unittest.TestCase):
             4: {"for", "range", "loop variable", "indentation", "print", "string sequence", "variable update", "addition"},
             5: {"list", "brackets", "items", "commas", "index", "zero based index", "append", "number", "for", "item", "indentation", "len", "print"},
             6: {"def", "function", "call", "indentation", "print", "parameter", "parameters", "string concatenation", "return", "addition", "multiplication"},
+            7: {"dictionary", "keys", "values", "assignment", "print", "key access", "brackets", "key assignment", "number", "get", "fallback"},
+            8: {"while", "condition", "comparison", "variable update", "indentation", "print", "subtraction", "accumulator", "addition", "step", "list", "index", "len"},
         }
 
         for mission in MISSIONS:

@@ -93,6 +93,30 @@ LESSONS: tuple[Lesson, ...] = (
             "Return values with return",
         ),
     ),
+    Lesson(
+        id="lesson_007",
+        title="Dictionaries",
+        block=7,
+        missions_range="31-35",
+        intro_title="Dictionaries",
+        goals=(
+            "Create dictionaries with keys and values",
+            "Read, add, and update values by key",
+            "Use get() when a key may be missing",
+        ),
+    ),
+    Lesson(
+        id="lesson_008",
+        title="While Loops",
+        block=8,
+        missions_range="36-40",
+        intro_title="While Loops",
+        goals=(
+            "Repeat while a condition remains true",
+            "Control counters, countdowns, and custom steps",
+            "Use an index to traverse a list",
+        ),
+    ),
 )
 
 

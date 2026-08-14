@@ -1,0 +1,161 @@
+
+Path                                                        LineNumber Line
+----                                                        ---------- ----
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         291     title: "Preparação do Bloco 01",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         298         title: "O que é Python?",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         299         text: "Python é uma linguagem de programação. Você escreve instruções, e o computador executa uma por uma.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         304         title: "Instruções",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         305         text: "Uma instrução é uma ordem pequena. O computador não adivinha intenção. Ele segue exatamente o que foi escrito.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         306         retryText: "Uma linha de código pode ser como uma ordem: faça isso agora. Se a ordem estiver errada, o resultado também sai errado.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         310         question: "Python é usado para:",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         312           { label: "A", text: "escrever instruções para o computador", correct: true },
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         314           { label: "C", text: "ligar cabos físicos", correct: false },
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         316         successText: "Certo. Python permite escrever instruções para o computador executar.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         317         failText: "Quase. Python não é decoração nem cabo físico. É uma linguagem para escrever instruções.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         322         text: "Quando queremos que Python trate algo como texto, normalmente usamos aspas. As aspas dizem: isto é uma mensagem.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         328         text: "Uma das primeiras ideias é pedir que o programa mostre uma mensagem. Em Python, print é o comando básico para isso.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         329         retryText: "print é uma forma simples de enviar uma mensagem para o console. Ele ajuda você a ver o resultado do programa.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         335     title: "Preparação do Bloco 02",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         336     subtitle: "Variáveis e valores",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         342         title: "Guardar informação",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         343         text: "Uma variável é um nome que guarda um valor. Você usa esse nome depois para recuperar a informação.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         344         retryText: "Imagine uma etiqueta em uma caixa. A etiqueta é o nome da variável. O que está dentro é o valor.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         348         title: "Atribuição",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         349         text: "Em Python, o sinal de igual coloca um valor dentro de um nome. Isso se chama atribuição.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         350         retryText: "Quando você escreve nome = valor, está dizendo: guarde este valor neste nome.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         354         question: "Em uma variável, o sinal = significa:",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         361         failText: "Ainda não. Aqui o igual serve para guardar um valor em uma variável.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         366         text: "Depois que uma variável existe, você pode usar o nome dela em comandos. O Python busca o valor guardado.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         367         retryText: "Você não precisa repetir o valor toda hora. Use o nome da variável, e Python pega o valor dela.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         373     title: "Preparação do Bloco 03",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         374     subtitle: "Decisões",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         380         title: "Condição",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         381         text: "Uma condição é uma pergunta com resposta verdadeira ou falsa. Programas usam isso para escolher caminhos.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         382         retryText: "Pense em uma porta: se a condição for verdadeira, o programa entra. Se for falsa, ele segue outro caminho.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         387         text: "O if executa um bloco apenas quando a condição é verdadeira. A indentação mostra o que pertence a esse bloco.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         394           { label: "A", text: "tomar uma decisão no programa", correct: true },
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         399         failText: "Quase. O if não muda o visual. Ele decide se um bloco deve executar.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         403         title: "Comparações",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         404         text: "Comparações como maior que, menor que ou igual a geram respostas verdadeiras ou falsas.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         405         retryText: "Comparar é perguntar: isto é maior? isto é igual? A resposta ajuda o programa a decidir.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         411     title: "Preparação do Bloco 04",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         412     subtitle: "Repetições",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         418         title: "Repetir ações",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         419         text: "Programas muitas vezes precisam repetir uma ação. Loops evitam copiar a mesma linha várias vezes.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         420         retryText: "Quando uma tarefa se repete, um loop ajuda o computador a fazer isso em sequência.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         425         text: "O for percorre uma sequência. A cada volta, ele trabalha com um item ou número da sequência.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         426         retryText: "Pense no for como uma esteira: cada item passa uma vez, e o bloco de código roda para ele.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         432           { label: "A", text: "repetir ações sem copiar código", correct: true },
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         434           { label: "C", text: "mudar o nome do usuário", correct: false },
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         436         successText: "Certo. Loops repetem ações de forma organizada.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         437         failText: "Ainda não. Loop é sobre repetição de código, não sobre interface.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         441         title: "Indentação",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         443         retryText: "A indentação é o recuo no começo da linha. Ela marca o bloco que fica dentro do loop.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         449     title: "Preparação do Bloco 05",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         456         title: "Vários valores",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         457         text: "Uma lista guarda vários valores em uma ordem. Cada valor é um item.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         458         retryText: "Lista é como uma prateleira: vários itens ficam juntos, cada um em uma posição.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         462         title: "Posição",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         463         text: "Itens de lista têm posição. Em Python, a primeira posição costuma ser zero.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         464         retryText: "O primeiro item fica na posição 0, o segundo na posição 1, e assim por diante.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         470           { label: "A", text: "guardar vários valores em ordem", correct: true },
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         474         successText: "Certo. Listas organizam vários valores.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         475         failText: "Quase. Lista é uma estrutura para guardar vários valores.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         481     title: "Preparação do Bloco 06",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         482     subtitle: "Funções",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         488         title: "Código com nome",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         489         text: "Uma função é um bloco de código com nome. Você cria uma vez e chama quando precisar.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         490         retryText: "Função é como uma ferramenta: tem um nome e executa uma tarefa quando você chama.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         494         title: "Organização",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         495         text: "Funções ajudam a evitar repetição e deixam o programa mais organizado.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         496         retryText: "Quando uma tarefa aparece muitas vezes, colocar essa tarefa em uma função deixa tudo mais limpo.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         500         question: "Uma função ajuda a:",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         502           { label: "A", text: "organizar e reutilizar código", correct: true },
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         506         successText: "Certo. Funções organizam tarefas reutilizáveis.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         507         failText: "Ainda não. Função é sobre organizar código com nome.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         518     description: "Primeiro passo: faça o programa escrever uma mensagem no console.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         526           text: "Primeiro passo: faça o programa escrever uma mensagem no console.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         541     description: "Variáveis guardam valores para você usar depois.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         545     help: 'Depois de criar a variável, use print(name). Não coloque name entre aspas no print.',
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         551     description: "Python consegue fazer contas simples direto no código.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         555     help: "Você pode usar print(a + b) depois de criar as variáveis.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         561     description: "O if executa um bloco de código apenas quando uma condição é verdadeira.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         571     description: "O for repete comandos para uma sequência de valores.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         581     description: "Listas guardam vários valores em ordem.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         585     help: "O primeiro item é índice 0. O segundo item é items[1].",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         601     description: "Funções guardam uma pequena tarefa para reutilizar depois.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         615     help: "Use print(is_ready). Em Python, True começa com T maiúsculo.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         621     description: "Strings têm métodos que transformam texto.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         622     objective: 'Transforme "mompy" em letras maiúsculas.',
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         641     description: "Dicionários guardam valores com nomes de chave.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         642     objective: 'Crie um dicionário com name = "Mompy" e mostre esse valor.',
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         651     description: "while repete enquanto uma condição continuar verdadeira.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         661     description: "f-strings colocam variáveis dentro de textos.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         671     description: "Comparações retornam True ou False.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         672     objective: "Mostre se 10 é maior que 3.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         681     description: "O operador % mostra o resto de uma divisão.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         701     description: "Uma função pode devolver um resultado com return.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         705     help: "A função deve retornar a + b. Depois use print(add(2, 3)).",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         721     description: "Você já consegue combinar loop, texto e método de string.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         722     objective: 'Mostre as letras de "py" em maiúsculas, uma por linha.',
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js         839   '>>> nome = input("Qual é o seu primeiro nome? ")',
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        1420       outputMessage: "Progresso resetado. Missão 01 carregada.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        1553   ["Missão concluída.", "Avançar?"].forEach((line) => {
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        1569   nextButton.textContent = "Próxima missão";
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        1649         label: "Não entendi",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        1676         label: "Não entendi",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        1770     title: "Preparação concluída",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        1772       "Preparação concluída.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2313     title: "Começar do zero",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2314     body: "<p>Você já tem progresso salvo.<br>Deseja começar do zero?</p>",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2324         label: "Começar do zero",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2429   return `Mompy: ${mission.objective}\nAtalho: Ctrl+Enter também executa.`;
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2585     "Ainda não foi dessa vez.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2586     "Verifique o objetivo da missão e tente novamente.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2603   output.textContent = "Missão reiniciada. Tente novamente.";
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2616       "Todas as missões disponíveis foram concluídas.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2617       "Novas missões serão adicionadas em breve.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2650       output: "Nenhum código para executar.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2651       detail: mission.help || "Escreva o código pedido no editor.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2661         ? backendValidation.message || "Missão concluída."
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2669     output: printed || "Ainda não foi dessa vez.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2670     detail: "Abra o Mompy pelo Python para usar a validação real das missões.",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2682   output.textContent = "Executando validação...";
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2752     output.textContent = "Mompy: Você já está na primeira missão.";
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2757     title: "Voltar missão",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2758     body: "<p>Tem certeza que deseja voltar para a missão anterior?</p>",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2790     title: "Ajuda da missão",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2827     return "Não verificado";
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2831     return "Verificação indisponível";
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2835     return `Nova versão ${updateStatusCache.latest_version}`;
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2852         <h3>Áudio</h3>
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2854           <span>Música ambiente</span>
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2859         <div class="settings-row"><span>Volume da música</span>${settingMeter("musicVolume")}</div>
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2873           <span>Animações do Mompy</span>
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2883           <span>Missões concluídas</span>
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2887           <span>Missão atual</span>
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2899           <span>Usuário atual</span>
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2903           <span>Sessão</span>
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2904           <button id="logoutUserButton" class="settings-inline-button" type="button">Sair do usuário</button>
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2909         <h3>Atualizações</h3>
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        2911           <span>Versão instalada</span>
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        3015     title: "Configurações",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        3050     title: "Sair do usuário",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        3051     body: "<p>Deseja sair deste usuário?</p>",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        3058         label: "Sair do usuário",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        3073     body: "<p>Tem certeza que deseja resetar o progresso das missões?</p>",
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        3099   console.log("Sair do usuário atual");
+C:\END0-SYM\project\mompy project\mompy\frontend\js\app.js        3136     const message = `Mompy: Não consegui alterar a tela cheia.\n${error.message}`;
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html         49             <div class="level-panel" aria-label="Nível atual">
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html         58               <button id="settingsButton" class="top-icon-button" type="button" aria-label="Configurações">
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html        108             <section class="start-stats-bar" aria-label="Informações do usuário">
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html        165                 <label class="onboarding-label" for="onboardingNameInput">Qual é o seu primeiro nome?</label>
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html        193                 <p>Missão concluída.</p>
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html        194                 <p>Avançar?</p>
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html        198                 <button id="nextMissionButton" type="button">Próxima missão</button>
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html        203           <section class="mission-panel" aria-label="Missão atual">
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html        208                 Primeiro passo: faça o programa escrever uma mensagem no console.
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html        217           <section class="editor-panel" aria-label="Editor de código">
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html        220               <div class="editor-actions" aria-label="Ações do editor">
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html        234                 aria-label="Editor de código Python"
+C:\END0-SYM\project\mompy project\mompy\frontend\index.html        242             <pre id="outputConsole" aria-live="polite">Mompy pronto. Escreva o código e clique em Run.</pre>

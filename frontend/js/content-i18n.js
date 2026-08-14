@@ -34,7 +34,17 @@ window.MOMPY_CONTENT_I18N = {
       mission_027: ["Missão 27 — Parâmetro", "Envie um valor para dentro de uma função.", "Crie greet(user) e chame com \"Mompy\" para mostrar Hello, Mompy.", "Use print(\"Hello, \" + user) dentro da função e depois greet(\"Mompy\")."],
       mission_028: ["Missão 28 — Return", "Faça uma função devolver o resultado de uma operação.", "Crie add(a, b), retorne a + b e mostre add(2, 3).", "A função deve usar return a + b. Depois use print(add(2, 3))."],
       mission_029: ["Missão 29 — Retornar texto", "Monte e devolva uma mensagem a partir de um parâmetro.", "Crie make_message(user) e mostre Hello, Mackson.", "Retorne \"Hello, \" + user e depois use print(make_message(\"Mackson\"))."],
-      mission_030: ["Missão 30 — Resultado da função", "Funções ajudam a organizar uma pequena regra sob um nome.", "Crie double(n), retorne n * 2 e mostre double(4).", "Use return n * 2 dentro da função. Depois use print(double(4))."]
+      mission_030: ["Missão 30 — Resultado da função", "Funções ajudam a organizar uma pequena regra sob um nome.", "Crie double(n), retorne n * 2 e mostre double(4).", "Use return n * 2 dentro da função. Depois use print(double(4))."],
+      mission_031: ["Missão 31 — Criar dicionário", "Dicionários organizam informações usando chaves e valores.", "Crie profile com name igual a Mompy e level igual a 1. Depois mostre profile.", "Use chaves para criar o dicionário e mantenha name antes de level."],
+      mission_032: ["Missão 32 — Ler uma chave", "Acesse um valor usando o nome da chave.", "Mostre o valor guardado na chave name de profile.", "Use print(profile[\"name\"])."],
+      mission_033: ["Missão 33 — Adicionar uma chave", "Um dicionário pode receber novas informações depois de ser criado.", "Adicione language com o valor Python e mostre esse valor.", "Use profile[\"language\"] = \"Python\" e depois mostre essa chave."],
+      mission_034: ["Missão 34 — Atualizar um valor", "Atribuir novamente a uma chave altera apenas aquele valor.", "Mude level de 1 para 2 e mostre o novo valor.", "Use profile[\"level\"] = 2 antes de print(profile[\"level\"])."],
+      mission_035: ["Missão 35 — Valor padrão", "O método get pode devolver um valor seguro quando a chave não existe.", "Use get para ler mode com o valor padrão offline e mostre o resultado.", "Use print(profile.get(\"mode\", \"offline\"))."],
+      mission_036: ["Missão 36 — Contador com while", "O while repete enquanto sua condição for verdadeira.", "Use while para mostrar 1, 2 e 3.", "Comece em 1, use count <= 3 e aumente count dentro do laço."],
+      mission_037: ["Missão 37 — Contagem regressiva", "Um contador também pode diminuir a cada repetição.", "Use while para mostrar 3, 2 e 1.", "Comece em 3, repita enquanto count > 0 e diminua count."],
+      mission_038: ["Missão 38 — Acumulador", "Atualize um total enquanto percorre uma sequência.", "Some os números de 1 a 4 com while e mostre 10.", "Mantenha total e count. Some count ao total e aumente count em cada repetição."],
+      mission_039: ["Missão 39 — Passos de dois", "O valor de controle não precisa mudar de um em um.", "Use while para mostrar 0, 2 e 4.", "Comece em 0, repita enquanto number <= 4 e use number += 2."],
+      mission_040: ["Missão 40 — Percorrer lista com while", "Um índice permite visitar cada posição de uma lista.", "Mostre learn, practice e build usando while.", "Comece index em 0, compare com len(steps), mostre steps[index] e aumente index."]
     },
     briefings: {
       briefing_001: {
@@ -88,6 +98,22 @@ window.MOMPY_CONTENT_I18N = {
           ["Código com nome", "Uma função é um bloco de código com um nome. Você o cria uma vez e chama sempre que precisar.", "Uma função é como uma ferramenta: tem um nome e realiza uma tarefa quando você a chama."],
           ["Organização", "Funções ajudam a evitar repetição e deixam o programa mais organizado.", "Quando uma tarefa aparece muitas vezes, colocá-la em uma função deixa tudo mais limpo."],
           { question: "Uma função ajuda você a:", options: ["organizar e reutilizar código", "criar uma nova imagem", "instalar Python sozinha"], successText: "Correto. Funções organizam tarefas reutilizáveis.", failText: "Ainda não. Uma função serve para organizar código sob um nome." }
+        ]
+      },
+      briefing_007: {
+        title: "Apresentação do bloco 07", subtitle: "Dicionários",
+        steps: [
+          ["Chaves e valores", "Um dicionário conecta cada chave a um valor. Ele é útil para dados com nomes, como o nome e o nível de um perfil.", "Pense em gavetas etiquetadas: a chave é a etiqueta e o valor é o que está guardado."],
+          ["Ler e atualizar", "Use colchetes com uma chave para ler ou alterar um valor sem substituir o dicionário inteiro.", "profile[\"name\"] lê o nome. profile[\"level\"] = 2 muda somente o nível."],
+          { question: "Um dicionário é especialmente útil para:", options: ["conectar chaves nomeadas a valores", "repetir um bloco para sempre", "desenhar diretamente na tela"], successText: "Correto. Dicionários organizam valores sob chaves significativas.", failText: "Ainda não. Dicionários conectam chaves, como name, aos seus valores." }
+        ]
+      },
+      briefing_008: {
+        title: "Apresentação do bloco 08", subtitle: "Laços while",
+        steps: [
+          ["Repetir enquanto for verdadeiro", "Um laço while repete seu bloco indentado enquanto a condição continuar verdadeira.", "Leia while como: continue fazendo isto enquanto a condição disser sim."],
+          ["Avançar até o fim", "O laço precisa atualizar o valor usado pela condição. Esse avanço faz a condição se tornar falsa no momento certo.", "Se um contador nunca muda, o laço pode nunca terminar. Atualize-o dentro do laço."],
+          { question: "O que ajuda um while com contador a terminar?", options: ["atualizar o contador dentro do laço", "adicionar mais aspas", "renomear a janela"], successText: "Correto. Atualizar o contador leva a condição até o valor falso.", failText: "Quase. Um laço com contador precisa atualizar esse contador para conseguir terminar." }
         ]
       }
     }

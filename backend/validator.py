@@ -6,7 +6,7 @@ import ast
 from dataclasses import dataclass
 from typing import Callable
 
-from .code_runner import run_user_code_safely
+from .code_runner import preflight_user_code, run_user_code_safely
 from .missions import MISSIONS_BY_ID
 
 
@@ -164,6 +164,61 @@ def _contains_literal(node: ast.AST | None, expected: object) -> bool:
     return bool(
         node
         and any(_literal_is(child, expected) for child in ast.walk(node))
+    )
+
+
+def _is_named_subscript(node: ast.AST | None, names: set[str], key: object) -> bool:
+    return bool(
+        isinstance(node, ast.Subscript)
+        and isinstance(node.value, ast.Name)
+        and node.value.id in names
+        and _literal_is(node.slice, key)
+    )
+
+
+def _updates_name(
+    node: ast.AST,
+    name: str,
+    amount: int,
+    operation: type[ast.operator],
+) -> bool:
+    for update in ast.walk(node):
+        if (
+            isinstance(update, ast.AugAssign)
+            and isinstance(update.target, ast.Name)
+            and update.target.id == name
+            and isinstance(update.op, operation)
+            and _literal_is(update.value, amount)
+        ):
+            return True
+        if not isinstance(update, ast.Assign) or not isinstance(update.value, ast.BinOp):
+            continue
+        targets = set().union(*(_name_targets(target) for target in update.targets))
+        if (
+            name in targets
+            and isinstance(update.value.op, operation)
+            and _contains_name(update.value, name)
+            and _contains_literal(update.value, amount)
+        ):
+            return True
+    return False
+
+
+def _while_compares(
+    statement: ast.While,
+    name: str,
+    operator: type[ast.cmpop],
+    value: int,
+) -> bool:
+    return any(
+        isinstance(compare, ast.Compare)
+        and isinstance(compare.left, ast.Name)
+        and compare.left.id == name
+        and len(compare.ops) == 1
+        and isinstance(compare.ops[0], operator)
+        and len(compare.comparators) == 1
+        and _literal_is(compare.comparators[0], value)
+        for compare in ast.walk(statement.test)
     )
 
 
@@ -908,6 +963,254 @@ def _mission_030(code: str) -> ValidationResult:
     )
 
 
+def _mission_031(code: str) -> ValidationResult:
+    tree = _tree(code)
+    names = _assigned_names(tree, {"name": "Mompy", "level": 1})
+    if names and _print_uses_name(tree, names):
+        return _ok("mission_031")
+    return _fail(
+        "mission_031",
+        'Store both "name" and "level" in one dictionary variable, then print that variable.',
+        user_code=code,
+        line=_first_line(tree, (ast.Dict, ast.Assign, ast.Call)),
+    )
+
+
+def _mission_032(code: str) -> ValidationResult:
+    tree = _tree(code)
+    names = _assigned_names(tree, {"name": "Mompy", "level": 1})
+    if any(
+        _is_named_subscript(argument, names, "name")
+        for call in _print_calls(tree)
+        for argument in call.args
+    ):
+        return _ok("mission_032")
+    return _fail(
+        "mission_032",
+        'Read the "name" key from the profile dictionary with brackets and print it.',
+        user_code=code,
+        line=_first_line(tree, (ast.Subscript, ast.Dict, ast.Call)),
+    )
+
+
+def _mission_033(code: str) -> ValidationResult:
+    tree = _tree(code)
+    names = _assigned_names(tree, {"name": "Mompy"})
+    changed = {
+        target.value.id
+        for statement in ast.walk(tree)
+        if isinstance(statement, ast.Assign) and _literal_is(statement.value, "Python")
+        for target in statement.targets
+        if _is_named_subscript(target, names, "language")
+        and isinstance(target.value, ast.Name)
+    }
+    if changed and any(
+        _is_named_subscript(argument, changed, "language")
+        for call in _print_calls(tree)
+        for argument in call.args
+    ):
+        return _ok("mission_033")
+    return _fail(
+        "mission_033",
+        'Assign "Python" to the new "language" key, then print that key from the same dictionary.',
+        user_code=code,
+        line=_first_line(tree, (ast.Subscript, ast.Assign, ast.Call)),
+    )
+
+
+def _mission_034(code: str) -> ValidationResult:
+    tree = _tree(code)
+    names = _assigned_names(tree, {"level": 1})
+    changed = {
+        target.value.id
+        for statement in ast.walk(tree)
+        if isinstance(statement, ast.Assign) and _literal_is(statement.value, 2)
+        for target in statement.targets
+        if _is_named_subscript(target, names, "level")
+        and isinstance(target.value, ast.Name)
+    }
+    if changed and any(
+        _is_named_subscript(argument, changed, "level")
+        for call in _print_calls(tree)
+        for argument in call.args
+    ):
+        return _ok("mission_034")
+    return _fail(
+        "mission_034",
+        'Assign 2 to the existing "level" key, then print the updated value.',
+        user_code=code,
+        line=_first_line(tree, (ast.Subscript, ast.Assign, ast.Call)),
+    )
+
+
+def _mission_035(code: str) -> ValidationResult:
+    tree = _tree(code)
+    names = _assigned_names(tree, {"name": "Mompy"})
+    get_calls = [
+        call
+        for call in ast.walk(tree)
+        if isinstance(call, ast.Call)
+        and isinstance(call.func, ast.Attribute)
+        and call.func.attr == "get"
+        and isinstance(call.func.value, ast.Name)
+        and call.func.value.id in names
+        and len(call.args) == 2
+        and _literal_is(call.args[0], "mode")
+        and _literal_is(call.args[1], "offline")
+    ]
+    directly_printed = any(
+        any(argument is get_call for argument in print_call.args)
+        for get_call in get_calls
+        for print_call in _print_calls(tree)
+    )
+    result_names = {
+        name
+        for name, value, _line in _assignments(tree)
+        if any(value is get_call for get_call in get_calls)
+    }
+    if directly_printed or (result_names and _print_uses_name(tree, result_names)):
+        return _ok("mission_035")
+    return _fail(
+        "mission_035",
+        'Call profile.get("mode", "offline") and print the value it returns.',
+        user_code=code,
+        line=_first_line(tree, (ast.Attribute, ast.Call, ast.Dict)),
+    )
+
+
+def _mission_036(code: str) -> ValidationResult:
+    tree = _tree(code)
+    names = _assigned_names(tree, 1)
+    for statement in (node for node in ast.walk(tree) if isinstance(node, ast.While)):
+        for name in names:
+            if (
+                _while_compares(statement, name, ast.LtE, 3)
+                and _print_uses_name(statement, {name})
+                and _updates_name(statement, name, 1, ast.Add)
+            ):
+                return _ok("mission_036")
+    return _fail(
+        "mission_036",
+        "Start a counter at 1, repeat while it is <= 3, print it, and increase it by 1.",
+        user_code=code,
+        line=_first_line(tree, (ast.While, ast.Compare, ast.AugAssign, ast.Assign)),
+    )
+
+
+def _mission_037(code: str) -> ValidationResult:
+    tree = _tree(code)
+    names = _assigned_names(tree, 3)
+    for statement in (node for node in ast.walk(tree) if isinstance(node, ast.While)):
+        for name in names:
+            if (
+                _while_compares(statement, name, ast.Gt, 0)
+                and _print_uses_name(statement, {name})
+                and _updates_name(statement, name, 1, ast.Sub)
+            ):
+                return _ok("mission_037")
+    return _fail(
+        "mission_037",
+        "Start at 3, repeat while the counter is > 0, print it, and decrease it by 1.",
+        user_code=code,
+        line=_first_line(tree, (ast.While, ast.Compare, ast.AugAssign, ast.Assign)),
+    )
+
+
+def _mission_038(code: str) -> ValidationResult:
+    tree = _tree(code)
+    total_names = _assigned_names(tree, 0)
+    count_names = _assigned_names(tree, 1)
+    for statement in (node for node in ast.walk(tree) if isinstance(node, ast.While)):
+        for count_name in count_names:
+            if not _while_compares(statement, count_name, ast.LtE, 4):
+                continue
+            if not _updates_name(statement, count_name, 1, ast.Add):
+                continue
+            for total_name in total_names:
+                adds_counter = any(
+                    isinstance(update, ast.AugAssign)
+                    and isinstance(update.target, ast.Name)
+                    and update.target.id == total_name
+                    and isinstance(update.op, ast.Add)
+                    and _contains_name(update.value, count_name)
+                    for update in ast.walk(statement)
+                ) or any(
+                    isinstance(update, ast.Assign)
+                    and total_name in set().union(*(_name_targets(target) for target in update.targets))
+                    and isinstance(update.value, ast.BinOp)
+                    and isinstance(update.value.op, ast.Add)
+                    and _contains_name(update.value, total_name)
+                    and _contains_name(update.value, count_name)
+                    for update in ast.walk(statement)
+                )
+                if adds_counter and _print_uses_name(tree, {total_name}):
+                    return _ok("mission_038")
+    return _fail(
+        "mission_038",
+        "Use a while counter from 1 through 4, add each counter value to total, then print total.",
+        user_code=code,
+        line=_first_line(tree, (ast.While, ast.AugAssign, ast.Assign, ast.Call)),
+    )
+
+
+def _mission_039(code: str) -> ValidationResult:
+    tree = _tree(code)
+    names = _assigned_names(tree, 0)
+    for statement in (node for node in ast.walk(tree) if isinstance(node, ast.While)):
+        for name in names:
+            if (
+                _while_compares(statement, name, ast.LtE, 4)
+                and _print_uses_name(statement, {name})
+                and _updates_name(statement, name, 2, ast.Add)
+            ):
+                return _ok("mission_039")
+    return _fail(
+        "mission_039",
+        "Start at 0, repeat while the number is <= 4, print it, and increase it by 2.",
+        user_code=code,
+        line=_first_line(tree, (ast.While, ast.Compare, ast.AugAssign, ast.Assign)),
+    )
+
+
+def _mission_040(code: str) -> ValidationResult:
+    tree = _tree(code)
+    list_names = _assigned_names(tree, ["learn", "practice", "build"])
+    index_names = _assigned_names(tree, 0)
+    for statement in (node for node in ast.walk(tree) if isinstance(node, ast.While)):
+        for index_name in index_names:
+            compares_length = any(
+                isinstance(compare, ast.Compare)
+                and isinstance(compare.left, ast.Name)
+                and compare.left.id == index_name
+                and len(compare.ops) == 1
+                and isinstance(compare.ops[0], ast.Lt)
+                and len(compare.comparators) == 1
+                and isinstance(compare.comparators[0], ast.Call)
+                and _call_name(compare.comparators[0]) == "len"
+                and len(compare.comparators[0].args) == 1
+                and isinstance(compare.comparators[0].args[0], ast.Name)
+                and compare.comparators[0].args[0].id in list_names
+                for compare in ast.walk(statement.test)
+            )
+            prints_item = any(
+                isinstance(argument, ast.Subscript)
+                and isinstance(argument.value, ast.Name)
+                and argument.value.id in list_names
+                and isinstance(argument.slice, ast.Name)
+                and argument.slice.id == index_name
+                for call in _print_calls(statement)
+                for argument in call.args
+            )
+            if compares_length and prints_item and _updates_name(statement, index_name, 1, ast.Add):
+                return _ok("mission_040")
+    return _fail(
+        "mission_040",
+        "Use an index starting at 0, loop while it is below len(steps), print steps[index], and increase the index.",
+        user_code=code,
+        line=_first_line(tree, (ast.While, ast.Subscript, ast.Call, ast.Assign)),
+    )
+
+
 VALIDATORS: dict[str, Callable[[str], ValidationResult]] = {
     "mission_001": _simple_print("mission_001", "Hello, Mompy!"),
     "mission_002": _simple_print("mission_002", "Python"),
@@ -939,6 +1242,16 @@ VALIDATORS: dict[str, Callable[[str], ValidationResult]] = {
     "mission_028": _mission_028,
     "mission_029": _mission_029,
     "mission_030": _mission_030,
+    "mission_031": _mission_031,
+    "mission_032": _mission_032,
+    "mission_033": _mission_033,
+    "mission_034": _mission_034,
+    "mission_035": _mission_035,
+    "mission_036": _mission_036,
+    "mission_037": _mission_037,
+    "mission_038": _mission_038,
+    "mission_039": _mission_039,
+    "mission_040": _mission_040,
 }
 
 
@@ -963,9 +1276,9 @@ def validate_mission(mission_id: str, user_code: str) -> dict:
             expected_output=mission.expected_output,
         ).to_dict()
 
-    execution = run_user_code_safely(user_code)
-    if not execution.get("ok"):
-        return _with_execution(_fail(mission_id), mission_id, user_code, execution).to_dict()
+    preflight = preflight_user_code(user_code)
+    if not preflight.get("ok"):
+        return _with_execution(_fail(mission_id), mission_id, user_code, preflight).to_dict()
 
     structure_result = validator(user_code)
     if not structure_result.correct:
@@ -975,7 +1288,10 @@ def validate_mission(mission_id: str, user_code: str) -> dict:
             hints=structure_result.hints,
             diagnostics=structure_result.diagnostics,
             expected_output=mission.expected_output,
-            actual_output=str(execution.get("output", "")),
         ).to_dict()
+
+    execution = run_user_code_safely(user_code)
+    if not execution.get("ok"):
+        return _with_execution(_fail(mission_id), mission_id, user_code, execution).to_dict()
 
     return _with_execution(structure_result, mission_id, user_code, execution).to_dict()

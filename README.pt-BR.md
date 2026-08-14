@@ -31,9 +31,9 @@
 
 Baixe a versão oficial mais recente na página de [GitHub Releases](https://github.com/hepter-studios/mompy/releases).
 
-- [Mompy v0.1.2](https://github.com/hepter-studios/mompy/releases/tag/v0.1.2)
-- [Instalador Windows](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/MompySetup-v0.1.2.exe)
-- [Versão portátil Windows x64](https://github.com/hepter-studios/mompy/releases/download/v0.1.2/Mompy-windows-x64.zip)
+- [Mompy v0.1.3](https://github.com/hepter-studios/mompy/releases/tag/v0.1.3)
+- [Instalador Windows](https://github.com/hepter-studios/mompy/releases/download/v0.1.3/MompySetup-v0.1.3.exe)
+- [Versão portátil Windows x64](https://github.com/hepter-studios/mompy/releases/download/v0.1.3/Mompy-windows-x64.zip)
 
 Já tem o Mompy instalado? Baixe e execute o instalador Windows mais recente em Releases. Ele substitui o app mantendo perfil e progresso locais. Quem usa a versão portátil pode baixar o zip novo e substituir a pasta extraída.
 

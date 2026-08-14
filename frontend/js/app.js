@@ -1,9 +1,16 @@
 const ASSETS = {
-  idle: "./assets/mompy_idle.png",
+  idle: "./assets/mompy_idle.png?v=2",
+  side: "./assets/mompy_look_side.png",
+  front: "./assets/mompy_front.png?v=5",
+  gazeTransition: "./assets/mompy_gaze_transition.png?v=1",
+  frontBlink: "./assets/mompy_front_blink.png?v=1",
+  achievements: "./assets/mompy_achievements.png?v=1",
+  settings: "./assets/mompy_settings.png?v=1",
   talk1: "./assets/mompy_talk_1.png",
   talk2: "./assets/mompy_talk_2.png",
   success: "./assets/mompy_happy.png",
   error: "./assets/mompy_sad.png",
+  celebrate: "./assets/mompy_celebrate.png",
   blank: "./assets/desligando5.png",
   shutdown: "./assets/desligando5.png",
   shutdown2: "./assets/desligando2.png",
@@ -17,13 +24,30 @@ const ASSETS = {
   ambientLoop: "./assets/audio/mompy_crt_ambient_loop_minimal.wav",
 };
 
+const MOMPY_GAZE_TRANSITION_MS = 165;
+const MOMPY_FRONT_BLINK_MS = 135;
+const MOMPY_FRONT_BLINK_MIN_MS = 4200;
+const MOMPY_FRONT_BLINK_MAX_MS = 8200;
+const MOMPY_FIRST_FORWARD_MIN_MS = 1800;
+const MOMPY_FIRST_FORWARD_MAX_MS = 3000;
+const MOMPY_SIDE_GAZE_MIN_MS = 9000;
+const MOMPY_SIDE_GAZE_MAX_MS = 16000;
+const MOMPY_FORWARD_GAZE_MIN_MS = 30000;
+const MOMPY_FORWARD_GAZE_MAX_MS = 60000;
+const MOMPY_TYPING_PAUSE_MS = 2600;
+const mompyAmbientPreloads = [ASSETS.side, ASSETS.front, ASSETS.gazeTransition, ASSETS.frontBlink].map((source) => {
+  const image = new Image();
+  image.src = source;
+  return image;
+});
+
 const USER_PROFILE_KEY = "mompy_user_profile_v1";
 const PROGRESS_KEY = "mompy_progress_v1";
 const BRIEFING_PROGRESS_KEY = "mompy_briefing_progress_v1";
 const LANGUAGE_KEY = "mompy_language_v1";
 const DEFAULT_USER_NAME = "Guest";
-const PLANNED_TOTAL_MISSIONS = 30;
-const FALLBACK_APP_VERSION = "0.1.2";
+const PLANNED_TOTAL_MISSIONS = 40;
+const FALLBACK_APP_VERSION = "0.1.3";
 const SUPPORTED_LANGUAGES = ["en-US", "pt-BR"];
 
 const UI_TEXT = {
@@ -107,6 +131,141 @@ const UI_TEXT = {
     conceptsLoaded: "Concepts loaded.",
     goodLuck: "Good luck, trainee.",
     shortcutAlsoRuns: "Shortcut: Ctrl+Enter also runs.",
+    stars: "Stars",
+    streak: "Streak",
+    bestStreak: "Best streak",
+    xpEarned: "+{xp} XP",
+    blockComplete: "Block {block} complete · {stars}/{max} stars",
+    blockUnlocked: "Block {block} unlocked",
+    achievementUnlocked: "Achievement: {name}",
+    achievementFirstMission: "First mission",
+    achievementMissionFive: "Console warm-up",
+    achievementMissionTen: "Double digits",
+    achievementMissionThirty: "Deep circuit",
+    achievementPerfectMission: "Perfect start",
+    achievementStarCollector25: "Star cache",
+    achievementStarCollector60: "Bright archive",
+    achievementStarMaster100: "Centurion signal",
+    achievementFirstBlock: "First block",
+    achievementThreeBlocks: "Three blocks strong",
+    achievementSixBlocks: "Core curriculum",
+    achievementCleanStreak3: "Three-mission streak",
+    achievementCleanStreak5: "Focused run",
+    achievementCleanStreak10: "Unbroken circuit",
+    achievementHalfwayHero: "Halfway hero",
+    achievementPathComplete: "Python path complete",
+    achievementSteadyStart: "Return signal",
+    achievementThreeDaysOnline: "Three days online",
+    achievementInitialSequence: "Initial sequence",
+    achievementCodeWeek: "Code week",
+    achievementAlwaysOnWeek: "Always-on week",
+    achievementFrequentOperator: "Frequent operator",
+    achievementMonthOnConsole: "Month on the console",
+    achievementQuarterlySignal: "Quarterly signal",
+    achievementProgrammingSemester: "Programming semester",
+    achievementMompyCompanion: "Mompy's companion",
+    achievementReturningLearner: "Returning learner",
+    achievementDedicatedLearner: "Dedicated operator",
+    achievementVeteranLearner: "Mompy veteran",
+    achievementFirstMissionDescription: "Complete your first Python mission.",
+    achievementMissionFiveDescription: "Complete five missions.",
+    achievementMissionTenDescription: "Complete ten missions.",
+    achievementMissionThirtyDescription: "Complete thirty missions.",
+    achievementPerfectMissionDescription: "Earn three stars on a mission.",
+    achievementStarCollector25Description: "Collect twenty-five stars.",
+    achievementStarCollector60Description: "Collect sixty stars.",
+    achievementStarMaster100Description: "Collect one hundred stars.",
+    achievementFirstBlockDescription: "Complete every mission in the first block.",
+    achievementThreeBlocksDescription: "Complete blocks one through three.",
+    achievementSixBlocksDescription: "Complete blocks one through six.",
+    achievementCleanStreak3Description: "Complete three missions without a wrong attempt.",
+    achievementCleanStreak5Description: "Reach a clean streak of five missions.",
+    achievementCleanStreak10Description: "Reach a clean streak of ten missions.",
+    achievementHalfwayHeroDescription: "Complete half of the planned learning path.",
+    achievementPathCompleteDescription: "Complete the full Python mission path.",
+    achievementSteadyStartDescription: "Open Mompy on two different days.",
+    achievementThreeDaysOnlineDescription: "Open Mompy on three different days.",
+    achievementInitialSequenceDescription: "Open Mompy for three consecutive days.",
+    achievementCodeWeekDescription: "Open Mompy on seven different days.",
+    achievementAlwaysOnWeekDescription: "Open Mompy for seven consecutive days.",
+    achievementFrequentOperatorDescription: "Open Mompy on fourteen different days.",
+    achievementMonthOnConsoleDescription: "Open Mompy on thirty different days.",
+    achievementQuarterlySignalDescription: "Use Mompy in three different months.",
+    achievementProgrammingSemesterDescription: "Use Mompy in six different months.",
+    achievementMompyCompanionDescription: "Use Mompy in twelve different months.",
+    achievementReturningLearnerDescription: "Practice with Mompy on seven different days.",
+    achievementDedicatedLearnerDescription: "Practice with Mompy on fourteen different days.",
+    achievementVeteranLearnerDescription: "Practice with Mompy on thirty different days.",
+    achievements: "Achievements",
+    achievementsSummary: "{earned} of {total} unlocked",
+    achievementUnlockedStatus: "Unlocked",
+    achievementLockedStatus: "Locked",
+    achievementFilterAll: "All",
+    achievementFilterUnlocked: "Unlocked",
+    achievementFilterLocked: "Locked",
+    achievementVisibleSummary: "Showing {visible} of {total}",
+    viewAchievements: "View collection",
+    rarityCommon: "Common",
+    rarityUncommon: "Uncommon",
+    rarityRare: "Rare",
+    rarityEpic: "Epic",
+    rarityLegendary: "Legendary",
+    correctOutput: "Correct output:",
+    missionCompletedOutput: "Mission completed.",
+    missionNotComplete: "The mission is not complete yet",
+    checkMissionGoal: "Check the mission goal and try again.",
+    checkAttempt: "Check this attempt",
+    lineLocation: "Line {line}",
+    lineColumnLocation: "Line {line}, column {column}",
+    tryThis: "Try this:",
+    expected: "Expected:",
+    received: "Received:",
+    noOutput: "(no output)",
+    missionRestarted: "Mission restarted. Try again.",
+    allMissionsComplete: "All available missions are complete.",
+    newMissionsSoon: "New missions will be added soon.",
+    noCodeToRun: "No code to run.",
+    writeMissionCodeFirst: "Write the mission code first",
+    editorEmpty: "The editor does not contain any Python code yet.",
+    writeRequestedCode: "Write the requested code in the editor.",
+    notQuiteThisTime: "Not quite this time.",
+    backendValidationRequired: "Open Mompy through Python to use real mission validation.",
+    runningValidation: "Running validation...",
+    unexpectedValidationError: "Unexpected validation error:",
+    progressReset: "Progress reset.",
+    progressResetMissionLoaded: "Progress reset. Mission 01 loaded.",
+    firstMissionAlready: "Mompy: You're already on the first mission.",
+    exitingApp: "Mompy: Exiting app.",
+    fullscreenChangeError: "Mompy: Couldn't change fullscreen mode.",
+    diagnosticMissionRequirementTitle: "Check the mission requirement",
+    diagnosticMissionRequirementSummary: "One mission requirement is still missing.",
+    diagnosticOutputTitle: "The output does not match yet",
+    diagnosticOutputSummary: "Python ran the code successfully, but printed a different result.",
+    diagnosticOutputSuggestion: "Check the values and text passed to print().",
+    diagnosticSyntaxTitle: "Python could not read this line",
+    diagnosticSyntaxSummary: "Python found a syntax error on this line.",
+    diagnosticSyntaxSuggestion: "Check parentheses, quotes, colons, and indentation.",
+    diagnosticSafetyTitle: "This feature is not available in missions",
+    diagnosticSafetySummary: "This code uses a feature that is not available in this mission.",
+    diagnosticSafetySuggestion: "Use only the Python concepts introduced by the current learning block.",
+    diagnosticTimeoutTitle: "The program took too long",
+    diagnosticTimeoutSummary: "Mompy stopped the code so the application would remain responsive.",
+    diagnosticTimeoutSuggestion: "Check for a loop that never ends or reduce the repeated work.",
+    diagnosticRuntimeTitle: "Python stopped while running the code",
+    diagnosticRuntimeSummary: "Python found a problem while executing this line.",
+    diagnosticRuntimeSuggestion: "Check the highlighted line and the values used there.",
+    diagnosticNameErrorTitle: "Name not defined",
+    diagnosticNameErrorSummary: "Python could not find one of the names used on this line.",
+    diagnosticNameErrorSuggestion: "Check whether the variable was created and whether its name is spelled correctly.",
+    diagnosticTypeErrorTitle: "Incompatible value types",
+    diagnosticTypeErrorSummary: "Python could not use these values together in this operation.",
+    diagnosticTypeErrorSuggestion: "Check whether each value is text, a number, a list, or another expected type.",
+    diagnosticZeroDivisionTitle: "Division by zero",
+    diagnosticZeroDivisionSummary: "Python cannot divide a value by zero.",
+    diagnosticZeroDivisionSuggestion: "Make sure the divisor is different from zero before dividing.",
+    diagnosticIndexErrorTitle: "List position not found",
+    diagnosticIndexErrorSummary: "The requested position is outside the list.",
+    diagnosticIndexErrorSuggestion: "Check the list length and remember that indexes start at zero.",
   },
   "pt-BR": {
     loadingMompy: "Carregando o Mompy",
@@ -188,8 +347,179 @@ const UI_TEXT = {
     conceptsLoaded: "Conceitos carregados.",
     goodLuck: "Boa sorte, aprendiz.",
     shortcutAlsoRuns: "Atalho: Ctrl+Enter também executa.",
+    stars: "Estrelas",
+    streak: "Sequência",
+    bestStreak: "Melhor sequência",
+    xpEarned: "+{xp} XP",
+    blockComplete: "Bloco {block} concluído · {stars}/{max} estrelas",
+    blockUnlocked: "Bloco {block} desbloqueado",
+    achievementUnlocked: "Conquista: {name}",
+    achievementFirstMission: "Primeira missão",
+    achievementMissionFive: "Aquecimento do console",
+    achievementMissionTen: "Dois dígitos",
+    achievementMissionThirty: "Circuito profundo",
+    achievementPerfectMission: "Início perfeito",
+    achievementStarCollector25: "Reserva de estrelas",
+    achievementStarCollector60: "Arquivo brilhante",
+    achievementStarMaster100: "Sinal centenário",
+    achievementFirstBlock: "Primeiro bloco",
+    achievementThreeBlocks: "Três blocos firmes",
+    achievementSixBlocks: "Currículo essencial",
+    achievementCleanStreak3: "Sequência de três missões",
+    achievementCleanStreak5: "Ritmo focado",
+    achievementCleanStreak10: "Circuito ininterrupto",
+    achievementHalfwayHero: "Metade do caminho",
+    achievementPathComplete: "Jornada Python concluída",
+    achievementSteadyStart: "Sinal de Retorno",
+    achievementThreeDaysOnline: "Três Dias Online",
+    achievementInitialSequence: "Sequência Inicial",
+    achievementCodeWeek: "Semana de Código",
+    achievementAlwaysOnWeek: "Semana Sem Desligar",
+    achievementFrequentOperator: "Operador Frequente",
+    achievementMonthOnConsole: "Mês no Console",
+    achievementQuarterlySignal: "Sinal Trimestral",
+    achievementProgrammingSemester: "Semestre de Programação",
+    achievementMompyCompanion: "Companheiro do Mompy",
+    achievementReturningLearner: "Aprendiz constante",
+    achievementDedicatedLearner: "Operador dedicado",
+    achievementVeteranLearner: "Veterano do Mompy",
+    achievementFirstMissionDescription: "Conclua sua primeira missão de Python.",
+    achievementMissionFiveDescription: "Conclua cinco missões.",
+    achievementMissionTenDescription: "Conclua dez missões.",
+    achievementMissionThirtyDescription: "Conclua trinta missões.",
+    achievementPerfectMissionDescription: "Ganhe três estrelas em uma missão.",
+    achievementStarCollector25Description: "Colete vinte e cinco estrelas.",
+    achievementStarCollector60Description: "Colete sessenta estrelas.",
+    achievementStarMaster100Description: "Colete cem estrelas.",
+    achievementFirstBlockDescription: "Conclua todas as missões do primeiro bloco.",
+    achievementThreeBlocksDescription: "Conclua os blocos um a três.",
+    achievementSixBlocksDescription: "Conclua os blocos um a seis.",
+    achievementCleanStreak3Description: "Conclua três missões sem uma tentativa incorreta.",
+    achievementCleanStreak5Description: "Alcance uma sequência limpa de cinco missões.",
+    achievementCleanStreak10Description: "Alcance uma sequência limpa de dez missões.",
+    achievementHalfwayHeroDescription: "Conclua metade da jornada de aprendizado planejada.",
+    achievementPathCompleteDescription: "Conclua toda a jornada de missões de Python.",
+    achievementSteadyStartDescription: "Entre no Mompy em dois dias diferentes.",
+    achievementThreeDaysOnlineDescription: "Entre no Mompy em três dias diferentes.",
+    achievementInitialSequenceDescription: "Entre no Mompy durante três dias consecutivos.",
+    achievementCodeWeekDescription: "Entre no Mompy em sete dias diferentes.",
+    achievementAlwaysOnWeekDescription: "Entre no Mompy durante sete dias consecutivos.",
+    achievementFrequentOperatorDescription: "Entre no Mompy em quatorze dias diferentes.",
+    achievementMonthOnConsoleDescription: "Entre no Mompy em trinta dias diferentes.",
+    achievementQuarterlySignalDescription: "Use o Mompy em três meses diferentes.",
+    achievementProgrammingSemesterDescription: "Use o Mompy em seis meses diferentes.",
+    achievementMompyCompanionDescription: "Use o Mompy em doze meses diferentes.",
+    achievementReturningLearnerDescription: "Pratique com o Mompy em sete dias diferentes.",
+    achievementDedicatedLearnerDescription: "Pratique com o Mompy em quatorze dias diferentes.",
+    achievementVeteranLearnerDescription: "Pratique com o Mompy em trinta dias diferentes.",
+    achievements: "Conquistas",
+    achievementsSummary: "{earned} de {total} desbloqueadas",
+    achievementUnlockedStatus: "Desbloqueada",
+    achievementLockedStatus: "Bloqueada",
+    achievementFilterAll: "Todas",
+    achievementFilterUnlocked: "Desbloqueadas",
+    achievementFilterLocked: "Bloqueadas",
+    achievementVisibleSummary: "Mostrando {visible} de {total}",
+    viewAchievements: "Ver coleção",
+    rarityCommon: "Comum",
+    rarityUncommon: "Incomum",
+    rarityRare: "Rara",
+    rarityEpic: "Épica",
+    rarityLegendary: "Lendária",
+    correctOutput: "Saída correta:",
+    missionCompletedOutput: "Missão concluída.",
+    missionNotComplete: "A missão ainda não foi concluída",
+    checkMissionGoal: "Confira o objetivo da missão e tente novamente.",
+    checkAttempt: "Confira esta tentativa",
+    lineLocation: "Linha {line}",
+    lineColumnLocation: "Linha {line}, coluna {column}",
+    tryThis: "Tente isto:",
+    expected: "Esperado:",
+    received: "Recebido:",
+    noOutput: "(sem saída)",
+    missionRestarted: "Missão reiniciada. Tente novamente.",
+    allMissionsComplete: "Todas as missões disponíveis foram concluídas.",
+    newMissionsSoon: "Novas missões serão adicionadas em breve.",
+    noCodeToRun: "Não há código para executar.",
+    writeMissionCodeFirst: "Escreva primeiro o código da missão",
+    editorEmpty: "O editor ainda não contém código Python.",
+    writeRequestedCode: "Escreva no editor o código solicitado.",
+    notQuiteThisTime: "Ainda não foi dessa vez.",
+    backendValidationRequired: "Abra o Mompy pelo Python para usar a validação real das missões.",
+    runningValidation: "Validando...",
+    unexpectedValidationError: "Erro inesperado na validação:",
+    progressReset: "Progresso redefinido.",
+    progressResetMissionLoaded: "Progresso redefinido. Missão 01 carregada.",
+    firstMissionAlready: "Mompy: Você já está na primeira missão.",
+    exitingApp: "Mompy: Encerrando o aplicativo.",
+    fullscreenChangeError: "Mompy: Não foi possível alterar o modo de tela cheia.",
+    diagnosticMissionRequirementTitle: "Confira o requisito da missão",
+    diagnosticMissionRequirementSummary: "Ainda falta cumprir um requisito da missão.",
+    diagnosticOutputTitle: "A saída ainda não corresponde",
+    diagnosticOutputSummary: "O código foi executado, mas imprimiu um resultado diferente.",
+    diagnosticOutputSuggestion: "Confira os valores e o texto enviados para print().",
+    diagnosticSyntaxTitle: "O Python não conseguiu ler esta linha",
+    diagnosticSyntaxSummary: "O Python encontrou um erro de sintaxe nesta linha.",
+    diagnosticSyntaxSuggestion: "Confira parênteses, aspas, dois-pontos e indentação.",
+    diagnosticSafetyTitle: "Este recurso não está disponível nas missões",
+    diagnosticSafetySummary: "Este código usa um recurso que não está disponível nesta missão.",
+    diagnosticSafetySuggestion: "Use apenas os conceitos de Python apresentados no bloco atual.",
+    diagnosticTimeoutTitle: "O programa demorou demais",
+    diagnosticTimeoutSummary: "O Mompy interrompeu o código para manter o aplicativo funcionando.",
+    diagnosticTimeoutSuggestion: "Procure um laço que nunca termina ou reduza o trabalho repetido.",
+    diagnosticRuntimeTitle: "O Python parou durante a execução",
+    diagnosticRuntimeSummary: "O Python encontrou um problema ao executar esta linha.",
+    diagnosticRuntimeSuggestion: "Confira a linha destacada e os valores usados nela.",
+    diagnosticNameErrorTitle: "Nome não definido",
+    diagnosticNameErrorSummary: "O Python não encontrou um dos nomes usados nesta linha.",
+    diagnosticNameErrorSuggestion: "Confira se a variável foi criada e se o nome está escrito corretamente.",
+    diagnosticTypeErrorTitle: "Tipos de valores incompatíveis",
+    diagnosticTypeErrorSummary: "O Python não conseguiu usar esses valores juntos nesta operação.",
+    diagnosticTypeErrorSuggestion: "Confira se cada valor é texto, número, lista ou outro tipo esperado.",
+    diagnosticZeroDivisionTitle: "Divisão por zero",
+    diagnosticZeroDivisionSummary: "O Python não pode dividir um valor por zero.",
+    diagnosticZeroDivisionSuggestion: "Garanta que o divisor seja diferente de zero antes de dividir.",
+    diagnosticIndexErrorTitle: "Posição da lista não encontrada",
+    diagnosticIndexErrorSummary: "A posição solicitada está fora da lista.",
+    diagnosticIndexErrorSuggestion: "Confira o tamanho da lista e lembre que os índices começam em zero.",
   },
 };
+
+const ACHIEVEMENT_DEFINITIONS = Object.freeze([
+  { id: "steady_start", family: "dedication", titleKey: "achievementSteadyStart", descriptionKey: "achievementSteadyStartDescription", rarityKey: "rarityCommon", rarity: "common", mark: "2D", glyph: "◴", image: "./assets/achievements/achievement-sinal-de-retorno.png?v=1" },
+  { id: "three_days_online", family: "dedication", titleKey: "achievementThreeDaysOnline", descriptionKey: "achievementThreeDaysOnlineDescription", rarityKey: "rarityCommon", rarity: "common", mark: "3D", glyph: "3", image: "./assets/achievements/achievement-tres-dias-online.png?v=1" },
+  { id: "initial_sequence", family: "dedication", titleKey: "achievementInitialSequence", descriptionKey: "achievementInitialSequenceDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "x3", glyph: "3", image: "./assets/achievements/achievement-sequencia-inicial-turquoise.png?v=1" },
+  { id: "code_week", family: "dedication", titleKey: "achievementCodeWeek", descriptionKey: "achievementCodeWeekDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "7D", glyph: "7", image: "./assets/achievements/achievement-semana-de-codigo-turquoise.png?v=1" },
+  { id: "always_on_week", family: "dedication", titleKey: "achievementAlwaysOnWeek", descriptionKey: "achievementAlwaysOnWeekDescription", rarityKey: "rarityRare", rarity: "rare", mark: "7x", glyph: "∞", image: "./assets/achievements/achievement-semana-sem-desligar-blue.png?v=1" },
+  { id: "frequent_operator", family: "dedication", titleKey: "achievementFrequentOperator", descriptionKey: "achievementFrequentOperatorDescription", rarityKey: "rarityRare", rarity: "rare", mark: "14D", glyph: "14", image: "./assets/achievements/achievement-operador-frequente-blue.png?v=1" },
+  { id: "month_on_console", family: "dedication", titleKey: "achievementMonthOnConsole", descriptionKey: "achievementMonthOnConsoleDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "30D", glyph: "30", image: "./assets/achievements/achievement-mes-no-console-purple.png?v=1" },
+  { id: "quarterly_signal", family: "dedication", titleKey: "achievementQuarterlySignal", descriptionKey: "achievementQuarterlySignalDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "3M", glyph: "Ⅲ", image: "./assets/achievements/achievement-sinal-trimestral-purple.png?v=1" },
+  { id: "programming_semester", family: "dedication", titleKey: "achievementProgrammingSemester", descriptionKey: "achievementProgrammingSemesterDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "6M", glyph: "Ⅵ", image: "./assets/achievements/achievement-semestre-programacao-gold.png?v=1" },
+  { id: "mompy_companion", family: "dedication", titleKey: "achievementMompyCompanion", descriptionKey: "achievementMompyCompanionDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "12M", glyph: "★", image: "./assets/achievements/achievement-companheiro-do-mompy-gold.png?v=1" },
+  { id: "first_mission", family: "progress", titleKey: "achievementFirstMission", descriptionKey: "achievementFirstMissionDescription", rarityKey: "rarityCommon", rarity: "common", mark: "01", glyph: "★" },
+  { id: "mission_five", family: "progress", titleKey: "achievementMissionFive", descriptionKey: "achievementMissionFiveDescription", rarityKey: "rarityCommon", rarity: "common", mark: "05", glyph: "✦" },
+  { id: "mission_ten", family: "progress", titleKey: "achievementMissionTen", descriptionKey: "achievementMissionTenDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "10", glyph: "◆" },
+  { id: "halfway_hero", family: "progress", titleKey: "achievementHalfwayHero", descriptionKey: "achievementHalfwayHeroDescription", rarityKey: "rarityRare", rarity: "rare", mark: "1/2", glyph: "◐" },
+  { id: "mission_thirty", family: "progress", titleKey: "achievementMissionThirty", descriptionKey: "achievementMissionThirtyDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "30", glyph: "⚑" },
+  { id: "path_complete", family: "progress", titleKey: "achievementPathComplete", descriptionKey: "achievementPathCompleteDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "ALL", glyph: "♛" },
+  { id: "perfect_mission", family: "mastery", titleKey: "achievementPerfectMission", descriptionKey: "achievementPerfectMissionDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "3X", glyph: "✓" },
+  { id: "star_collector_25", family: "stars", titleKey: "achievementStarCollector25", descriptionKey: "achievementStarCollector25Description", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "25*", glyph: "✧" },
+  { id: "star_collector_60", family: "stars", titleKey: "achievementStarCollector60", descriptionKey: "achievementStarCollector60Description", rarityKey: "rarityRare", rarity: "rare", mark: "60*", glyph: "✪" },
+  { id: "star_master_100", family: "stars", titleKey: "achievementStarMaster100", descriptionKey: "achievementStarMaster100Description", rarityKey: "rarityLegendary", rarity: "legendary", mark: "100", glyph: "☄" },
+  { id: "first_block", family: "blocks", titleKey: "achievementFirstBlock", descriptionKey: "achievementFirstBlockDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "B1", glyph: "I" },
+  { id: "three_blocks", family: "blocks", titleKey: "achievementThreeBlocks", descriptionKey: "achievementThreeBlocksDescription", rarityKey: "rarityRare", rarity: "rare", mark: "B3", glyph: "III" },
+  { id: "six_blocks", family: "blocks", titleKey: "achievementSixBlocks", descriptionKey: "achievementSixBlocksDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "B6", glyph: "VI" },
+  { id: "clean_streak_3", family: "mastery", titleKey: "achievementCleanStreak3", descriptionKey: "achievementCleanStreak3Description", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "x3", glyph: "↟" },
+  { id: "clean_streak_5", family: "mastery", titleKey: "achievementCleanStreak5", descriptionKey: "achievementCleanStreak5Description", rarityKey: "rarityRare", rarity: "rare", mark: "x5", glyph: "⇈" },
+  { id: "clean_streak_10", family: "mastery", titleKey: "achievementCleanStreak10", descriptionKey: "achievementCleanStreak10Description", rarityKey: "rarityEpic", rarity: "epic", mark: "x10", glyph: "▲" },
+  { id: "returning_learner", family: "dedication", titleKey: "achievementReturningLearner", descriptionKey: "achievementReturningLearnerDescription", rarityKey: "rarityRare", rarity: "rare", mark: "7D", glyph: "◑" },
+  { id: "dedicated_learner", family: "dedication", titleKey: "achievementDedicatedLearner", descriptionKey: "achievementDedicatedLearnerDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "14D", glyph: "◕" },
+  { id: "veteran_learner", family: "dedication", titleKey: "achievementVeteranLearner", descriptionKey: "achievementVeteranLearnerDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "30D", glyph: "∞" },
+]);
+
+function getAchievementDefinition(achievementId) {
+  return ACHIEVEMENT_DEFINITIONS.find(({ id }) => id === achievementId);
+}
 
 let currentLanguage = "en-US";
 
@@ -241,6 +571,14 @@ function applyLanguage(language, { persist = true } = {}) {
     && !activeBriefingId
   ) {
     renderMission(currentMission());
+  }
+
+  if (trainingStarted && lastValidationResult) {
+    renderDiagnostic(lastValidationResult);
+  } else if (trainingStarted && missionCompleted && lastCompletedOutput !== null) {
+    renderCompletedMissionOutput(lastCompletedOutput);
+  } else if (trainingStarted && !missionCompleted) {
+    output.textContent = missionIntroText(currentMission());
   }
 }
 
@@ -317,6 +655,9 @@ const defaultProgressState = {
   currentMissionIndex: 0,
   completedMissionIds: [],
   totalXp: 0,
+  totalStars: 0,
+  currentStreak: 0,
+  bestStreak: 0,
   lastUpdatedAt: null,
 };
 
@@ -349,6 +690,7 @@ const PYTHON_HTTP_ROUTES = {
   get_bootstrap_state: { method: "GET", path: "/api/bootstrap" },
   get_progress: { method: "GET", path: "/api/progress" },
   validate_mission: { method: "POST", path: "/api/validate", body: ([missionId, userCode]) => ({ mission_id: missionId, user_code: userCode }) },
+  submit_mission: { method: "POST", path: "/api/mission/submit", body: ([missionId, userCode, hintUsed]) => ({ mission_id: missionId, user_code: userCode, hint_used: hintUsed }) },
   complete_mission: { method: "POST", path: "/api/complete", body: ([missionId]) => ({ mission_id: missionId }) },
   reset_progress: { method: "POST", path: "/api/reset", body: () => ({}) },
   set_current_mission_index: { method: "POST", path: "/api/progress/current", body: ([missionIndex]) => ({ current_mission_index: missionIndex }) },
@@ -438,6 +780,9 @@ function applyPythonProgress(progress) {
   const missionIndex = progress.current_mission_index ?? progress.currentMissionIndex;
   const xp = progress.total_xp ?? progress.totalXp;
   const levelInfo = progress.level_info || progress.levelInfo;
+  const stars = progress.total_stars ?? progress.totalStars;
+  const streak = progress.current_streak ?? progress.currentStreak;
+  const best = progress.best_streak ?? progress.bestStreak;
 
   if (Number.isInteger(missionIndex)) {
     currentMissionIndex = clampMissionIndex(missionIndex);
@@ -456,6 +801,12 @@ function applyPythonProgress(progress) {
   if (levelInfo && typeof levelInfo === "object") {
     backendLevelInfo = normalizePythonLevelInfo(levelInfo);
   }
+
+  totalStars = Number(stars) || 0;
+  currentStreak = Number(streak) || 0;
+  bestStreak = Number(best) || 0;
+  blockProgress = Array.isArray(progress.block_progress) ? progress.block_progress : [];
+  earnedAchievements = Array.isArray(progress.achievements) ? progress.achievements : [];
 
   updateProgressUI();
   saveLocalProgress({
@@ -803,6 +1154,70 @@ const learningBriefings = [
       },
     ],
   },
+  {
+    id: "briefing_007",
+    title: "Block 07 Briefing",
+    subtitle: "Dictionaries",
+    beforeMissionIndex: 30,
+    missionsRange: "31-35",
+    steps: [
+      {
+        type: "lesson",
+        title: "Keys and values",
+        text: "A dictionary connects each key to a value. It is useful when data has names, such as a profile name and level.",
+        retryText: "Think of a dictionary as labeled drawers: the key is the label and the value is what the drawer stores.",
+      },
+      {
+        type: "lesson",
+        title: "Read and update",
+        text: "Use square brackets with a key to read or change one value without replacing the whole dictionary.",
+        retryText: "profile[\"name\"] reads the name. profile[\"level\"] = 2 changes only the level.",
+      },
+      {
+        type: "check",
+        question: "A dictionary is especially useful when you need to:",
+        options: [
+          { label: "A", text: "connect named keys to values", correct: true },
+          { label: "B", text: "repeat a block forever", correct: false },
+          { label: "C", text: "draw directly on the screen", correct: false },
+        ],
+        successText: "Correct. Dictionaries organize values under meaningful keys.",
+        failText: "Not quite. Dictionaries connect keys, such as name, to their values.",
+      },
+    ],
+  },
+  {
+    id: "briefing_008",
+    title: "Block 08 Briefing",
+    subtitle: "While Loops",
+    beforeMissionIndex: 35,
+    missionsRange: "36-40",
+    steps: [
+      {
+        type: "lesson",
+        title: "Repeat while true",
+        text: "A while loop repeats its indented block while its condition remains true.",
+        retryText: "Read while as: keep doing this while the condition says yes.",
+      },
+      {
+        type: "lesson",
+        title: "Move toward the end",
+        text: "The loop must update the value used by its condition. That progress eventually makes the condition false.",
+        retryText: "If a counter never changes, the loop may never stop. Update it inside the loop.",
+      },
+      {
+        type: "check",
+        question: "What helps a counter-based while loop finish?",
+        options: [
+          { label: "A", text: "updating the counter inside the loop", correct: true },
+          { label: "B", text: "adding more quote marks", correct: false },
+          { label: "C", text: "renaming the window", correct: false },
+        ],
+        successText: "Correct. Updating the counter moves the condition toward false.",
+        failText: "Almost. A counter-based loop needs to update its counter so it can finish.",
+      },
+    ],
+  },
 ];
 
 const missions = [
@@ -1025,6 +1440,11 @@ let currentMissionIndex = 0;
 let completedMissionIds = [];
 let totalXp = 0;
 let backendLevelInfo = null;
+let totalStars = 0;
+let currentStreak = 0;
+let bestStreak = 0;
+let blockProgress = [];
+let earnedAchievements = [];
 let completedBriefingIds = [];
 let skippedBriefingIds = [];
 
@@ -1056,6 +1476,7 @@ const output = document.querySelector("#outputConsole");
 const runButton = document.querySelector("#runButton");
 const backButton = document.querySelector("#backButton");
 const helpButton = document.querySelector("#helpButton");
+const achievementsButton = document.querySelector("#achievementsButton");
 const settingsButton = document.querySelector("#settingsButton");
 const fullscreenButton = document.querySelector("#fullscreenButton");
 const modalBackdrop = document.querySelector("#modalBackdrop");
@@ -1070,16 +1491,31 @@ const nextMissionButton = document.querySelector("#nextMissionButton");
 let talkTimer = null;
 let settleTimer = null;
 let talkFrame = false;
+let currentMompyState = "idle";
+let currentMompyGaze = "side";
+let mompyFirstForwardPending = true;
+let mompyBlinkTimer = null;
+let mompyBlinkFrameTimers = [];
+let mompyGazeTimer = null;
+let mompyGazeTransitioning = false;
+let mompyTypingPauseTimer = null;
 let lastFocusedElement = null;
+let modalMompyRestore = null;
 let typingTimer = null;
 let typingToken = 0;
 let trainingStarted = false;
 let missionCompleted = false;
+let missionHintUsed = false;
+let lastMissionReward = null;
 let completionTimer = null;
 let completionPending = false;
+let lastValidationResult = null;
+let lastCompletedOutput = null;
 let startScreenAnimationActive = false;
 let startMompyTerminalTimer = null;
 let startMompyTypingTimer = null;
+let startMompyBlinkTimer = null;
+let startMompyBlinkFrameTimers = [];
 let startMompyTerminalToken = 0;
 let startTerminalExampleIndex = 0;
 let loadingInterval = null;
@@ -1564,7 +2000,7 @@ function loadBriefingProgress() {
       return;
     }
 
-    const progress = JSON.parse(rawProgress);
+  const progress = JSON.parse(rawProgress);
     completedBriefingIds = sanitizeBriefingIds(progress.completedBriefingIds);
     skippedBriefingIds = sanitizeBriefingIds(progress.skippedBriefingIds);
   } catch (error) {
@@ -1620,12 +2056,18 @@ function loadProgress() {
     currentMissionIndex = clampMissionIndex(progress.currentMissionIndex);
     completedMissionIds = sanitizeCompletedMissionIds(progress.completedMissionIds);
     totalXp = Number(progress.totalXp) || 0;
+    totalStars = Number(progress.totalStars) || 0;
+    currentStreak = Number(progress.currentStreak) || 0;
+    bestStreak = Number(progress.bestStreak) || 0;
     backendLevelInfo = null;
     updateProgressUI();
     return {
       currentMissionIndex,
       completedMissionIds: [...completedMissionIds],
       totalXp,
+      totalStars,
+      currentStreak,
+      bestStreak,
       lastUpdatedAt: progress.lastUpdatedAt || null,
     };
   } catch (error) {
@@ -1633,6 +2075,9 @@ function loadProgress() {
     currentMissionIndex = defaultProgressState.currentMissionIndex;
     completedMissionIds = [...defaultProgressState.completedMissionIds];
     totalXp = defaultProgressState.totalXp;
+    totalStars = defaultProgressState.totalStars;
+    currentStreak = defaultProgressState.currentStreak;
+    bestStreak = defaultProgressState.bestStreak;
     backendLevelInfo = null;
     updateProgressUI();
     return { ...defaultProgressState };
@@ -1644,6 +2089,9 @@ function currentProgressPayload() {
     currentMissionIndex,
     completedMissionIds: [...completedMissionIds],
     totalXp,
+    totalStars,
+    currentStreak,
+    bestStreak,
     lastUpdatedAt: new Date().toISOString(),
   };
 }
@@ -1694,6 +2142,11 @@ async function resetProgress(options = {}) {
   currentMissionIndex = 0;
   completedMissionIds = [];
   totalXp = 0;
+  totalStars = 0;
+  currentStreak = 0;
+  bestStreak = 0;
+  blockProgress = [];
+  earnedAchievements = [];
   backendLevelInfo = null;
   missionCompleted = false;
   completionPending = false;
@@ -1714,7 +2167,7 @@ async function resetProgress(options = {}) {
   if (trainingStarted && !options.keepMissionView) {
     openMissionOrBriefing({
       intro: false,
-      outputMessage: "Progress reset. Mission 01 loaded.",
+      outputMessage: t("progressResetMissionLoaded"),
     });
   }
 }
@@ -1844,16 +2297,98 @@ function renderMompyScreenPanel({ title, lines = [], actions = [], variant = "" 
 }
 
 function renderMompyCompletionPrompt() {
-  mompyScreenMessage.className = "mompy-screen-message";
+  mompyScreenMessage.className = "mompy-screen-message is-briefing is-reward";
 
   const text = document.createElement("div");
   text.className = "mompy-screen-text";
 
-  [t("missionComplete"), t("continueQuestion")].forEach((line) => {
+  const reward = lastMissionReward;
+  const appendLine = (line, className) => {
     const paragraph = document.createElement("p");
+    paragraph.className = className;
     paragraph.textContent = line;
     text.append(paragraph);
-  });
+  };
+
+  appendLine(t("missionComplete"), "reward-title");
+
+  if (reward?.stars) {
+    appendLine(
+      "★".repeat(reward.stars) + "☆".repeat(Math.max(0, 3 - reward.stars)),
+      "reward-stars",
+    );
+  }
+
+  if (reward?.first_completion) {
+    appendLine(
+      `${t("xpEarned", { xp: reward.xp_awarded })} · ${t("streak")} ${reward.current_streak}`,
+      "reward-detail",
+    );
+  }
+
+  const progression = [];
+  if (reward?.block_completed && reward.block) {
+    progression.push(t("blockComplete", {
+      block: String(reward.block.block).padStart(2, "0"),
+      stars: reward.block.stars,
+      max: reward.block.max_stars,
+    }));
+  }
+  if (reward?.unlocked_block) {
+    progression.push(t("blockUnlocked", { block: String(reward.unlocked_block).padStart(2, "0") }));
+  }
+  if (progression.length) {
+    appendLine(progression.join(" · "), "reward-detail reward-progression");
+  }
+
+  const newAchievements = reward?.new_achievements || [];
+  if (newAchievements.length) {
+    mompyScreenMessage.classList.add("has-achievement");
+    const achievementRow = document.createElement("button");
+    achievementRow.type = "button";
+    achievementRow.className = "reward-achievement";
+    achievementRow.setAttribute("aria-label", t("viewAchievements"));
+    achievementRow.addEventListener("click", showAchievements);
+
+    const celebration = document.createElement("img");
+    celebration.className = "reward-celebration-sprite";
+    celebration.src = ASSETS.celebrate;
+    celebration.alt = "";
+    celebration.setAttribute("aria-hidden", "true");
+
+    const achievementStack = document.createElement("span");
+    achievementStack.className = "reward-achievement-stack";
+
+    newAchievements.forEach((achievementId) => {
+      const definition = getAchievementDefinition(achievementId);
+      const item = document.createElement("span");
+      item.className = `reward-achievement-item rarity-${definition?.rarity || "common"}`;
+
+      const medal = document.createElement("span");
+      medal.className = "reward-achievement-medal";
+      medal.setAttribute("aria-hidden", "true");
+      medal.textContent = definition?.glyph || "★";
+
+      const name = document.createElement("span");
+      name.className = "reward-achievement-text";
+      name.textContent = t("achievementUnlocked", {
+        name: t(definition?.titleKey || achievementId),
+      });
+
+      item.append(medal, name);
+      achievementStack.append(item);
+    });
+
+    const viewLabel = document.createElement("span");
+    viewLabel.className = "reward-achievement-view";
+    viewLabel.textContent = t("viewAchievements");
+
+    achievementStack.append(viewLabel);
+    achievementRow.append(celebration, achievementStack);
+    text.append(achievementRow);
+  } else {
+    appendLine(t("continueQuestion"), "reward-question");
+  }
 
   const actionShell = document.createElement("div");
   actionShell.className = "mompy-screen-actions";
@@ -1865,6 +2400,7 @@ function renderMompyCompletionPrompt() {
 
   const nextButton = document.createElement("button");
   nextButton.type = "button";
+  nextButton.className = "is-primary";
   nextButton.textContent = t("nextMission");
   nextButton.addEventListener("click", goToNextMission);
 
@@ -2142,6 +2678,178 @@ function openMissionOrBriefing(options = {}) {
   renderCurrentMission(options);
 }
 
+function prefersReducedMotion() {
+  return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+}
+
+function randomDuration(minimum, maximum) {
+  return minimum + Math.round(Math.random() * (maximum - minimum));
+}
+
+function canAnimateMompyGaze() {
+  return (
+    trainingStarted
+    && currentMompyState === "idle"
+    && Boolean(sprite)
+    && !mompyShutdownAnimating
+    && !activeBriefingId
+  );
+}
+
+function currentMompyGazeAsset() {
+  return currentMompyGaze === "front" ? ASSETS.front : ASSETS.side;
+}
+
+function clearMompyBlinkTimers() {
+  clearTimeout(mompyBlinkTimer);
+  mompyBlinkFrameTimers.forEach((timer) => clearTimeout(timer));
+  mompyBlinkTimer = null;
+  mompyBlinkFrameTimers = [];
+}
+
+function clearMompyGazeTimer() {
+  clearTimeout(mompyGazeTimer);
+  mompyGazeTimer = null;
+  mompyGazeTransitioning = false;
+}
+
+function clearMompyAmbientTimers() {
+  clearMompyBlinkTimers();
+  clearMompyGazeTimer();
+  clearTimeout(mompyTypingPauseTimer);
+  mompyTypingPauseTimer = null;
+}
+
+function pointMompyAtEditor() {
+  if (
+    !trainingStarted
+    || missionCompleted
+    || activeBriefingId
+    || !sprite
+    || !["idle", "talking"].includes(currentMompyState)
+  ) {
+    return;
+  }
+
+  if (currentMompyState === "talking") {
+    finishMissionIntro();
+    stopTalking();
+    currentMompyState = "idle";
+  }
+
+  clearMompyAmbientTimers();
+  currentMompyGaze = "side";
+  mompyFirstForwardPending = true;
+  sprite.src = ASSETS.side;
+
+  mompyTypingPauseTimer = setTimeout(() => {
+    mompyTypingPauseTimer = null;
+
+    if (canAnimateMompyGaze() && currentMompyGaze === "side") {
+      scheduleMompyGaze();
+    }
+  }, MOMPY_TYPING_PAUSE_MS);
+}
+
+function playMompyBlink() {
+  if (
+    !canAnimateMompyGaze()
+    || currentMompyGaze !== "front"
+    || mompyGazeTransitioning
+  ) {
+    return;
+  }
+
+  mompyBlinkFrameTimers = [];
+  sprite.src = ASSETS.frontBlink;
+
+  mompyBlinkFrameTimers.push(setTimeout(() => {
+    mompyBlinkFrameTimers = [];
+
+    if (
+      canAnimateMompyGaze()
+      && currentMompyGaze === "front"
+      && !mompyGazeTransitioning
+    ) {
+      sprite.src = ASSETS.front;
+      scheduleMompyBlink();
+    }
+  }, MOMPY_FRONT_BLINK_MS));
+}
+
+function scheduleMompyBlink() {
+  clearTimeout(mompyBlinkTimer);
+  mompyBlinkTimer = null;
+
+  if (
+    !canAnimateMompyGaze()
+    || currentMompyGaze !== "front"
+    || mompyGazeTransitioning
+  ) {
+    return;
+  }
+
+  const delay = randomDuration(MOMPY_FRONT_BLINK_MIN_MS, MOMPY_FRONT_BLINK_MAX_MS);
+  mompyBlinkTimer = setTimeout(() => {
+    mompyBlinkTimer = null;
+    playMompyBlink();
+  }, delay);
+}
+
+function beginMompyGazeTransition(nextGaze) {
+  clearMompyGazeTimer();
+  clearMompyBlinkTimers();
+
+  if (!canAnimateMompyGaze()) {
+    return;
+  }
+
+  mompyGazeTransitioning = true;
+  sprite.src = ASSETS.gazeTransition;
+  mompyGazeTimer = setTimeout(() => {
+    mompyGazeTimer = null;
+
+    if (!canAnimateMompyGaze()) {
+      mompyGazeTransitioning = false;
+      return;
+    }
+
+    currentMompyGaze = nextGaze;
+    mompyGazeTransitioning = false;
+    sprite.src = currentMompyGazeAsset();
+
+    if (currentMompyGaze === "front") {
+      mompyFirstForwardPending = false;
+      scheduleMompyBlink();
+    }
+
+    scheduleMompyGaze();
+  }, MOMPY_GAZE_TRANSITION_MS);
+}
+
+function scheduleMompyGaze() {
+  clearMompyGazeTimer();
+
+  if (!canAnimateMompyGaze()) {
+    return;
+  }
+
+  const lookingForward = currentMompyGaze === "front";
+  const delay = lookingForward
+    ? randomDuration(MOMPY_FORWARD_GAZE_MIN_MS, MOMPY_FORWARD_GAZE_MAX_MS)
+    : mompyFirstForwardPending
+      ? randomDuration(MOMPY_FIRST_FORWARD_MIN_MS, MOMPY_FIRST_FORWARD_MAX_MS)
+      : randomDuration(MOMPY_SIDE_GAZE_MIN_MS, MOMPY_SIDE_GAZE_MAX_MS);
+
+  mompyGazeTimer = setTimeout(() => {
+    if (!canAnimateMompyGaze()) {
+      return;
+    }
+
+    beginMompyGazeTransition(lookingForward ? "side" : "front");
+  }, delay);
+}
+
 function stopTalking() {
   if (talkTimer) {
     clearInterval(talkTimer);
@@ -2169,10 +2877,13 @@ function playMompyShutdownAnimation() {
   }
 
   mompyShutdownAnimating = true;
+  clearMompyAmbientTimers();
   clearMompyShutdownTimers();
   playShutdownSound();
 
-  const originalSrc = sprite.getAttribute("src") || ASSETS.idle;
+  const originalSrc = currentMompyState === "idle"
+    ? currentMompyGazeAsset()
+    : sprite.getAttribute("src") || ASSETS.idle;
   const steps = [
     [0, ASSETS.shutdown2],
     [120, ASSETS.shutdown3],
@@ -2188,6 +2899,8 @@ function playMompyShutdownAnimation() {
       if (delay === 700) {
         mompyShutdownAnimating = false;
         clearMompyShutdownTimers();
+        scheduleMompyBlink();
+        scheduleMompyGaze();
       }
     }, delay);
 
@@ -2196,6 +2909,8 @@ function playMompyShutdownAnimation() {
 }
 
 function setMompyState(state, options = {}) {
+  currentMompyState = state;
+  clearMompyAmbientTimers();
   stopTalking();
   clearTimeout(settleTimer);
   machine.classList.remove("is-success", "is-error");
@@ -2222,7 +2937,11 @@ function setMompyState(state, options = {}) {
     machine.classList.add("is-error");
     sprite.src = ASSETS.error;
   } else {
-    sprite.src = ASSETS.idle;
+    currentMompyGaze = "side";
+    mompyFirstForwardPending = true;
+    sprite.src = currentMompyGazeAsset();
+    scheduleMompyBlink();
+    scheduleMompyGaze();
   }
 
   if (options.returnToIdle) {
@@ -2465,13 +3184,57 @@ async function submitOnboardingName() {
   audioManager.startAmbientMusic();
 }
 
+function clearStartMompyBlinkTimers() {
+  clearTimeout(startMompyBlinkTimer);
+  startMompyBlinkFrameTimers.forEach((timer) => clearTimeout(timer));
+  startMompyBlinkTimer = null;
+  startMompyBlinkFrameTimers = [];
+}
+
+function scheduleStartMompyBlink() {
+  clearStartMompyBlinkTimers();
+
+  if (
+    prefersReducedMotion()
+    || !startScreenAnimationActive
+    || !startMompySprite
+    || !startMompyTerminal.hidden
+  ) {
+    return;
+  }
+
+  const token = startMompyTerminalToken;
+  startMompyBlinkTimer = setTimeout(() => {
+    if (
+      !startScreenAnimationActive
+      || token !== startMompyTerminalToken
+      || !startMompyTerminal.hidden
+    ) {
+      return;
+    }
+
+    startMompySprite.src = ASSETS.frontBlink;
+    startMompyBlinkFrameTimers.push(setTimeout(() => {
+      if (
+        startScreenAnimationActive
+        && token === startMompyTerminalToken
+        && startMompyTerminal.hidden
+      ) {
+        startMompySprite.src = ASSETS.front;
+      }
+    }, MOMPY_FRONT_BLINK_MS));
+  }, 920);
+}
+
 function showStartMompyFace() {
-  startMompySprite.src = ASSETS.idle;
+  startMompySprite.src = ASSETS.front;
   startMompyTerminal.hidden = true;
   startMompyTerminal.setAttribute("aria-hidden", "true");
+  scheduleStartMompyBlink();
 }
 
 function showStartMompyTerminal() {
+  clearStartMompyBlinkTimers();
   startMompySprite.src = ASSETS.blank;
   startMompyTerminal.hidden = false;
   startMompyTerminal.setAttribute("aria-hidden", "false");
@@ -2601,6 +3364,7 @@ function startStartScreenMompyAnimation() {
 function stopStartScreenMompyAnimation(options = {}) {
   startScreenAnimationActive = false;
   startMompyTerminalToken += 1;
+  clearStartMompyBlinkTimers();
   clearTimeout(startMompyTerminalTimer);
   clearTimeout(startMompyTypingTimer);
   startMompyTerminalTimer = null;
@@ -2610,7 +3374,7 @@ function stopStartScreenMompyAnimation(options = {}) {
   startMompyTerminal.setAttribute("aria-hidden", "true");
 
   if (!options.keepFace) {
-    startMompySprite.src = ASSETS.idle;
+    startMompySprite.src = ASSETS.front;
   }
 }
 
@@ -2631,12 +3395,13 @@ async function showStartScreen() {
   clearTimeout(completionTimer);
   stopMissionTyping();
   stopTalking();
+  clearMompyAmbientTimers();
   stopMompyShutdownAnimation();
   clearTimeout(settleTimer);
   clearMompyScreenMessage();
   machine.classList.remove("training-active", "is-success", "is-error");
   startScreen.hidden = false;
-  sprite.src = ASSETS.idle;
+  sprite.src = ASSETS.front;
   setMissionActionsEnabled(true);
   renderStartUserInfo();
   if (profile) {
@@ -2795,6 +3560,10 @@ function missionIntroText(mission) {
 function renderCurrentMission(options = {}) {
   const mission = currentMission();
   missionCompleted = false;
+  missionHintUsed = false;
+  lastMissionReward = null;
+  lastValidationResult = null;
+  lastCompletedOutput = null;
   completionPending = false;
   clearTimeout(completionTimer);
   clearMompyScreenMessage();
@@ -2888,7 +3657,40 @@ function clearMompyScreenMessage() {
   mompyScreenMessage.className = "mompy-screen-message";
 }
 
+function showMompyPanelState(asset) {
+  const showingStartScreen = !trainingStarted && Boolean(startMompySprite);
+  const activeSprite = showingStartScreen ? startMompySprite : sprite;
+
+  if (!activeSprite) {
+    return;
+  }
+
+  if (!modalMompyRestore) {
+    modalMompyRestore = {
+      src: activeSprite.getAttribute("src") || ASSETS.idle,
+      state: currentMompyState,
+      gaze: currentMompyGaze,
+      showingStartScreen,
+      startAnimationActive: startScreenAnimationActive,
+    };
+  }
+
+  if (showingStartScreen) {
+    stopStartScreenMompyAnimation({ keepFace: true });
+  } else {
+    clearMompyAmbientTimers();
+    stopTalking();
+    clearTimeout(settleTimer);
+    currentMompyState = "panel";
+  }
+
+  activeSprite.src = asset;
+}
+
 function restoreAfterModal() {
+  const panelRestore = modalMompyRestore;
+  modalMompyRestore = null;
+
   if (missionCompleted) {
     if (completionPending) {
       setMompyState("success");
@@ -2901,7 +3703,61 @@ function restoreAfterModal() {
 
   if (trainingStarted) {
     setMompyState("idle");
+    return;
   }
+
+  if (panelRestore?.showingStartScreen && startMompySprite) {
+    currentMompyState = panelRestore.state;
+    currentMompyGaze = panelRestore.gaze;
+    startMompySprite.src = panelRestore.src;
+
+    if (panelRestore.startAnimationActive) {
+      startStartScreenMompyAnimation();
+    }
+  }
+}
+
+function shouldReduceMotion() {
+  return !settingsState.mompyAnimations
+    || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+}
+
+function animateMissionReward(reward) {
+  if (!reward?.first_completion || !reward.stars || shouldReduceMotion()) {
+    return;
+  }
+
+  const source = document.querySelector(".mascot-panel")?.getBoundingClientRect();
+  const target = document.querySelector(".level-panel")?.getBoundingClientRect();
+  if (!source || !target) {
+    return;
+  }
+
+  const startX = source.left + source.width * 0.5;
+  const startY = source.top + source.height * 0.45;
+  const endX = target.left + target.width * 0.5;
+  const endY = target.top + target.height * 0.5;
+
+  Array.from({ length: reward.stars }, (_, index) => index).forEach((index) => {
+    const star = document.createElement("span");
+    star.className = "reward-star-flight";
+    star.textContent = "★";
+    star.style.left = `${startX - 11}px`;
+    star.style.top = `${startY - 11}px`;
+    document.body.append(star);
+
+    const animation = star.animate([
+      { transform: `translate(${(index - 1) * 18}px, 8px) scale(.55)`, opacity: 0 },
+      { transform: `translate(${(index - 1) * 28}px, -28px) scale(1.15)`, opacity: 1, offset: 0.32 },
+      { transform: `translate(${endX - startX}px, ${endY - startY}px) scale(.45)`, opacity: 0.15 },
+    ], {
+      duration: 760,
+      delay: index * 110,
+      easing: "cubic-bezier(.2,.75,.25,1)",
+      fill: "forwards",
+    });
+    animation.addEventListener("finish", () => star.remove(), { once: true });
+  });
 }
 
 function completeMission(result) {
@@ -2909,27 +3765,35 @@ function completeMission(result) {
   missionCompleted = true;
   completionPending = true;
   const alreadyCompleted = completedMissionIds.includes(mission.id);
+  lastMissionReward = result.reward || null;
 
-  callPythonBackend("complete_mission", mission.id).then((progress) => {
-    if (progress) {
-      applyPythonProgress(progress);
-      return;
-    }
+  if (result.progress) {
+    applyPythonProgress(result.progress);
+  } else {
+    callPythonBackend("complete_mission", mission.id).then((progress) => {
+      if (progress) {
+        applyPythonProgress(progress);
+        return;
+      }
 
-    if (!alreadyCompleted) {
-      completedMissionIds.push(mission.id);
-      backendLevelInfo = null;
-    }
+      if (!alreadyCompleted) {
+        completedMissionIds.push(mission.id);
+        backendLevelInfo = null;
+      }
 
-    saveLocalProgress();
-    updateProgressUI();
-  });
+      saveLocalProgress();
+      updateProgressUI();
+    });
+  }
   clearTimeout(completionTimer);
   setMissionActionsEnabled(false);
   clearMompyScreenMessage();
-  output.textContent = `Correct output:\n${result.output}\n\nMission completed.`;
+  lastValidationResult = null;
+  lastCompletedOutput = result.output ?? "";
+  renderCompletedMissionOutput(lastCompletedOutput);
   audioManager.playSuccess();
   setMompyState("success");
+  animateMissionReward(result.reward);
   completionTimer = setTimeout(() => {
     if (!missionCompleted) {
       return;
@@ -2939,6 +3803,10 @@ function completeMission(result) {
     setMompyState("complete");
     showMissionCompleteOnMompy();
   }, 1500);
+}
+
+function renderCompletedMissionOutput(programOutput) {
+  output.textContent = `${t("correctOutput")}\n${programOutput}\n\n${t("missionCompletedOutput")}`;
 }
 
 function editorOffsetAt(lineNumber, columnNumber = 1) {
@@ -2990,13 +3858,101 @@ function appendDiagnosticText(parent, className, label, value) {
   parent.append(paragraph);
 }
 
+function localizedDiagnostic(diagnostic) {
+  if (currentLanguage !== "pt-BR") {
+    return diagnostic;
+  }
+
+  const mission = currentMission();
+  const translations = {
+    empty_editor: {
+      title: t("writeMissionCodeFirst"),
+      summary: t("editorEmpty"),
+      suggestion: mission.help || t("writeRequestedCode"),
+    },
+    mission_requirement_missing: {
+      title: t("diagnosticMissionRequirementTitle"),
+      summary: t("diagnosticMissionRequirementSummary"),
+      suggestion: mission.help || t("diagnosticMissionRequirementSuggestion"),
+    },
+    output_mismatch: {
+      title: t("diagnosticOutputTitle"),
+      summary: t("diagnosticOutputSummary"),
+      suggestion: t("diagnosticOutputSuggestion"),
+    },
+    syntax_error: {
+      title: t("diagnosticSyntaxTitle"),
+      summary: t("diagnosticSyntaxSummary"),
+      suggestion: t("diagnosticSyntaxSuggestion"),
+    },
+    code_too_long: {
+      title: t("diagnosticSafetyTitle"),
+      summary: t("diagnosticSafetySummary"),
+      suggestion: t("diagnosticSafetySuggestion"),
+    },
+    feature_not_available: {
+      title: t("diagnosticSafetyTitle"),
+      summary: t("diagnosticSafetySummary"),
+      suggestion: t("diagnosticSafetySuggestion"),
+    },
+    time_limit_exceeded: {
+      title: t("diagnosticTimeoutTitle"),
+      summary: t("diagnosticTimeoutSummary"),
+      suggestion: t("diagnosticTimeoutSuggestion"),
+    },
+    missing_execution_response: {
+      title: t("diagnosticRuntimeTitle"),
+      summary: t("diagnosticRuntimeSummary"),
+      suggestion: t("diagnosticRuntimeSuggestion"),
+    },
+    nameerror: {
+      title: t("diagnosticNameErrorTitle"),
+      summary: t("diagnosticNameErrorSummary"),
+      suggestion: t("diagnosticNameErrorSuggestion"),
+    },
+    typeerror: {
+      title: t("diagnosticTypeErrorTitle"),
+      summary: t("diagnosticTypeErrorSummary"),
+      suggestion: t("diagnosticTypeErrorSuggestion"),
+    },
+    zerodivisionerror: {
+      title: t("diagnosticZeroDivisionTitle"),
+      summary: t("diagnosticZeroDivisionSummary"),
+      suggestion: t("diagnosticZeroDivisionSuggestion"),
+    },
+    indexerror: {
+      title: t("diagnosticIndexErrorTitle"),
+      summary: t("diagnosticIndexErrorSummary"),
+      suggestion: t("diagnosticIndexErrorSuggestion"),
+    },
+  };
+  const fallback = diagnostic.category === "mission" || diagnostic.category === "concept"
+    ? {
+        title: t("diagnosticMissionRequirementTitle"),
+        summary: t("diagnosticMissionRequirementSummary"),
+        suggestion: mission.help || t("diagnosticMissionRequirementSuggestion"),
+      }
+    : {
+        title: t("diagnosticRuntimeTitle"),
+        summary: t("diagnosticRuntimeSummary"),
+        suggestion: t("diagnosticRuntimeSuggestion"),
+      };
+
+  return {
+    ...diagnostic,
+    ...(translations[String(diagnostic.code || "").toLowerCase()] || fallback),
+  };
+}
+
 function renderDiagnostic(result) {
-  const diagnostic = result.diagnostics?.[0] || {
+  lastValidationResult = result;
+  const rawDiagnostic = result.diagnostics?.[0] || {
     category: "mission",
-    title: "The mission is not complete yet",
-    summary: result.message || "Check the mission goal and try again.",
+    title: t("missionNotComplete"),
+    summary: result.message || t("checkMissionGoal"),
     suggestion: result.detail,
   };
+  const diagnostic = localizedDiagnostic(rawDiagnostic);
 
   output.replaceChildren();
 
@@ -3007,29 +3963,31 @@ function renderDiagnostic(result) {
   heading.className = "diagnostic-heading";
 
   const title = document.createElement("h3");
-  title.textContent = diagnostic.title || "Check this attempt";
+  title.textContent = diagnostic.title || t("checkAttempt");
   heading.append(title);
 
   if (diagnostic.line) {
     const location = document.createElement("button");
     location.type = "button";
     location.className = "diagnostic-location";
-    location.textContent = `Line ${diagnostic.line}${diagnostic.column ? `, column ${diagnostic.column}` : ""}`;
+    location.textContent = diagnostic.column
+      ? t("lineColumnLocation", { line: diagnostic.line, column: diagnostic.column })
+      : t("lineLocation", { line: diagnostic.line });
     location.addEventListener("click", () => focusDiagnosticLocation(diagnostic));
     heading.append(location);
   }
 
   report.append(heading);
   appendDiagnosticText(report, "diagnostic-summary", "", diagnostic.summary || result.message);
-  appendDiagnosticText(report, "diagnostic-suggestion", "Try this:", diagnostic.suggestion || result.detail);
+  appendDiagnosticText(report, "diagnostic-suggestion", t("tryThis"), diagnostic.suggestion || result.detail);
 
   const expected = diagnostic.expected ?? result.expectedOutput;
   const actual = diagnostic.actual ?? result.actualOutput;
   if (diagnostic.category === "output" && (expected != null || actual != null)) {
     const comparison = document.createElement("div");
     comparison.className = "diagnostic-comparison";
-    appendDiagnosticText(comparison, "diagnostic-expected", "Expected:", expected || "(no output)");
-    appendDiagnosticText(comparison, "diagnostic-actual", "Received:", actual || "(no output)");
+    appendDiagnosticText(comparison, "diagnostic-expected", t("expected"), expected || t("noOutput"));
+    appendDiagnosticText(comparison, "diagnostic-actual", t("received"), actual || t("noOutput"));
     report.append(comparison);
     report.classList.add("has-comparison");
   }
@@ -3050,13 +4008,17 @@ function failMission(result) {
 function repeatMission() {
   missionCompleted = false;
   completionPending = false;
+  missionHintUsed = false;
+  lastMissionReward = null;
+  lastValidationResult = null;
+  lastCompletedOutput = null;
   clearTimeout(completionTimer);
   clearMompyScreenMessage();
   setMissionActionsEnabled(true);
   setMompyState("idle");
   editor.value = currentMission().starterCode || "";
   updateLineNumbers();
-  output.textContent = "Mission restarted. Try again.";
+  output.textContent = t("missionRestarted");
   editor.focus();
 }
 
@@ -3069,8 +4031,8 @@ function goToNextMission() {
     setMissionActionsEnabled(false);
     setMompyState("complete");
     output.textContent = [
-      "All available missions are complete.",
-      "New missions will be added soon.",
+      t("allMissionsComplete"),
+      t("newMissionsSoon"),
     ].join("\n");
     saveProgress();
     return;
@@ -3103,22 +4065,28 @@ async function validateCode(code) {
   if (!trimmed || trimmed === "# write here") {
     return {
       ok: false,
-      output: "No code to run.",
+      output: t("noCodeToRun"),
       diagnostics: [
         {
           category: "mission",
           code: "empty_editor",
-          title: "Write the mission code first",
-          summary: "The editor does not contain any Python code yet.",
-          suggestion: mission.help || "Write the requested code in the editor.",
+          title: t("writeMissionCodeFirst"),
+          summary: t("editorEmpty"),
+          suggestion: mission.help || t("writeRequestedCode"),
         },
       ],
-      detail: mission.help || "Write the requested code in the editor.",
+      detail: mission.help || t("writeRequestedCode"),
     };
   }
 
-  const backendValidation = await callPythonBackend("validate_mission", mission.id, code);
+  const usedHint = missionHintUsed;
+  missionHintUsed = false;
+  const submission = await callPythonBackend("submit_mission", mission.id, code, usedHint);
+  const backendValidation = submission?.validation || submission;
   if (backendValidation && typeof backendValidation.correct === "boolean") {
+    if (submission?.progress) {
+      applyPythonProgress(submission.progress);
+    }
     return {
       ok: Boolean(backendValidation.correct),
       output: backendValidation.actual_output || backendValidation.expected_output || mission.expectedOutput,
@@ -3127,19 +4095,21 @@ async function validateCode(code) {
       message: backendValidation.message,
       diagnostics: Array.isArray(backendValidation.diagnostics) ? backendValidation.diagnostics : [],
       detail: backendValidation.correct
-        ? backendValidation.message || "Mission complete."
+        ? backendValidation.message || t("missionCompletedOutput")
         : backendValidation.runtime_error || backendValidation.hints?.[0] || backendValidation.message || mission.help,
+      progress: submission?.progress,
+      reward: submission?.reward,
     };
   }
 
   const printed = extractPrintOutput(code);
   return {
     ok: false,
-    output: printed || "Not quite this time.",
+    output: printed || t("notQuiteThisTime"),
     actualOutput: printed,
     expectedOutput: mission.expectedOutput,
     diagnostics: [],
-    detail: "Open Mompy through Python to use real mission validation.",
+    detail: t("backendValidationRequired"),
   };
 }
 
@@ -3151,7 +4121,9 @@ async function runCode() {
   finishMissionIntro();
   const code = editor.value;
   runButton.disabled = true;
-  output.textContent = "Running validation...";
+  lastValidationResult = null;
+  lastCompletedOutput = null;
+  output.textContent = t("runningValidation");
   audioManager.playRun();
   setMompyState("talking");
 
@@ -3164,7 +4136,7 @@ async function runCode() {
 
     failMission(result);
   } catch (error) {
-    output.textContent = `Unexpected validation error:\n${error.message}`;
+    output.textContent = `${t("unexpectedValidationError")}\n${error.message}`;
     audioManager.playError();
     setMompyState("error", { returnToIdle: 3200 });
   } finally {
@@ -3221,7 +4193,7 @@ function showBackConfirmation() {
   setMompyState("idle");
 
   if (currentMissionIndex <= 0) {
-    output.textContent = "Mompy: You're already on the first mission.";
+    output.textContent = t("firstMissionAlready");
     return;
   }
 
@@ -3256,6 +4228,7 @@ function showHelp() {
   }
 
   finishMissionIntro();
+  missionHintUsed = true;
   setMompyState("talking");
   const mission = currentMission();
   openModal({
@@ -3366,6 +4339,10 @@ function renderSettingsBody() {
           <span>${t("currentMissionSetting")}</span>
           <span class="settings-control">${String(currentMissionIndex + 1).padStart(2, "0")}</span>
         </div>
+        <div class="settings-row"><span>${t("stars")}</span><span class="settings-control">${totalStars} / ${PLANNED_TOTAL_MISSIONS * 3}</span></div>
+        <div class="settings-row"><span>${t("streak")}</span><span class="settings-control">${currentStreak}</span></div>
+        <div class="settings-row"><span>${t("bestStreak")}</span><span class="settings-control">${bestStreak}</span></div>
+        <div class="settings-row"><span>${t("achievements")}</span><span class="settings-control">${earnedAchievements.length}</span></div>
         <div class="settings-row">
           <span>${t("localProgress")}</span>
           <button id="resetProgressButton" class="settings-inline-button" type="button">${t("resetProgress")}</button>
@@ -3499,6 +4476,8 @@ function showSettings() {
     setMompyState("idle");
   }
 
+  showMompyPanelState(ASSETS.settings);
+
   openModal({
     title: t("settings"),
     body: renderSettingsBody(),
@@ -3510,6 +4489,143 @@ function showSettings() {
     ],
   });
   bindSettingsControls();
+}
+
+function renderAchievementsBody() {
+  const unlocked = new Set(earnedAchievements);
+  const completionPercent = Math.round((earnedAchievements.length / ACHIEVEMENT_DEFINITIONS.length) * 100);
+  const badges = ACHIEVEMENT_DEFINITIONS.map((achievement) => {
+    const isUnlocked = unlocked.has(achievement.id);
+    const visual = achievement.image
+      ? `<span class="achievement-art-shell" aria-hidden="true"><img class="achievement-art" src="${achievement.image}" alt="" draggable="false" /></span>`
+      : `<span class="achievement-medal" aria-hidden="true"><span class="achievement-glyph">${achievement.glyph}</span><small>${achievement.mark}</small></span>`;
+    return `
+      <button type="button" class="achievement-badge ${achievement.image ? "has-art" : ""} ${isUnlocked ? "is-unlocked" : "is-locked"} rarity-${achievement.rarity} family-${achievement.family}" data-achievement-id="${achievement.id}" data-achievement-state="${isUnlocked ? "unlocked" : "locked"}" aria-label="${t(achievement.titleKey)}. ${t(isUnlocked ? "achievementUnlockedStatus" : "achievementLockedStatus")}. ${t(achievement.rarityKey)}.">
+        ${visual}
+        <div class="achievement-copy">
+          <h3>${t(achievement.titleKey)}</h3>
+          <p>${t(achievement.descriptionKey)}</p>
+          <span class="achievement-state">${t(isUnlocked ? "achievementUnlockedStatus" : "achievementLockedStatus")}</span>
+          <span class="achievement-rarity"> · ${t(achievement.rarityKey)}</span>
+        </div>
+      </button>
+    `;
+  }).join("");
+
+  return `
+    <div class="achievements-board">
+      <div class="achievements-overview">
+        <div class="achievements-summary">
+          <span>${t("achievementsSummary", {
+            earned: earnedAchievements.length,
+            total: ACHIEVEMENT_DEFINITIONS.length,
+          })}</span>
+          <span class="achievements-progress" aria-hidden="true" style="--achievement-progress: ${completionPercent}%">
+            <span></span>
+          </span>
+        </div>
+        <strong>★ ${totalStars}</strong>
+      </div>
+      <div class="achievement-toolbar" role="group" aria-label="${t("achievements")}">
+        <button type="button" class="achievement-filter is-active" data-achievement-filter="all" aria-pressed="true">${t("achievementFilterAll")}</button>
+        <button type="button" class="achievement-filter" data-achievement-filter="unlocked" aria-pressed="false">${t("achievementFilterUnlocked")}</button>
+        <button type="button" class="achievement-filter" data-achievement-filter="locked" aria-pressed="false">${t("achievementFilterLocked")}</button>
+        <span class="achievements-visible-summary" aria-live="polite">${t("achievementVisibleSummary", {
+          visible: ACHIEVEMENT_DEFINITIONS.length,
+          total: ACHIEVEMENT_DEFINITIONS.length,
+        })}</span>
+      </div>
+      <div class="achievement-grid">${badges}</div>
+    </div>
+  `;
+}
+
+function showAchievementDetails(achievementId) {
+  const achievement = getAchievementDefinition(achievementId);
+
+  if (!achievement) {
+    return;
+  }
+
+  const isUnlocked = earnedAchievements.includes(achievement.id);
+  const visual = achievement.image
+    ? `<span class="achievement-art-shell achievement-detail-art" aria-hidden="true"><img class="achievement-art" src="${achievement.image}" alt="" draggable="false" /></span>`
+    : `<span class="achievement-medal achievement-detail-medal" aria-hidden="true"><span class="achievement-glyph">${achievement.glyph}</span><small>${achievement.mark}</small></span>`;
+  openModal({
+    title: t(achievement.titleKey),
+    body: `
+      <div class="achievement-detail ${achievement.image ? "has-art" : ""} rarity-${achievement.rarity} family-${achievement.family} ${isUnlocked ? "is-unlocked" : "is-locked"}">
+        ${visual}
+        <div class="achievement-detail-copy">
+          <p>${t(achievement.descriptionKey)}</p>
+          <div class="achievement-detail-meta">
+            <strong>${t(isUnlocked ? "achievementUnlockedStatus" : "achievementLockedStatus")}</strong>
+            <span>${t(achievement.rarityKey)}</span>
+          </div>
+        </div>
+      </div>
+    `,
+    actions: [
+      {
+        label: t("achievements"),
+        onClick: showAchievements,
+      },
+    ],
+  });
+}
+
+function bindAchievementControls() {
+  const filters = [...modalBody.querySelectorAll("[data-achievement-filter]")];
+  const badges = [...modalBody.querySelectorAll("[data-achievement-state]")];
+  const summary = modalBody.querySelector(".achievements-visible-summary");
+
+  filters.forEach((filterButton) => {
+    filterButton.addEventListener("click", () => {
+      const filter = filterButton.dataset.achievementFilter;
+      let visibleCount = 0;
+
+      badges.forEach((badge) => {
+        const isVisible = filter === "all" || badge.dataset.achievementState === filter;
+        badge.hidden = !isVisible;
+        visibleCount += Number(isVisible);
+      });
+
+      filters.forEach((button) => {
+        const isActive = button === filterButton;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+      });
+
+      if (summary) {
+        summary.textContent = t("achievementVisibleSummary", {
+          visible: visibleCount,
+          total: ACHIEVEMENT_DEFINITIONS.length,
+        });
+      }
+    });
+  });
+
+  badges.forEach((badge) => {
+    badge.addEventListener("click", () => {
+      showAchievementDetails(badge.dataset.achievementId);
+    });
+  });
+}
+
+function showAchievements() {
+  finishMissionIntro();
+
+  if (trainingStarted && !missionCompleted) {
+    setMompyState("idle");
+  }
+
+  showMompyPanelState(ASSETS.achievements);
+
+  openModal({
+    title: t("achievements"),
+    body: renderAchievementsBody(),
+  });
+  bindAchievementControls();
 }
 
 function confirmExitApp() {
@@ -3572,7 +4688,7 @@ function confirmResetProgress() {
           closeModal();
 
           if (trainingStarted) {
-            output.textContent = "Progress reset.";
+            output.textContent = t("progressReset");
             editor.focus();
           } else {
             showStartScreen();
@@ -3600,10 +4716,10 @@ function exitApp() {
   clearTimeout(completionTimer);
   completionPending = false;
   setMompyState("idle");
-  startMompySprite.src = ASSETS.idle;
+  startMompySprite.src = ASSETS.front;
 
   if (output) {
-    output.textContent = "Mompy: Exiting app.";
+    output.textContent = t("exitingApp");
   }
 
   if (document.fullscreenElement) {
@@ -3621,7 +4737,7 @@ async function toggleFullscreen() {
       await document.exitFullscreen();
     }
   } catch (error) {
-    const message = `Mompy: Couldn't change fullscreen mode.\n${error.message}`;
+    const message = `${t("fullscreenChangeError")}\n${error.message}`;
 
     if (trainingStarted) {
       output.textContent = message;
@@ -3662,7 +4778,10 @@ document.addEventListener("click", (event) => {
   audioManager.playClick();
 });
 
-editor.addEventListener("input", updateLineNumbers);
+editor.addEventListener("input", () => {
+  updateLineNumbers();
+  pointMompyAtEditor();
+});
 editor.addEventListener("keydown", (event) => {
   if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
     event.preventDefault();
@@ -3679,6 +4798,7 @@ editor.addEventListener("keydown", (event) => {
     editor.value = `${editor.value.slice(0, start)}    ${editor.value.slice(end)}`;
     editor.selectionStart = editor.selectionEnd = start + 4;
     updateLineNumbers();
+    pointMompyAtEditor();
   }
 });
 
@@ -3694,6 +4814,7 @@ onboardingNameInput?.addEventListener("keydown", (event) => {
 runButton.addEventListener("click", runCode);
 backButton.addEventListener("click", showBackConfirmation);
 helpButton.addEventListener("click", showHelp);
+achievementsButton?.addEventListener("click", showAchievements);
 settingsButton.addEventListener("click", showSettings);
 fullscreenButton?.addEventListener("click", toggleFullscreen);
 sprite?.addEventListener("click", playMompyShutdownAnimation);

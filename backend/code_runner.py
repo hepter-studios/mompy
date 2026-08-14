@@ -263,7 +263,9 @@ def _execute_in_child(user_code: str, result_queue: multiprocessing.Queue) -> No
     )
 
 
-def run_user_code_safely(user_code: str, timeout: float = TIMEOUT_SECONDS) -> dict:
+def preflight_user_code(user_code: str) -> dict:
+    """Check syntax and mission sandbox rules without executing user code."""
+
     code = user_code or ""
     if len(code) > MAX_CODE_LENGTH:
         return {
@@ -331,6 +333,21 @@ def run_user_code_safely(user_code: str, timeout: float = TIMEOUT_SECONDS) -> di
             ),
         }
 
+    return {
+        "ok": True,
+        "code": code,
+        "tree": tree,
+        "implemented": True,
+    }
+
+
+def run_user_code_safely(user_code: str, timeout: float = TIMEOUT_SECONDS) -> dict:
+    preflight = preflight_user_code(user_code)
+    if not preflight.get("ok"):
+        return preflight
+
+    code = str(preflight["code"])
+
     context = multiprocessing.get_context("spawn")
     result_queue: multiprocessing.Queue = context.Queue(maxsize=1)
     process = context.Process(target=_execute_in_child, args=(code, result_queue))
@@ -339,7 +356,10 @@ def run_user_code_safely(user_code: str, timeout: float = TIMEOUT_SECONDS) -> di
 
     if process.is_alive():
         process.terminate()
-        process.join(0.5)
+        process.join(1.0)
+        if process.is_alive():
+            process.kill()
+            process.join()
         result_queue.close()
         process.close()
         return {
