@@ -20,7 +20,7 @@ from pathlib import Path
 
 
 APP_NAME = "Mompy"
-APP_VERSION = "0.1.3"
+APP_VERSION = "0.1.4"
 PUBLISHER = "Hepter Studio"
 REPO_URL = "https://github.com/hepter-studios/mompy"
 SUPPORT_URL = "https://github.com/hepter-studios/mompy/issues"

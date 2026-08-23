@@ -13,6 +13,7 @@ from .storage import PROGRESS_PATH
 from .progress import (
     complete_mission,
     load_progress,
+    record_app_open,
     reset_progress,
     set_current_mission_index,
     submit_mission_result,
@@ -29,6 +30,7 @@ class MompyAPI:
         self.progress_path = progress_path
 
     def get_bootstrap_state(self) -> dict:
+        progress = self.record_app_open()
         return {
             "backend": {
                 "name": "Mompy Python Backend",
@@ -37,13 +39,18 @@ class MompyAPI:
                 "version": APP_VERSION,
             },
             "profile": self.get_profile(),
-            "progress": self.get_progress(),
+            "progress": progress,
             "current_mission": self.get_current_mission(),
             "missions": self.get_missions(),
             "lessons": self.get_lessons(),
             "briefings": self.get_briefings(),
             "next_briefing": self.get_next_briefing(),
         }
+
+    def record_app_open(self) -> dict:
+        if self.progress_path is None:
+            return record_app_open()
+        return record_app_open(self.progress_path)
 
     def get_missions(self) -> list[dict]:
         return get_missions()

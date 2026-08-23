@@ -1,0 +1,644 @@
+@font-face {
+  font-family: "Pixel Operator";
+  src: url("../assets/fonts/PixelOperator-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pixel Operator";
+  src: url("../assets/fonts/PixelOperator-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pixel Operator Mono";
+  src: url("../assets/fonts/PixelOperatorMono-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pixel Operator Mono";
+  src: url("../assets/fonts/PixelOperatorMono-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --font-pixel: "Pixel Operator", "Cascadia Mono", "Consolas", monospace;
+  --font-pixel-numeric: "Pixel Operator Mono", "Cascadia Mono", "Consolas", monospace;
+
+  --text-2xs: 10px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 20px;
+  --text-heading: 20px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
+  --text-3xl: 32px;
+  --text-display: 48px;
+
+  --leading-2xs: 12px;
+  --leading-xs: 14px;
+  --leading-sm: 18px;
+  --leading-body: 20px;
+  --leading-md: 22px;
+  --leading-lg: 24px;
+  --leading-heading: 24px;
+  --leading-code: 26px;
+  --leading-xl: 28px;
+  --leading-2xl: 36px;
+  --leading-3xl: 36px;
+  --leading-display: 52px;
+
+  --tracking-none: 0px;
+  --tracking-label: 1px;
+  --tracking-display: 1px;
+
+  --text-glow-display:
+    0 0 4px rgba(149, 255, 77, 0.48),
+    0 0 8px rgba(149, 255, 77, 0.18);
+  --text-glow-heading: 0 0 4px rgba(149, 255, 77, 0.28);
+  --text-glow-label: 0 0 2px rgba(149, 255, 77, 0.22);
+
+  font-family: var(--font-pixel);
+}
+
+html,
+body,
+button,
+input,
+select,
+option,
+textarea {
+  font-family: var(--font-pixel);
+  font-synthesis: none;
+  font-kerning: none;
+  font-feature-settings: "kern" 0, "liga" 0;
+}
+
+body {
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
+}
+
+pre,
+code,
+kbd,
+samp,
+textarea,
+.start-mompy-terminal pre,
+.onboarding-terminal pre,
+#outputConsole,
+.line-numbers {
+  font-family: var(--font-pixel-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "kern" 0, "liga" 0, "tnum" 1;
+}
+
+.type-display {
+  font-family: var(--font-pixel);
+  font-size: var(--text-display);
+  font-weight: 700;
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  text-shadow: var(--text-glow-display);
+}
+
+.type-heading {
+  font-family: var(--font-pixel);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: var(--leading-xl);
+  letter-spacing: var(--tracking-none);
+  text-shadow: var(--text-glow-heading);
+}
+
+.type-body {
+  font-family: var(--font-pixel);
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: var(--leading-md);
+  letter-spacing: var(--tracking-none);
+  text-shadow: none;
+}
+
+.type-label {
+  font-family: var(--font-pixel);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-label);
+  text-shadow: var(--text-glow-label);
+}
+
+.type-numeric {
+  font-family: var(--font-pixel-numeric);
+  font-size: var(--text-md);
+  font-weight: 700;
+  line-height: var(--leading-md);
+  letter-spacing: var(--tracking-none);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Header and boot labels */
+.loading-text {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-label);
+  text-shadow: var(--text-glow-label);
+}
+
+.level-panel,
+.top-exit-button {
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  letter-spacing: var(--tracking-label);
+  text-shadow: var(--text-glow-label);
+}
+
+.level-value {
+  font-family: var(--font-pixel-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Start screen and profile/status */
+.start-mompy-terminal pre {
+  font-size: var(--text-2xs);
+  line-height: var(--leading-xs);
+  letter-spacing: var(--tracking-none);
+  text-shadow: var(--text-glow-label);
+}
+
+.start-mompy-terminal-cursor {
+  font-size: var(--text-2xs);
+  line-height: var(--leading-2xs);
+}
+
+.start-main-panel h1 {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+  letter-spacing: var(--tracking-none);
+  text-shadow: var(--text-glow-heading);
+}
+
+.start-command-button {
+  font-size: clamp(24px, 1.67cqw, var(--text-3xl));
+  line-height: 1;
+  letter-spacing: var(--tracking-label);
+  text-shadow: var(--text-glow-heading);
+}
+
+.start-stat-label {
+  font-size: var(--text-md);
+  line-height: var(--leading-lg);
+  letter-spacing: var(--tracking-label);
+  text-shadow: var(--text-glow-label);
+}
+
+.start-stat-value {
+  font-family: var(--font-pixel-numeric);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: var(--leading-xl);
+  letter-spacing: var(--tracking-none);
+  font-variant-numeric: tabular-nums lining-nums;
+  text-shadow: var(--text-glow-label);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* First visit and Mompy screen messages */
+.onboarding-terminal pre {
+  font-size: var(--text-xs);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-none);
+  text-shadow: var(--text-glow-label);
+}
+
+.onboarding-title {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-label);
+  text-shadow: var(--text-glow-heading);
+}
+
+.onboarding-label,
+.onboarding-input-shell span,
+.onboarding-error,
+.onboarding-button {
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  letter-spacing: var(--tracking-none);
+}
+
+.onboarding-label,
+.onboarding-input-shell span,
+.onboarding-button {
+  text-shadow: var(--text-glow-label);
+}
+
+.onboarding-input-shell input {
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  letter-spacing: var(--tracking-none);
+  text-shadow: none;
+}
+
+.mompy-screen-text p {
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  letter-spacing: var(--tracking-none);
+  text-shadow: var(--text-glow-label);
+  overflow-wrap: anywhere;
+}
+
+.mompy-screen-actions button,
+.mompy-screen-message.is-briefing .mompy-screen-actions button,
+.mompy-screen-message.is-reward .mompy-screen-actions button {
+  font-size: var(--text-2xs);
+  line-height: var(--leading-2xs);
+  letter-spacing: var(--tracking-none);
+  text-shadow: var(--text-glow-label);
+}
+
+.mompy-screen-message.is-briefing .mompy-screen-text p,
+.mompy-screen-message.is-reward .mompy-screen-text p,
+.mompy-screen-message.is-reward .reward-achievement-text,
+.reward-achievement-view {
+  font-size: var(--text-2xs);
+  line-height: var(--leading-2xs);
+  letter-spacing: var(--tracking-none);
+  text-shadow: none;
+}
+
+.mompy-screen-message.is-briefing .mompy-screen-text .mompy-screen-heading,
+.mompy-screen-message.is-reward .reward-title {
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  letter-spacing: var(--tracking-label);
+  text-shadow: var(--text-glow-label);
+}
+
+.mompy-screen-message.is-reward .reward-stars {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-label);
+}
+
+.reward-achievement-medal {
+  font-family: var(--font-pixel-numeric);
+  font-size: var(--text-2xs);
+  line-height: var(--leading-2xs);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Missions and code editor */
+.mission-copy h2 {
+  font-size: var(--text-heading);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-none);
+  text-shadow: var(--text-glow-heading);
+}
+
+.mission-copy p {
+  font-size: var(--text-md);
+  line-height: var(--leading-lg);
+  letter-spacing: var(--tracking-none);
+  text-shadow: none;
+}
+
+.panel-label {
+  font-size: var(--text-heading);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-label);
+  text-shadow: var(--text-glow-heading);
+}
+
+.editor-button {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-label);
+}
+
+.line-numbers,
+textarea {
+  font-size: var(--text-md);
+  line-height: var(--leading-code);
+  letter-spacing: var(--tracking-none);
+}
+
+textarea,
+#outputConsole {
+  text-shadow: none;
+}
+
+#outputConsole {
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-none);
+}
+
+.diagnostic-heading h3 {
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
+  letter-spacing: var(--tracking-none);
+  overflow-wrap: anywhere;
+}
+
+.diagnostic-location {
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  letter-spacing: var(--tracking-none);
+}
+
+/* Settings and standard dialogs */
+.modal-close-button,
+.language-option,
+button.settings-control,
+.settings-inline-button,
+.setting-step,
+.setting-meter {
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  letter-spacing: var(--tracking-none);
+}
+
+.modal h2 {
+  font-size: var(--text-heading);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-label);
+  text-shadow: var(--text-glow-heading);
+}
+
+.modal-body {
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-none);
+  text-shadow: none;
+  overflow-wrap: anywhere;
+}
+
+.settings-section h3 {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-label);
+  text-shadow: var(--text-glow-label);
+}
+
+.modal-button {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-label);
+}
+
+/* Shared achievement typography kept for non-catalog variants */
+.achievements-overview strong,
+.achievement-copy h3 {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-none);
+}
+
+.achievement-filter,
+.achievements-visible-summary,
+.achievement-copy p,
+.achievement-state,
+.achievement-rarity,
+.achievement-detail-copy p,
+.achievement-detail-meta {
+  font-size: var(--text-xs);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-none);
+}
+
+.achievement-medal small,
+.achievement-detail-medal small {
+  font-family: var(--font-pixel-numeric);
+  font-size: var(--text-2xs);
+  line-height: var(--text-2xs);
+  letter-spacing: var(--tracking-none);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.modal-backdrop[data-modal-variant="achievements"] .modal-body {
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+}
+
+/* Full achievement catalog */
+.achievements-header h2 {
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  text-shadow: var(--text-glow-display);
+}
+
+.achievements-header strong,
+.achievements-header span {
+  font-family: var(--font-pixel-numeric);
+  font-size: var(--text-md);
+  font-weight: 700;
+  line-height: var(--leading-md);
+  letter-spacing: var(--tracking-label);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.achievement-category-tab {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-none);
+  text-shadow: var(--text-glow-label);
+}
+
+.achievement-category-tab.is-active {
+  text-shadow: none;
+}
+
+.achievement-card-rarity,
+.achievement-card-requirement,
+.achievement-card-progress,
+.achievement-detail-rarity,
+.achievement-detail section > strong,
+.achievement-category-empty {
+  font-size: var(--text-xs);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-none);
+}
+
+.achievement-card-title {
+  font-size: var(--text-md);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-none);
+  text-shadow: var(--text-glow-label);
+  overflow-wrap: anywhere;
+}
+
+.achievement-card-requirement,
+.achievement-detail section p,
+.achievement-detail-copy p,
+.achievement-category-empty {
+  text-shadow: none;
+  overflow-wrap: anywhere;
+}
+
+.achievement-card-progress,
+.achievement-detail-progress-value {
+  font-family: var(--font-pixel-numeric);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.achievement-detail h3 {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-label);
+  text-shadow: var(--text-glow-heading);
+}
+
+.achievement-detail h4 {
+  font-size: var(--text-heading);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-none);
+  text-shadow: var(--text-glow-heading);
+}
+
+.achievement-detail section > strong {
+  letter-spacing: var(--tracking-label);
+  text-shadow: var(--text-glow-label);
+}
+
+.achievement-detail section p,
+.achievement-detail-copy p {
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-none);
+}
+
+.achievement-detail-progress-value {
+  font-size: var(--text-sm) !important;
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-none);
+}
+
+.achievement-track-button {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  letter-spacing: var(--tracking-label);
+}
+
+/* Use real available faces instead of synthesized 800/900 weights. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong,
+b,
+label,
+button,
+.level-panel,
+.start-mompy-terminal pre,
+.start-stat-label,
+.onboarding-terminal pre,
+.onboarding-input-shell span,
+.onboarding-input-shell input,
+.onboarding-error,
+.mompy-screen-text p,
+.reward-achievement-medal,
+.panel-label,
+.settings-control,
+.setting-meter,
+.achievements-overview strong,
+.achievement-filter,
+.achievement-state,
+.achievement-card-rarity,
+.achievement-card-title,
+.achievement-detail-rarity,
+.achievement-detail section > strong,
+.achievement-lock.is-unlocked {
+  font-weight: 700;
+}
+
+/* Decorative glyphs keep their previous symbol shapes. */
+.achievement-star-icon,
+.reward-stars,
+.reward-star-flight,
+.achievement-glyph,
+.achievement-lock {
+  font-family: "Cascadia Mono", "Segoe UI Symbol", "Segoe UI Emoji", sans-serif;
+  font-synthesis: none;
+}
+
+/* Industrial settings panel typography */
+.settings-machine-title {
+  font-family: var(--font-pixel);
+  font-size: clamp(24px, 4cqh, 48px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+.settings-machine-subtitle {
+  font-family: var(--font-pixel);
+  font-size: clamp(10px, 1.55cqh, 18px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+.settings-nav-button {
+  font-family: var(--font-pixel);
+  font-size: clamp(10px, 1.7cqh, 19px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.settings-machine .settings-control,
+.settings-machine code,
+.settings-machine .setting-meter,
+.settings-update-status {
+  font-family: var(--font-pixel-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.settings-machine .settings-row,
+.settings-machine .settings-control,
+.settings-machine .language-option,
+.settings-machine .settings-inline-button,
+.settings-machine .setting-step,
+.settings-machine .setting-meter {
+  font-size: clamp(10px, 1.52cqh, 17px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.settings-machine .settings-update-status {
+  font-size: clamp(9px, 1.35cqh, 15px);
+}
+
+.settings-system-status {
+  font-family: var(--font-pixel);
+  font-size: clamp(9px, 1.3cqh, 15px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+.settings-machine-exit {
+  font-family: var(--font-pixel);
+  font-size: clamp(14px, 2.15cqh, 24px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 1px;
+}

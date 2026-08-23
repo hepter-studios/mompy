@@ -8,10 +8,15 @@
     <link rel="icon" href="./assets/mompy_idle.ico" sizes="any" />
     <link rel="shortcut icon" href="./assets/mompy_idle.ico" />
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./css/styles.css?v=57" />
+    <link rel="preload" href="./assets/fonts/PixelOperator-Regular.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="./assets/fonts/PixelOperator-Bold.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="./assets/fonts/PixelOperatorMono-Regular.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="./assets/fonts/PixelOperatorMono-Bold.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="stylesheet" href="./css/styles.css?v=127" />
+    <link rel="stylesheet" href="./css/typography.css?v=5" />
   </head>
   <body>
-    <section id="loadingScreen" class="loading-screen" aria-label="Loading Mompy" data-i18n-aria-label="loadingMompy" aria-live="polite">
+    <section id="loadingScreen" class="loading-screen is-intro" aria-label="Loading Mompy" data-i18n-aria-label="loadingMompy" aria-live="polite">
       <div class="loading-shell">
         <div class="loading-visual">
           <img
@@ -27,14 +32,30 @@
             alt="Mompy"
             draggable="false"
           />
+          <img
+            class="loading-title-image"
+            src="./assets/mompy_boot_title.png?v=1"
+            alt="Mompy"
+            draggable="false"
+          />
           <div class="loading-overlay">
-            <div id="loadingBranding" class="loading-branding" aria-label="Hepter Studio">
+            <div id="loadingBranding" class="loading-branding" aria-label="Hepter Studios">
               <div class="loading-branding-logo-crop">
-                <img src="./assets/hepterakt_boot_logo_green.png" alt="Hepter Studio" draggable="false" />
+                <img src="./assets/hepter_studios_boot_logo_green.png?v=3" alt="Hepter Studios" draggable="false" />
               </div>
             </div>
-            <div class="loading-bar" aria-label="Loading" data-i18n-aria-label="loading">
-              <div id="loadingProgress" class="loading-progress"></div>
+            <div class="loading-runway" aria-label="Loading" data-i18n-aria-label="loading">
+              <div class="loading-bar" aria-hidden="true">
+                <div id="loadingProgress" class="loading-progress"></div>
+              </div>
+              <img
+                id="loadingRunner"
+                class="loading-runner"
+                src="./assets/loading/mompy-run-01.png?v=2"
+                alt=""
+                draggable="false"
+                aria-hidden="true"
+              />
             </div>
             <p class="loading-text" data-i18n="loading">Loading...</p>
           </div>
@@ -56,14 +77,31 @@
             <img class="brand-logo" src="./assets/name_mompy.png" alt="Mompy" draggable="false" />
             <div class="header-actions">
               <button id="achievementsButton" class="top-icon-button" type="button" aria-label="Achievements" data-i18n-aria-label="achievements">
-                <span class="achievement-star-icon" aria-hidden="true">&#9733;</span>
+                <img
+                  class="feature-icon-image achievements-feature-icon"
+                  src="./assets/ui-icons/achievements-star.png?v=1"
+                  alt=""
+                  draggable="false"
+                  aria-hidden="true"
+                />
+              </button>
+              <button id="gameButton" class="top-icon-button game-access-button" type="button" aria-label="Mompy game — coming soon" data-i18n-aria-label="gameComingSoon" disabled>
+                <img
+                  class="feature-icon-image game-feature-icon"
+                  src="./assets/ui-icons/game-flag.png?v=1"
+                  alt=""
+                  draggable="false"
+                  aria-hidden="true"
+                />
               </button>
               <button id="settingsButton" class="top-icon-button" type="button" aria-label="Settings" data-i18n-aria-label="settings">
-                <span class="top-icon-mask settings-mask" aria-hidden="true"></span>
-              </button>
-              <button id="fullscreenButton" class="top-icon-button fullscreen-toggle" type="button" aria-label="Expand window" data-i18n-aria-label="expandWindow">
-                <span class="top-icon-mask fullscreen-expand-mask" aria-hidden="true"></span>
-                <span class="top-icon-mask fullscreen-restore-mask" aria-hidden="true"></span>
+                <img
+                  class="feature-icon-image settings-feature-icon"
+                  src="./assets/ui-icons/settings-gear.png?v=1"
+                  alt=""
+                  draggable="false"
+                  aria-hidden="true"
+                />
               </button>
             </div>
           </header>
@@ -89,21 +127,24 @@
               <h1 data-i18n="trainingConsole">Python Training Console</h1>
               <div class="start-actions">
                 <button id="startButton" class="start-command-button" type="button">
-                  <span class="start-command-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" focusable="false">
-                      <path d="M7 4v16l12-8z"></path>
-                    </svg>
-                  </span>
-                  <span data-i18n="start">Start</span>
+                  <img
+                    class="start-command-frame"
+                    src="./assets/start-buttons/start-button-frame.png?v=1"
+                    alt=""
+                    draggable="false"
+                    aria-hidden="true"
+                  />
+                  <span class="start-command-label" data-i18n="start">Start</span>
                 </button>
                 <button id="continueButton" class="start-command-button" type="button">
-                  <span class="start-command-icon" aria-hidden="true">
-                    <svg class="continue-icon" viewBox="0 0 24 24" focusable="false">
-                      <path class="continue-step" d="M6 5v14"></path>
-                      <path class="continue-play" d="M10 5v14l9-7z"></path>
-                    </svg>
-                  </span>
-                  <span data-i18n="continue">Continue</span>
+                  <img
+                    class="start-command-frame"
+                    src="./assets/start-buttons/continue-button-frame.png?v=1"
+                    alt=""
+                    draggable="false"
+                    aria-hidden="true"
+                  />
+                  <span class="start-command-label" data-i18n="continue">Continue</span>
                 </button>
               </div>
             </section>
@@ -111,11 +152,12 @@
             <section class="start-stats-bar" aria-label="User information" data-i18n-aria-label="userInformation">
               <article class="start-stat">
                 <div class="start-stat-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" focusable="false">
-                    <rect width="18" height="18" x="3" y="3" rx="2"></rect>
-                    <circle cx="12" cy="10" r="3"></circle>
-                    <path d="M7 21v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"></path>
-                  </svg>
+                  <img
+                    class="start-stat-icon-image user-stat-icon-image"
+                    src="./assets/ui-icons/user-profile.png?v=1"
+                    alt=""
+                    draggable="false"
+                  />
                 </div>
                 <div class="start-stat-text">
                   <span class="start-stat-label" data-i18n="user">User</span>
@@ -125,12 +167,12 @@
 
               <article class="start-stat">
                 <div class="start-stat-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" focusable="false">
-                    <path d="M13 17V9"></path>
-                    <path d="M18 17v-3"></path>
-                    <path d="M3 3v16a2 2 0 0 0 2 2h16"></path>
-                    <path d="M8 17V5"></path>
-                  </svg>
+                  <img
+                    class="start-stat-icon-image level-stat-icon-image"
+                    src="./assets/ui-icons/level-progress.png?v=1"
+                    alt=""
+                    draggable="false"
+                  />
                 </div>
                 <div class="start-stat-text">
                   <span class="start-stat-label" data-i18n="level">Level</span>
@@ -140,11 +182,12 @@
 
               <article class="start-stat">
                 <div class="start-stat-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" focusable="false">
-                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
-                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                    <path d="m9 14 2 2 4-4"></path>
-                  </svg>
+                  <img
+                    class="start-stat-icon-image missions-stat-icon-image"
+                    src="./assets/ui-icons/missions-completed.png?v=1"
+                    alt=""
+                    draggable="false"
+                  />
                 </div>
                 <div class="start-stat-text">
                   <span class="start-stat-label" data-i18n="missionsCompleted">Missions completed</span>
@@ -179,7 +222,7 @@
                   />
                 </div>
                 <p id="onboardingError" class="onboarding-error" aria-live="polite"></p>
-                <button id="onboardingContinueButton" class="onboarding-button" type="button" data-i18n="continue">Continue</button>
+                <button id="onboardingContinueButton" class="onboarding-button mompy-button mompy-button--primary" type="button" data-i18n="continue">Continue</button>
               </div>
             </section>
           </div>
@@ -204,8 +247,8 @@
                 <p data-i18n="continueQuestion">Continue?</p>
               </div>
               <div class="mompy-screen-actions">
-                <button id="repeatMissionButton" type="button" data-i18n="retry">Retry</button>
-                <button id="nextMissionButton" type="button" data-i18n="nextMission">Next mission</button>
+                <button id="repeatMissionButton" class="mompy-button mompy-button--secondary mompy-button--compact" type="button" data-i18n="retry">Retry</button>
+                <button id="nextMissionButton" class="mompy-button mompy-button--primary mompy-button--compact" type="button" data-i18n="nextMission">Next mission</button>
               </div>
             </div>
           </section>
@@ -228,9 +271,9 @@
             <div class="editor-topline">
               <p class="panel-label" data-i18n="codeEditor">Code editor</p>
               <div class="editor-actions" aria-label="Editor actions" data-i18n-aria-label="editorActions">
-                <button id="backButton" class="editor-button" type="button">← <span data-i18n="back">Back</span></button>
-                <button id="helpButton" class="editor-button" type="button">? <span data-i18n="help">Help</span></button>
-                <button id="runButton" class="editor-button run-button" type="button">▶ <span data-i18n="run">Run</span></button>
+                <button id="backButton" class="editor-button mompy-button mompy-button--secondary" type="button">← <span data-i18n="back">Back</span></button>
+                <button id="helpButton" class="editor-button mompy-button mompy-button--secondary" type="button">? <span data-i18n="help">Help</span></button>
+                <button id="runButton" class="editor-button run-button mompy-button mompy-button--primary" type="button">▶ <span data-i18n="run">Run</span></button>
               </div>
             </div>
 
@@ -254,7 +297,7 @@
 
           <div id="modalBackdrop" class="modal-backdrop" hidden>
             <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-              <button id="modalCloseButton" class="modal-close-button" type="button" aria-label="Close" data-i18n-aria-label="close">X</button>
+              <button id="modalCloseButton" class="modal-close-button mompy-button mompy-button--icon" type="button" aria-label="Close" data-i18n-aria-label="close">X</button>
               <h2 id="modalTitle"></h2>
               <div id="modalBody" class="modal-body"></div>
               <div id="modalActions" class="modal-actions"></div>
@@ -265,6 +308,6 @@
     </main>
 
     <script src="./js/content-i18n.js?v=1"></script>
-    <script src="./js/app.js?v=81"></script>
+    <script src="./js/app.js?v=125"></script>
   </body>
 </html>

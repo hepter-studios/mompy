@@ -19,6 +19,8 @@ class ValidationResult:
     expected_output: str | None = None
     actual_output: str = ""
     runtime_error: str = ""
+    solution_quality: str = "standard"
+    advanced_solution: bool = False
 
     def to_dict(self) -> dict:
         return {
@@ -29,6 +31,8 @@ class ValidationResult:
             "expected_output": self.expected_output,
             "actual_output": self.actual_output,
             "runtime_error": self.runtime_error,
+            "solution_quality": self.solution_quality,
+            "advanced_solution": self.advanced_solution,
         }
 
 
@@ -115,6 +119,81 @@ def _assignments(tree: ast.Module) -> list[tuple[str, ast.AST, int]]:
     return sorted(result, key=lambda item: item[2])
 
 
+def _assigned_names_matching(
+    tree: ast.Module,
+    predicate: Callable[[ast.AST], bool],
+) -> set[str]:
+    matching_names = {
+        name
+        for name, value, _line in _assignments(tree)
+        if predicate(value)
+    }
+    return _dependent_assignment_names(tree, matching_names)
+
+
+def _all_assigned_names(tree: ast.Module) -> set[str]:
+    return {name for name, _value, _line in _assignments(tree)}
+
+
+def _dependent_assignment_names(
+    tree: ast.Module,
+    initial_names: set[str],
+) -> set[str]:
+    dependent_names = set(initial_names)
+    changed = True
+    while changed:
+        changed = False
+        for assigned_name, value, _line in _assignments(tree):
+            if assigned_name in dependent_names:
+                continue
+            if any(_contains_name(value, name) for name in dependent_names):
+                dependent_names.add(assigned_name)
+                changed = True
+    return dependent_names
+
+
+def _is_list_expression(node: ast.AST | None) -> bool:
+    return bool(
+        isinstance(node, (ast.List, ast.ListComp))
+        or (
+            isinstance(node, ast.Call)
+            and _call_name(node) == "list"
+            and len(node.args) <= 1
+            and not node.keywords
+        )
+    )
+
+
+def _is_dict_expression(node: ast.AST | None) -> bool:
+    return bool(
+        isinstance(node, (ast.Dict, ast.DictComp))
+        or (
+            isinstance(node, ast.Call)
+            and _call_name(node) == "dict"
+            and len(node.args) <= 1
+        )
+    )
+
+
+def _is_string_expression(node: ast.AST | None) -> bool:
+    if isinstance(node, ast.Constant):
+        return isinstance(node.value, str)
+    if isinstance(node, ast.JoinedStr):
+        return True
+    if isinstance(node, ast.BinOp) and isinstance(node.op, (ast.Add, ast.Mod)):
+        return any(
+            isinstance(child, ast.Constant) and isinstance(child.value, str)
+            for child in ast.walk(node)
+        )
+    return bool(
+        isinstance(node, ast.Call)
+        and (
+            _call_name(node) == "str"
+            or (isinstance(node.func, ast.Attribute) and node.func.attr in {"format", "join"})
+        )
+    )
+
+
 def _call_name(node: ast.AST | None) -> str | None:
     if not isinstance(node, ast.Call):
         return None
@@ -179,7 +258,7 @@ def _is_named_subscript(node: ast.AST | None, names: set[str], key: object) -> b
 def _updates_name(
     node: ast.AST,
     name: str,
-    amount: int,
+    amount: int | None,
     operation: type[ast.operator],
 ) -> bool:
     for update in ast.walk(node):
@@ -188,7 +267,7 @@ def _updates_name(
             and isinstance(update.target, ast.Name)
             and update.target.id == name
             and isinstance(update.op, operation)
-            and _literal_is(update.value, amount)
+            and (amount is None or _contains_literal(update.value, amount))
         ):
             return True
         if not isinstance(update, ast.Assign) or not isinstance(update.value, ast.BinOp):
@@ -198,7 +277,7 @@ def _updates_name(
             name in targets
             and isinstance(update.value.op, operation)
             and _contains_name(update.value, name)
-            and _contains_literal(update.value, amount)
+            and (amount is None or _contains_literal(update.value, amount))
         ):
             return True
     return False
@@ -264,6 +343,111 @@ def _called_with(tree: ast.Module, function_name: str, *arguments: object) -> bo
     )
 
 
+def _function_is_called(tree: ast.Module, function_name: str) -> bool:
+    return bool(_calls_named(tree, function_name))
+
+
+def _call_result_is_printed(tree: ast.Module, function_name: str) -> bool:
+    calls = _calls_named(tree, function_name)
+    if any(
+        any(
+            any(child is call for child in ast.walk(argument))
+            for argument in print_call.args
+        )
+        for call in calls
+        for print_call in _print_calls(tree)
+    ):
+        return True
+
+    result_names = {
+        name
+        for name, value, _line in _assignments(tree)
+        if any(value is call for call in calls)
+    }
+    result_names = _dependent_assignment_names(tree, result_names)
+    return bool(result_names and _print_uses_name(tree, result_names))
+
+
+def _comparison_uses_name(
+    node: ast.AST | None,
+    names: set[str],
+    operators: tuple[type[ast.cmpop], ...] | None = None,
+) -> bool:
+    return bool(
+        node
+        and any(
+            isinstance(compare, ast.Compare)
+            and (operators is None or any(isinstance(op, operators) for op in compare.ops))
+            and any(_contains_name(compare, name) for name in names)
+            for compare in ast.walk(node)
+        )
+    )
+
+
+def _print_expression_uses_name(function: ast.FunctionDef, name: str) -> bool:
+    module = ast.Module(body=function.body, type_ignores=[])
+    dependent_names = _dependent_assignment_names(module, {name})
+    return _print_uses_name(function, dependent_names)
+
+
+def _function_returns_operation(
+    function: ast.FunctionDef,
+    operator: type[ast.operator],
+    required_names: set[str],
+    required_literal: object = _MISSING,
+) -> bool:
+    def is_required_operation(node: ast.AST | None) -> bool:
+        return bool(
+            isinstance(node, ast.BinOp)
+            and isinstance(node.op, operator)
+            and all(_contains_name(node, name) for name in required_names)
+            and (
+                required_literal is _MISSING
+                or _contains_literal(node, required_literal)
+            )
+        )
+
+    module = ast.Module(body=function.body, type_ignores=[])
+    operation_names = {
+        name
+        for name, value, _line in _assignments(module)
+        if is_required_operation(value)
+    }
+    operation_names = _dependent_assignment_names(module, operation_names)
+    return any(
+        is_required_operation(statement.value)
+        or any(_contains_name(statement.value, name) for name in operation_names)
+        for statement in ast.walk(function)
+        if isinstance(statement, ast.Return) and statement.value is not None
+    )
+
+
+def _function_returns_string_using_name(
+    function: ast.FunctionDef,
+    parameter: str,
+) -> bool:
+    module = ast.Module(body=function.body, type_ignores=[])
+    dependent_names = _dependent_assignment_names(module, {parameter})
+    string_names: set[str] = set()
+    for assigned_name, value, _line in _assignments(module):
+        if (
+            any(_contains_name(value, name) for name in dependent_names)
+            and _is_string_expression(value)
+        ):
+            string_names.add(assigned_name)
+    string_names = _dependent_assignment_names(module, string_names)
+
+    return any(
+        (
+            _is_string_expression(statement.value)
+            and any(_contains_name(statement.value, name) for name in dependent_names)
+        )
+        or any(_contains_name(statement.value, name) for name in string_names)
+        for statement in ast.walk(function)
+        if isinstance(statement, ast.Return) and statement.value is not None
+    )
+
+
 def _is_string_composition(node: ast.AST | None, parameter: str, prefix: str) -> bool:
     if not node or not _contains_name(node, parameter):
         return False
@@ -302,6 +486,8 @@ def _diagnostic(
     column: int | None = None,
     expected: str | None = None,
     actual: str | None = None,
+    cause: str | None = None,
+    action: str | None = None,
 ) -> dict:
     return {
         "category": category,
@@ -310,6 +496,8 @@ def _diagnostic(
         "title": title,
         "summary": summary,
         "suggestion": suggestion,
+        "cause": cause or summary,
+        "action": action or suggestion,
         "line": line,
         "column": column,
         "end_line": line,
@@ -334,6 +522,136 @@ def _last_print_line(user_code: str) -> int | None:
         and hasattr(node, "lineno")
     ]
     return max(lines, default=None)
+
+
+def _output_mismatch_line(user_code: str, expected: str, actual: str) -> int | None:
+    tree = parse_python(user_code)
+    if tree is None:
+        return None
+    print_lines = sorted(call.lineno for call in _print_calls(tree))
+    if not print_lines:
+        return None
+    if len(print_lines) == 1:
+        return print_lines[0]
+
+    expected_lines = expected.splitlines()
+    actual_lines = actual.splitlines()
+    mismatch_index = next(
+        (
+            index
+            for index in range(max(len(expected_lines), len(actual_lines)))
+            if (expected_lines[index] if index < len(expected_lines) else None)
+            != (actual_lines[index] if index < len(actual_lines) else None)
+        ),
+        0,
+    )
+    return print_lines[min(mismatch_index, len(print_lines) - 1)]
+
+
+def _output_mismatch_cause(expected: str, actual: str) -> str:
+    expected_lines = expected.splitlines()
+    actual_lines = actual.splitlines()
+    mismatch_index = next(
+        (
+            index
+            for index in range(max(len(expected_lines), len(actual_lines)))
+            if (expected_lines[index] if index < len(expected_lines) else None)
+            != (actual_lines[index] if index < len(actual_lines) else None)
+        ),
+        0,
+    )
+    expected_value = (
+        expected_lines[mismatch_index]
+        if mismatch_index < len(expected_lines)
+        else "<no additional output>"
+    )
+    actual_value = (
+        actual_lines[mismatch_index]
+        if mismatch_index < len(actual_lines)
+        else "<missing output>"
+    )
+    return (
+        f"Output line {mismatch_index + 1} should be {expected_value!r}, "
+        f"but the program produced {actual_value!r}."
+    )
+
+
+def _solution_quality(mission_id: str, user_code: str) -> str:
+    tree = _tree(user_code)
+    if any(isinstance(node, (ast.ListComp, ast.DictComp, ast.SetComp, ast.GeneratorExp)) for node in ast.walk(tree)):
+        return "advanced"
+    if any(isinstance(node, (ast.JoinedStr, ast.AnnAssign, ast.NamedExpr, ast.IfExp)) for node in ast.walk(tree)):
+        return "advanced"
+    if any(
+        isinstance(node, ast.Call)
+        and (
+            _call_name(node) in {"dict", "list"}
+            or (isinstance(node.func, ast.Attribute) and node.func.attr in {"format", "join"})
+        )
+        for node in ast.walk(tree)
+    ):
+        return "advanced"
+
+    function_names = {
+        node.name for node in tree.body if isinstance(node, ast.FunctionDef)
+    }
+    assigned_call_results = {
+        name
+        for name, value, _line in _assignments(tree)
+        if isinstance(value, ast.Call) and _call_name(value) in function_names
+    }
+    assigned_call_results = _dependent_assignment_names(tree, assigned_call_results)
+    if assigned_call_results and _print_uses_name(tree, assigned_call_results):
+        return "advanced"
+
+    canonical_ranges = {
+        "mission_016": (3,),
+        "mission_017": (2,),
+        "mission_018": (1, 4),
+        "mission_020": (3,),
+    }
+    expected_range = canonical_ranges.get(mission_id)
+    if expected_range and any(
+        isinstance(node, ast.For)
+        and isinstance(node.iter, ast.Call)
+        and _call_name(node.iter) == "range"
+        and not _is_range_call(node.iter, *expected_range)
+        for node in ast.walk(tree)
+    ):
+        return "advanced"
+
+    if mission_id == "mission_012" and any(
+        isinstance(node, ast.Compare)
+        and any(isinstance(op, ast.Lt) for op in node.ops)
+        for node in ast.walk(tree)
+    ):
+        return "advanced"
+    if mission_id == "mission_015" and any(
+        isinstance(node, ast.Compare)
+        and any(isinstance(op, ast.GtE) for op in node.ops)
+        for node in ast.walk(tree)
+    ):
+        return "advanced"
+
+    canonical_while_operators = {
+        "mission_036": ast.LtE,
+        "mission_037": ast.Gt,
+        "mission_038": ast.LtE,
+        "mission_039": ast.LtE,
+        "mission_040": ast.Lt,
+    }
+    expected_operator = canonical_while_operators.get(mission_id)
+    if expected_operator and any(
+        isinstance(node, ast.While)
+        and any(
+            isinstance(compare, ast.Compare)
+            and not any(isinstance(op, expected_operator) for op in compare.ops)
+            for compare in ast.walk(node.test)
+        )
+        for node in ast.walk(tree)
+    ):
+        return "advanced"
+    return "standard"
 
 
 def _ok(mission_id: str) -> ValidationResult:
@@ -400,7 +718,15 @@ def _with_execution(
         )
 
     if actual_output.strip() != mission.expected_output.strip():
-        print_line = _last_print_line(user_code)
+        print_line = _output_mismatch_line(
+            user_code,
+            mission.expected_output,
+            actual_output,
+        )
+        mismatch_cause = _output_mismatch_cause(
+            mission.expected_output,
+            actual_output,
+        )
         return ValidationResult(
             correct=False,
             message="The program ran, but its output is different from the mission goal.",
@@ -410,8 +736,10 @@ def _with_execution(
                     category="output",
                     code="output_mismatch",
                     title="The output does not match yet",
-                    summary="Python ran the code successfully, but printed a different result.",
-                    suggestion="Check the values and text passed to print().",
+                    summary=mismatch_cause,
+                    suggestion="Change the highlighted print expression or the values that reach it, then run the mission again.",
+                    cause=mismatch_cause,
+                    action="Change the highlighted print expression or the values that reach it, then run the mission again.",
                     user_code=user_code,
                     line=print_line,
                     expected=mission.expected_output,
@@ -422,6 +750,7 @@ def _with_execution(
             actual_output=actual_output,
         )
 
+    quality = _solution_quality(mission_id, user_code)
     return ValidationResult(
         correct=result.correct,
         message="Correct. The code ran and produced the expected output.",
@@ -429,6 +758,8 @@ def _with_execution(
         diagnostics=result.diagnostics,
         expected_output=mission.expected_output,
         actual_output=actual_output,
+        solution_quality=quality,
+        advanced_solution=quality == "advanced",
     )
 
 
@@ -461,7 +792,7 @@ def _mission_005(code: str) -> ValidationResult:
 
 def _mission_006(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, "Mompy")
+    names = _all_assigned_names(tree)
     if names and _print_uses_name(tree, names):
         return _ok("mission_006")
     return _fail(
@@ -474,7 +805,7 @@ def _mission_006(code: str) -> ValidationResult:
 
 def _mission_007(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, 1)
+    names = _all_assigned_names(tree)
     if names and _print_uses_name(tree, names):
         return _ok("mission_007")
     return _fail(
@@ -488,15 +819,13 @@ def _mission_007(code: str) -> ValidationResult:
 def _mission_008(code: str) -> ValidationResult:
     tree = _tree(code)
     assignments = _assignments(tree)
-    for name, value, off_line in assignments:
-        if not _literal_is(value, "off"):
-            continue
-        on_lines = [
+    for name, _value, first_line in assignments:
+        later_lines = [
             line
-            for assigned_name, assigned_value, line in assignments
-            if assigned_name == name and line > off_line and _literal_is(assigned_value, "on")
+            for assigned_name, _assigned_value, line in assignments
+            if assigned_name == name and line > first_line
         ]
-        if on_lines and _print_uses_name(tree, {name}):
+        if later_lines and _print_uses_name(tree, {name}):
             return _ok("mission_008")
     return _fail(
         "mission_008",
@@ -508,8 +837,20 @@ def _mission_008(code: str) -> ValidationResult:
 
 def _mission_009(code: str) -> ValidationResult:
     tree = _tree(code)
-    left_names = _assigned_names(tree, 2)
-    right_names = _assigned_names(tree, 3)
+    assigned_names = _all_assigned_names(tree)
+    result_names: set[str] = set()
+    for name, value, _line in _assignments(tree):
+        if not isinstance(value, ast.BinOp) or not isinstance(value.op, ast.Add):
+            continue
+        loaded_names = {
+            child.id
+            for child in ast.walk(value)
+            if isinstance(child, ast.Name)
+            and isinstance(child.ctx, ast.Load)
+            and child.id in assigned_names
+        }
+        if len(loaded_names) >= 2:
+            result_names.add(name)
     for call in _print_calls(tree):
         for argument in call.args:
             if not isinstance(argument, ast.BinOp) or not isinstance(argument.op, ast.Add):
@@ -519,8 +860,10 @@ def _mission_009(code: str) -> ValidationResult:
                 for child in ast.walk(argument)
                 if isinstance(child, ast.Name) and isinstance(child.ctx, ast.Load)
             }
-            if loaded_names & left_names and loaded_names & right_names:
+            if len(loaded_names & assigned_names) >= 2:
                 return _ok("mission_009")
+    if result_names and _print_uses_name(tree, result_names):
+        return _ok("mission_009")
     return _fail(
         "mission_009",
         "Store 2 and 3 in two variables, then add those variables inside print().",
@@ -531,7 +874,7 @@ def _mission_009(code: str) -> ValidationResult:
 
 def _mission_010(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, "Ready")
+    names = _all_assigned_names(tree)
     if names and _print_uses_name(tree, names):
         return _ok("mission_010")
     return _fail(
@@ -544,7 +887,7 @@ def _mission_010(code: str) -> ValidationResult:
 
 def _mission_011(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, True)
+    names = _all_assigned_names(tree)
     for statement in ast.walk(tree):
         if (
             isinstance(statement, ast.If)
@@ -562,17 +905,27 @@ def _mission_011(code: str) -> ValidationResult:
 
 def _mission_012(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, 10)
+    names = _all_assigned_names(tree)
     for statement in ast.walk(tree):
         if not isinstance(statement, ast.If) or not isinstance(statement.test, ast.Compare):
             continue
         test = statement.test
-        if (
-            any(_contains_name(test.left, name) for name in names)
-            and len(test.ops) == 1
-            and isinstance(test.ops[0], ast.Gt)
+        compares_greater = (
+            len(test.ops) == 1
             and len(test.comparators) == 1
-            and _literal_is(test.comparators[0], 5)
+            and (
+                (
+                    isinstance(test.ops[0], ast.Gt)
+                    and any(_contains_name(test.left, name) for name in names)
+                )
+                or (
+                    isinstance(test.ops[0], ast.Lt)
+                    and any(_contains_name(test.comparators[0], name) for name in names)
+                )
+            )
+        )
+        if (
+            compares_greater
             and any(_statement_contains_print(child) for child in statement.body)
         ):
             return _ok("mission_012")
@@ -586,7 +939,7 @@ def _mission_012(code: str) -> ValidationResult:
 
 def _mission_013(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, "py")
+    names = _all_assigned_names(tree)
     for statement in ast.walk(tree):
         if not isinstance(statement, ast.If) or not isinstance(statement.test, ast.Compare):
             continue
@@ -595,7 +948,6 @@ def _mission_013(code: str) -> ValidationResult:
             len(test.ops) == 1
             and isinstance(test.ops[0], ast.Eq)
             and any(_contains_name(test, name) for name in names)
-            and _contains_literal(test, "py")
             and any(_statement_contains_print(child) for child in statement.body)
         ):
             return _ok("mission_013")
@@ -609,17 +961,13 @@ def _mission_013(code: str) -> ValidationResult:
 
 def _mission_014(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, 1)
     for statement in ast.walk(tree):
         if not isinstance(statement, ast.If) or not isinstance(statement.test, ast.Compare):
             continue
         test = statement.test
         if (
             len(test.ops) == 1
-            and isinstance(test.ops[0], ast.GtE)
-            and any(_contains_name(test.left, name) for name in names)
             and len(test.comparators) == 1
-            and _literal_is(test.comparators[0], 2)
             and any(_statement_contains_print(child) for child in statement.body)
             and any(_statement_contains_print(child) for child in statement.orelse)
         ):
@@ -634,18 +982,27 @@ def _mission_014(code: str) -> ValidationResult:
 
 def _mission_015(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, 3)
+    names = _all_assigned_names(tree)
     for statement in ast.walk(tree):
         if not isinstance(statement, ast.If) or not isinstance(statement.test, ast.Compare):
             continue
         test = statement.test
-        if (
+        compares_less_or_equal = (
             len(test.ops) == 1
-            and isinstance(test.ops[0], ast.LtE)
-            and any(_contains_name(test.left, name) for name in names)
             and len(test.comparators) == 1
-            and _literal_is(test.comparators[0], 3)
-            and any(_statement_contains_print(child) for child in statement.body)
+            and (
+                (
+                    isinstance(test.ops[0], ast.LtE)
+                    and any(_contains_name(test.left, name) for name in names)
+                )
+                or (
+                    isinstance(test.ops[0], ast.GtE)
+                    and any(_contains_name(test.comparators[0], name) for name in names)
+                )
+            )
+        )
+        if compares_less_or_equal and any(
+            _statement_contains_print(child) for child in statement.body
         ):
             return _ok("mission_015")
     return _fail(
@@ -661,7 +1018,9 @@ def _mission_016(code: str) -> ValidationResult:
     for statement in ast.walk(tree):
         if (
             isinstance(statement, ast.For)
-            and _is_range_call(statement.iter, 3)
+            and isinstance(statement.iter, ast.Call)
+            and _call_name(statement.iter) == "range"
+            and 1 <= len(statement.iter.args) <= 3
             and _print_uses_name(statement, _name_targets(statement.target))
         ):
             return _ok("mission_016")
@@ -678,7 +1037,9 @@ def _mission_017(code: str) -> ValidationResult:
     for statement in ast.walk(tree):
         if (
             isinstance(statement, ast.For)
-            and _is_range_call(statement.iter, 2)
+            and isinstance(statement.iter, ast.Call)
+            and _call_name(statement.iter) == "range"
+            and 1 <= len(statement.iter.args) <= 3
             and any(_statement_contains_print(child) for child in statement.body)
         ):
             return _ok("mission_017")
@@ -695,7 +1056,9 @@ def _mission_018(code: str) -> ValidationResult:
     for statement in ast.walk(tree):
         if (
             isinstance(statement, ast.For)
-            and _is_range_call(statement.iter, 1, 4)
+            and isinstance(statement.iter, ast.Call)
+            and _call_name(statement.iter) == "range"
+            and 2 <= len(statement.iter.args) <= 3
             and _print_uses_name(statement, _name_targets(statement.target))
         ):
             return _ok("mission_018")
@@ -709,10 +1072,17 @@ def _mission_018(code: str) -> ValidationResult:
 
 def _mission_019(code: str) -> ValidationResult:
     tree = _tree(code)
+    string_names = _assigned_names_matching(tree, _is_string_expression)
     for statement in ast.walk(tree):
         if (
             isinstance(statement, ast.For)
-            and _literal_is(statement.iter, "py")
+            and (
+                _is_string_expression(statement.iter)
+                or (
+                    isinstance(statement.iter, ast.Name)
+                    and statement.iter.id in string_names
+                )
+            )
             and _print_uses_name(statement, _name_targets(statement.target))
         ):
             return _ok("mission_019")
@@ -726,9 +1096,13 @@ def _mission_019(code: str) -> ValidationResult:
 
 def _mission_020(code: str) -> ValidationResult:
     tree = _tree(code)
-    total_names = _assigned_names(tree, 0)
+    total_names = _all_assigned_names(tree)
     for statement in ast.walk(tree):
-        if not isinstance(statement, ast.For) or not _is_range_call(statement.iter, 3):
+        if (
+            not isinstance(statement, ast.For)
+            or not isinstance(statement.iter, ast.Call)
+            or _call_name(statement.iter) != "range"
+        ):
             continue
         loop_names = _name_targets(statement.target)
         updated_names: set[str] = set()
@@ -763,7 +1137,7 @@ def _mission_020(code: str) -> ValidationResult:
 
 def _mission_021(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, ["onion", "terminal", "python"])
+    names = _assigned_names_matching(tree, _is_list_expression)
     if names and _print_uses_name(tree, names):
         return _ok("mission_021")
     return _fail(
@@ -776,14 +1150,13 @@ def _mission_021(code: str) -> ValidationResult:
 
 def _mission_022(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, ["onion", "terminal", "python"])
+    names = _assigned_names_matching(tree, _is_list_expression)
     for call in _print_calls(tree):
         for argument in call.args:
             if (
                 isinstance(argument, ast.Subscript)
                 and isinstance(argument.value, ast.Name)
                 and argument.value.id in names
-                and _literal_is(argument.slice, 1)
             ):
                 return _ok("mission_022")
     return _fail(
@@ -796,7 +1169,7 @@ def _mission_022(code: str) -> ValidationResult:
 
 def _mission_023(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, [1, 2, 3])
+    names = _assigned_names_matching(tree, _is_list_expression)
     appended: set[str] = set()
     for call in ast.walk(tree):
         if (
@@ -806,7 +1179,6 @@ def _mission_023(code: str) -> ValidationResult:
             and isinstance(call.func.value, ast.Name)
             and call.func.value.id in names
             and len(call.args) == 1
-            and _literal_is(call.args[0], 4)
         ):
             appended.add(call.func.value.id)
     if appended and _print_uses_name(tree, appended):
@@ -821,7 +1193,7 @@ def _mission_023(code: str) -> ValidationResult:
 
 def _mission_024(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, ["onion", "python"])
+    names = _assigned_names_matching(tree, _is_list_expression)
     for statement in ast.walk(tree):
         if (
             isinstance(statement, ast.For)
@@ -840,7 +1212,7 @@ def _mission_024(code: str) -> ValidationResult:
 
 def _mission_025(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, [1, 2, 3])
+    names = _assigned_names_matching(tree, _is_list_expression)
     for print_call in _print_calls(tree):
         for argument in print_call.args:
             if (
@@ -880,12 +1252,10 @@ def _mission_027(code: str) -> ValidationResult:
         if len(function.args.args) != 1:
             continue
         parameter = function.args.args[0].arg
-        has_message = any(
-            _is_string_composition(argument, parameter, "Hello, ")
-            for call in _print_calls(function)
-            for argument in call.args
-        )
-        if has_message and _called_with(tree, function.name, "Mompy"):
+        if (
+            _print_expression_uses_name(function, parameter)
+            and _function_is_called(tree, function.name)
+        ):
             return _ok("mission_027")
     return _fail(
         "mission_027",
@@ -901,14 +1271,8 @@ def _mission_028(code: str) -> ValidationResult:
         if len(function.args.args) != 2:
             continue
         parameters = {argument.arg for argument in function.args.args}
-        has_sum = any(
-            isinstance(statement.value, ast.BinOp)
-            and isinstance(statement.value.op, ast.Add)
-            and all(_contains_name(statement.value, parameter) for parameter in parameters)
-            for statement in ast.walk(function)
-            if isinstance(statement, ast.Return) and statement.value is not None
-        )
-        if has_sum and _printed_call(tree, function.name, 2, 3):
+        has_sum = _function_returns_operation(function, ast.Add, parameters)
+        if has_sum and _call_result_is_printed(tree, function.name):
             return _ok("mission_028")
     return _fail(
         "mission_028",
@@ -924,12 +1288,8 @@ def _mission_029(code: str) -> ValidationResult:
         if len(function.args.args) != 1:
             continue
         parameter = function.args.args[0].arg
-        has_message = any(
-            _is_string_composition(statement.value, parameter, "Hello, ")
-            for statement in ast.walk(function)
-            if isinstance(statement, ast.Return)
-        )
-        if has_message and _printed_call(tree, function.name, "Mackson"):
+        has_message = _function_returns_string_using_name(function, parameter)
+        if has_message and _call_result_is_printed(tree, function.name):
             return _ok("mission_029")
     return _fail(
         "mission_029",
@@ -945,15 +1305,13 @@ def _mission_030(code: str) -> ValidationResult:
         if len(function.args.args) != 1:
             continue
         parameter = function.args.args[0].arg
-        has_double = any(
-            isinstance(statement.value, ast.BinOp)
-            and isinstance(statement.value.op, ast.Mult)
-            and _contains_name(statement.value, parameter)
-            and _contains_literal(statement.value, 2)
-            for statement in ast.walk(function)
-            if isinstance(statement, ast.Return) and statement.value is not None
+        has_double = _function_returns_operation(
+            function,
+            ast.Mult,
+            {parameter},
+            required_literal=2,
         )
-        if has_double and _printed_call(tree, function.name, 4):
+        if has_double and _call_result_is_printed(tree, function.name):
             return _ok("mission_030")
     return _fail(
         "mission_030",
@@ -965,7 +1323,7 @@ def _mission_030(code: str) -> ValidationResult:
 
 def _mission_031(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, {"name": "Mompy", "level": 1})
+    names = _assigned_names_matching(tree, _is_dict_expression)
     if names and _print_uses_name(tree, names):
         return _ok("mission_031")
     return _fail(
@@ -978,7 +1336,7 @@ def _mission_031(code: str) -> ValidationResult:
 
 def _mission_032(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, {"name": "Mompy", "level": 1})
+    names = _assigned_names_matching(tree, _is_dict_expression)
     if any(
         _is_named_subscript(argument, names, "name")
         for call in _print_calls(tree)
@@ -995,11 +1353,11 @@ def _mission_032(code: str) -> ValidationResult:
 
 def _mission_033(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, {"name": "Mompy"})
+    names = _assigned_names_matching(tree, _is_dict_expression)
     changed = {
         target.value.id
         for statement in ast.walk(tree)
-        if isinstance(statement, ast.Assign) and _literal_is(statement.value, "Python")
+        if isinstance(statement, ast.Assign)
         for target in statement.targets
         if _is_named_subscript(target, names, "language")
         and isinstance(target.value, ast.Name)
@@ -1020,11 +1378,11 @@ def _mission_033(code: str) -> ValidationResult:
 
 def _mission_034(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, {"level": 1})
+    names = _assigned_names_matching(tree, _is_dict_expression)
     changed = {
         target.value.id
         for statement in ast.walk(tree)
-        if isinstance(statement, ast.Assign) and _literal_is(statement.value, 2)
+        if isinstance(statement, ast.Assign)
         for target in statement.targets
         if _is_named_subscript(target, names, "level")
         and isinstance(target.value, ast.Name)
@@ -1045,7 +1403,7 @@ def _mission_034(code: str) -> ValidationResult:
 
 def _mission_035(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, {"name": "Mompy"})
+    names = _assigned_names_matching(tree, _is_dict_expression)
     get_calls = [
         call
         for call in ast.walk(tree)
@@ -1055,8 +1413,6 @@ def _mission_035(code: str) -> ValidationResult:
         and isinstance(call.func.value, ast.Name)
         and call.func.value.id in names
         and len(call.args) == 2
-        and _literal_is(call.args[0], "mode")
-        and _literal_is(call.args[1], "offline")
     ]
     directly_printed = any(
         any(argument is get_call for argument in print_call.args)
@@ -1080,13 +1436,13 @@ def _mission_035(code: str) -> ValidationResult:
 
 def _mission_036(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, 1)
+    names = _all_assigned_names(tree)
     for statement in (node for node in ast.walk(tree) if isinstance(node, ast.While)):
         for name in names:
             if (
-                _while_compares(statement, name, ast.LtE, 3)
+                _comparison_uses_name(statement.test, {name})
                 and _print_uses_name(statement, {name})
-                and _updates_name(statement, name, 1, ast.Add)
+                and _updates_name(statement, name, None, ast.Add)
             ):
                 return _ok("mission_036")
     return _fail(
@@ -1099,13 +1455,13 @@ def _mission_036(code: str) -> ValidationResult:
 
 def _mission_037(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, 3)
+    names = _all_assigned_names(tree)
     for statement in (node for node in ast.walk(tree) if isinstance(node, ast.While)):
         for name in names:
             if (
-                _while_compares(statement, name, ast.Gt, 0)
+                _comparison_uses_name(statement.test, {name})
                 and _print_uses_name(statement, {name})
-                and _updates_name(statement, name, 1, ast.Sub)
+                and _updates_name(statement, name, None, ast.Sub)
             ):
                 return _ok("mission_037")
     return _fail(
@@ -1118,15 +1474,18 @@ def _mission_037(code: str) -> ValidationResult:
 
 def _mission_038(code: str) -> ValidationResult:
     tree = _tree(code)
-    total_names = _assigned_names(tree, 0)
-    count_names = _assigned_names(tree, 1)
+    assigned_names = _all_assigned_names(tree)
+    total_names = assigned_names
+    count_names = assigned_names
     for statement in (node for node in ast.walk(tree) if isinstance(node, ast.While)):
         for count_name in count_names:
-            if not _while_compares(statement, count_name, ast.LtE, 4):
+            if not _comparison_uses_name(statement.test, {count_name}):
                 continue
-            if not _updates_name(statement, count_name, 1, ast.Add):
+            if not _updates_name(statement, count_name, None, ast.Add):
                 continue
             for total_name in total_names:
+                if total_name == count_name:
+                    continue
                 adds_counter = any(
                     isinstance(update, ast.AugAssign)
                     and isinstance(update.target, ast.Name)
@@ -1155,13 +1514,13 @@ def _mission_038(code: str) -> ValidationResult:
 
 def _mission_039(code: str) -> ValidationResult:
     tree = _tree(code)
-    names = _assigned_names(tree, 0)
+    names = _all_assigned_names(tree)
     for statement in (node for node in ast.walk(tree) if isinstance(node, ast.While)):
         for name in names:
             if (
-                _while_compares(statement, name, ast.LtE, 4)
+                _comparison_uses_name(statement.test, {name})
                 and _print_uses_name(statement, {name})
-                and _updates_name(statement, name, 2, ast.Add)
+                and _updates_name(statement, name, None, ast.Add)
             ):
                 return _ok("mission_039")
     return _fail(
@@ -1174,22 +1533,21 @@ def _mission_039(code: str) -> ValidationResult:
 
 def _mission_040(code: str) -> ValidationResult:
     tree = _tree(code)
-    list_names = _assigned_names(tree, ["learn", "practice", "build"])
-    index_names = _assigned_names(tree, 0)
+    list_names = _assigned_names_matching(tree, _is_list_expression)
+    index_names = _all_assigned_names(tree) - list_names
     for statement in (node for node in ast.walk(tree) if isinstance(node, ast.While)):
         for index_name in index_names:
             compares_length = any(
                 isinstance(compare, ast.Compare)
-                and isinstance(compare.left, ast.Name)
-                and compare.left.id == index_name
-                and len(compare.ops) == 1
-                and isinstance(compare.ops[0], ast.Lt)
-                and len(compare.comparators) == 1
-                and isinstance(compare.comparators[0], ast.Call)
-                and _call_name(compare.comparators[0]) == "len"
-                and len(compare.comparators[0].args) == 1
-                and isinstance(compare.comparators[0].args[0], ast.Name)
-                and compare.comparators[0].args[0].id in list_names
+                and _contains_name(compare, index_name)
+                and any(
+                    isinstance(call, ast.Call)
+                    and _call_name(call) == "len"
+                    and len(call.args) == 1
+                    and isinstance(call.args[0], ast.Name)
+                    and call.args[0].id in list_names
+                    for call in ast.walk(compare)
+                )
                 for compare in ast.walk(statement.test)
             )
             prints_item = any(
@@ -1201,7 +1559,7 @@ def _mission_040(code: str) -> ValidationResult:
                 for call in _print_calls(statement)
                 for argument in call.args
             )
-            if compares_length and prints_item and _updates_name(statement, index_name, 1, ast.Add):
+            if compares_length and prints_item and _updates_name(statement, index_name, None, ast.Add):
                 return _ok("mission_040")
     return _fail(
         "mission_040",

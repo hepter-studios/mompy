@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from .missions import MISSIONS, MISSIONS_BY_ID, PLANNED_TOTAL_MISSIONS
@@ -10,7 +10,20 @@ from .storage import PROGRESS_PATH, read_json, write_json
 from .xp import calculate_level
 
 
-PROGRESS_SCHEMA_VERSION = 3
+PROGRESS_SCHEMA_VERSION = 4
+
+CONSISTENCY_ACHIEVEMENT_GOALS = {
+    "steady_start": ("active_days", 2),
+    "three_days_online": ("active_days", 3),
+    "initial_sequence": ("activity_streak", 3),
+    "code_week": ("active_days", 7),
+    "always_on_week": ("activity_streak", 7),
+    "frequent_operator": ("active_days", 14),
+    "month_on_console": ("active_days", 30),
+    "quarterly_signal": ("active_months", 3),
+    "programming_semester": ("active_months", 6),
+    "mompy_companion": ("active_months", 12),
+}
 
 
 def _empty_mission_stats() -> dict:
@@ -47,14 +60,67 @@ def _timestamp() -> str:
 
 
 def _today() -> str:
-    return datetime.now(timezone.utc).date().isoformat()
+    return datetime.now().astimezone().date().isoformat()
 
 
-def _record_active_day(progress: dict) -> None:
+def _valid_activity_date(value: object) -> str | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        return date.fromisoformat(value).isoformat()
+    except ValueError:
+        return None
+
+
+def _record_active_day(progress: dict, active_date: str | None = None) -> bool:
     active_dates = progress.setdefault("active_dates", [])
-    today = _today()
+    today = _valid_activity_date(active_date or _today())
+    if today is None:
+        raise ValueError("active_date must use YYYY-MM-DD")
     if today not in active_dates:
         active_dates.append(today)
+        active_dates.sort()
+        return True
+    return False
+
+
+def _activity_metrics(active_dates: object) -> dict[str, int]:
+    values = active_dates if isinstance(active_dates, list) else []
+    normalized_dates = sorted({
+        valid
+        for value in values
+        if (valid := _valid_activity_date(value)) is not None
+    })
+    parsed_dates = [date.fromisoformat(value) for value in normalized_dates]
+    longest_streak = 0
+    running_streak = 0
+    previous_date: date | None = None
+
+    for active_date in parsed_dates:
+        if previous_date is not None and active_date == previous_date + timedelta(days=1):
+            running_streak += 1
+        else:
+            running_streak = 1
+        longest_streak = max(longest_streak, running_streak)
+        previous_date = active_date
+
+    return {
+        "active_days": len(parsed_dates),
+        "activity_streak": longest_streak,
+        "active_months": len({value[:7] for value in normalized_dates}),
+    }
+
+
+def _consistency_progress(progress: dict) -> dict[str, dict[str, int | str]]:
+    metrics = _activity_metrics(progress.get("active_dates", []))
+    return {
+        achievement_id: {
+            "current": min(metrics[metric], target),
+            "target": target,
+            "metric": metric,
+        }
+        for achievement_id, (metric, target) in CONSISTENCY_ACHIEVEMENT_GOALS.items()
+    }
 
 
 def _mission_xp(mission_id: str) -> int:
@@ -114,7 +180,10 @@ def _earned_achievements(progress: dict) -> list[str]:
         if isinstance(item, dict)
     )
     best_streak = _safe_non_negative_int(progress.get("best_streak"))
-    active_days = len(progress.get("active_dates", []))
+    activity = _activity_metrics(progress.get("active_dates", []))
+    active_days = activity["active_days"]
+    activity_streak = activity["activity_streak"]
+    active_months = activity["active_months"]
 
     def completed_through(count: int) -> bool:
         required = MISSIONS[:count]
@@ -153,8 +222,26 @@ def _earned_achievements(progress: dict) -> list[str]:
         achievements.append("clean_streak_5")
     if best_streak >= 10:
         achievements.append("clean_streak_10")
-    if active_days >= 3:
+    if active_days >= 2:
         achievements.append("steady_start")
+    if active_days >= 3:
+        achievements.append("three_days_online")
+    if activity_streak >= 3:
+        achievements.append("initial_sequence")
+    if active_days >= 7:
+        achievements.append("code_week")
+    if activity_streak >= 7:
+        achievements.append("always_on_week")
+    if active_days >= 14:
+        achievements.append("frequent_operator")
+    if active_days >= 30:
+        achievements.append("month_on_console")
+    if active_months >= 3:
+        achievements.append("quarterly_signal")
+    if active_months >= 6:
+        achievements.append("programming_semester")
+    if active_months >= 12:
+        achievements.append("mompy_companion")
     if active_days >= 7:
         achievements.append("returning_learner")
     if active_days >= 14:
@@ -202,9 +289,9 @@ def _sanitize_progress(progress: dict | None) -> dict:
     active_dates = progress.get("active_dates", [])
     if isinstance(active_dates, list):
         clean["active_dates"] = sorted({
-            value
+            valid
             for value in active_dates
-            if isinstance(value, str) and len(value) == 10
+            if (valid := _valid_activity_date(value)) is not None
         })
 
     index = progress.get("current_mission_index", 0)
@@ -239,7 +326,9 @@ def _with_progress_metadata(progress: dict) -> dict:
         for stats in enriched["mission_stats"].values()
     )
     enriched["max_stars"] = len(MISSIONS) * 3
-    enriched["active_days"] = len(enriched["active_dates"])
+    activity = _activity_metrics(enriched["active_dates"])
+    enriched.update(activity)
+    enriched["achievement_progress"] = _consistency_progress(enriched)
     enriched["block_progress"] = [
         _block_summary(enriched, block)
         for block in sorted({mission.block for mission in MISSIONS})
@@ -250,6 +339,20 @@ def _with_progress_metadata(progress: dict) -> dict:
 def load_progress(path: Path = PROGRESS_PATH) -> dict:
     progress = _sanitize_progress(read_json(path, default_progress()))
     return _with_progress_metadata(progress)
+
+
+def record_app_open(
+    path: Path = PROGRESS_PATH,
+    *,
+    active_date: str | None = None,
+) -> dict:
+    """Record one Mompy visit per local calendar day."""
+    progress = load_progress(path)
+    if _record_active_day(progress, active_date):
+        progress["last_updated_at"] = _timestamp()
+        progress["achievements"] = _earned_achievements(progress)
+        save_progress(progress, path)
+    return load_progress(path)
 
 
 def save_progress(progress: dict, path: Path = PROGRESS_PATH) -> None:

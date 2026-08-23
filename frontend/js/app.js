@@ -21,8 +21,59 @@ const ASSETS = {
   successSfx: "./assets/audio/success.wav",
   errorSfx: "./assets/audio/error.wav",
   shutdownSfx: "./assets/audio/shutdown.wav",
+  achievementRailSfx: "./assets/audio/achievement-rail-arrive.wav?v=1",
+  achievementGlassSfx: "./assets/audio/achievement-glass-descend.wav?v=1",
+  achievementRevealSfx: "./assets/audio/achievement-content-reveal.wav?v=1",
+  rewardCapsuleClosed: "./assets/reward-capsule/capsule-frame-01-closed.png?v=1",
+  rewardCapsuleUnlocking: "./assets/reward-capsule/capsule-frame-02-unlocking.png?v=1",
+  rewardCapsuleOpening: "./assets/reward-capsule/capsule-frame-03-opening.png?v=1",
+  rewardCapsuleOpen: "./assets/reward-capsule/capsule-frame-04-open.png?v=1",
+  rewardCapsuleMonitor: "./assets/reward-capsule/reward-monitor-frame.png?v=1",
+  rewardCapsuleLegendaryStages: "./assets/reward-capsule/legendary-capsule-stages.png?v=1",
+  achievementPythonConsole1: "./assets/achievements/python/achievement-python-console-frame-01.png?v=1",
+  achievementPythonConsole2: "./assets/achievements/python/achievement-python-console-frame-02.png?v=1",
+  achievementPythonConsole3: "./assets/achievements/python/achievement-python-console-frame-03.png?v=1",
+  settingsPanel: "./assets/settings-panel/settings-panel-base.png?v=1",
+  settingsGearLarge: "./assets/settings-panel/settings-gear-large.png?v=1",
+  settingsGearMedium: "./assets/settings-panel/settings-gear-medium.png?v=1",
+  settingsGearSmall: "./assets/settings-panel/settings-gear-small.png?v=1",
+  settingsGearEngageSfx: "./assets/audio/settings-gear-engage.wav?v=1",
+  settingsGearsTurnSfx: "./assets/audio/settings-gears-turn.wav?v=1",
+  settingsPanelLockSfx: "./assets/audio/settings-panel-lock.wav?v=1",
   ambientLoop: "./assets/audio/mompy_crt_ambient_loop_minimal.wav",
 };
+
+const REWARD_CAPSULE_FRAMES = Object.freeze({
+  closed: ASSETS.rewardCapsuleClosed,
+  unlocking: ASSETS.rewardCapsuleUnlocking,
+  opening: ASSETS.rewardCapsuleOpening,
+  open: ASSETS.rewardCapsuleOpen,
+});
+const PYTHON_CONSOLE_ACHIEVEMENT_FRAMES = Object.freeze([
+  ASSETS.achievementPythonConsole1,
+  ASSETS.achievementPythonConsole2,
+  ASSETS.achievementPythonConsole3,
+]);
+let rewardCapsulePreloadPromise = null;
+
+function preloadRewardCapsuleFrames() {
+  if (!rewardCapsulePreloadPromise) {
+    const sources = [
+      ...Object.values(REWARD_CAPSULE_FRAMES),
+      ASSETS.rewardCapsuleMonitor,
+      ASSETS.rewardCapsuleLegendaryStages,
+      ...PYTHON_CONSOLE_ACHIEVEMENT_FRAMES,
+    ];
+    rewardCapsulePreloadPromise = Promise.all(sources.map((source) => new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(source);
+      image.onerror = () => reject(new Error(`Could not preload reward capsule frame: ${source}`));
+      image.src = source;
+    })));
+  }
+
+  return rewardCapsulePreloadPromise;
+}
 
 const MOMPY_GAZE_TRANSITION_MS = 165;
 const MOMPY_FRONT_BLINK_MS = 135;
@@ -45,9 +96,11 @@ const USER_PROFILE_KEY = "mompy_user_profile_v1";
 const PROGRESS_KEY = "mompy_progress_v1";
 const BRIEFING_PROGRESS_KEY = "mompy_briefing_progress_v1";
 const LANGUAGE_KEY = "mompy_language_v1";
+const CRT_BRIGHTNESS_KEY = "mompy_crt_brightness_v1";
+const MOMPY_ANIMATIONS_KEY = "mompy_animations_v1";
 const DEFAULT_USER_NAME = "Guest";
 const PLANNED_TOTAL_MISSIONS = 40;
-const FALLBACK_APP_VERSION = "0.1.3";
+const FALLBACK_APP_VERSION = "0.1.4";
 const SUPPORTED_LANGUAGES = ["en-US", "pt-BR"];
 
 const UI_TEXT = {
@@ -57,6 +110,9 @@ const UI_TEXT = {
     currentLevel: "Current level",
     level: "Level",
     settings: "Settings",
+    gameComingSoon: "Mompy game — coming soon",
+    settingsControlPanel: "Mompy control panel",
+    systemOnline: "System online",
     expandWindow: "Expand window",
     restoreWindow: "Restore window",
     trainingConsole: "Python Training Console",
@@ -89,6 +145,7 @@ const UI_TEXT = {
     correctAnswer: "Correct answer",
     missionHelp: "Mission help",
     goal: "Goal",
+    scrollOrDragForMore: "Scroll or drag for more ↓",
     decrease: "Decrease",
     increase: "Increase",
     on: "ON",
@@ -113,6 +170,7 @@ const UI_TEXT = {
     logOut: "Log out",
     updates: "Updates",
     installedVersion: "Installed version",
+    updateStatus: "Update status",
     checkUpdates: "Check for updates",
     checking: "Checking",
     openRelease: "Open release",
@@ -123,6 +181,9 @@ const UI_TEXT = {
     upToDate: "Up to date",
     exit: "Exit",
     runShortcut: "Run",
+    indentShortcut: "Indent code",
+    newLineShortcut: "New line",
+    viewMoreShortcut: "View more content",
     closeShortcut: "Close",
     lessonReady: "Lesson ready.",
     learn: "Learn",
@@ -138,6 +199,11 @@ const UI_TEXT = {
     blockComplete: "Block {block} complete · {stars}/{max} stars",
     blockUnlocked: "Block {block} unlocked",
     achievementUnlocked: "Achievement: {name}",
+    newReward: "New reward",
+    openRewardCapsule: "Open reward capsule",
+    openRewardCapsuleHint: "Click or press Enter to open",
+    rewardCapsuleOpening: "Opening reward capsule",
+    rewardRevealed: "Reward revealed",
     achievementFirstMission: "First mission",
     achievementMissionFive: "Console warm-up",
     achievementMissionTen: "Double digits",
@@ -205,6 +271,23 @@ const UI_TEXT = {
     achievementFilterLocked: "Locked",
     achievementVisibleSummary: "Showing {visible} of {total}",
     viewAchievements: "View collection",
+    achievementCategoryConsistency: "Consistency",
+    achievementCategoryPython: "Python",
+    achievementCategoryMissions: "Missions",
+    achievementCategorySecrets: "Secrets",
+    achievementTotalScore: "TOTAL SCORE: {score}",
+    achievementDetailsTitle: "ACHIEVEMENT DETAILS",
+    achievementRequirement: "REQUIREMENT",
+    achievementProgressLabel: "PROGRESS",
+    achievementDescriptionLabel: "DESCRIPTION",
+    achievementTrack: "Track",
+    achievementTracking: "Tracking",
+    achievementPlannedCategory: "The next achievements for this category are being planned.",
+    achievementProgressDays: "{current} / {target} days",
+    achievementProgressStreak: "{current} / {target} consecutive days",
+    achievementProgressMonths: "{current} / {target} months",
+    achievementProgressMissions: "{current} / {target} missions",
+    achievementEncouragement: "Keep Mompy in your routine and keep the code flowing. Mompy is proud of your progress!",
     rarityCommon: "Common",
     rarityUncommon: "Uncommon",
     rarityRare: "Rare",
@@ -217,6 +300,10 @@ const UI_TEXT = {
     checkAttempt: "Check this attempt",
     lineLocation: "Line {line}",
     lineColumnLocation: "Line {line}, column {column}",
+    diagnosticCause: "Cause:",
+    diagnosticExplanation: "Why this happened:",
+    diagnosticSourceLine: "Code on this line:",
+    diagnosticSuggestion: "How to fix:",
     tryThis: "Try this:",
     expected: "Expected:",
     received: "Received:",
@@ -266,6 +353,7 @@ const UI_TEXT = {
     diagnosticIndexErrorTitle: "List position not found",
     diagnosticIndexErrorSummary: "The requested position is outside the list.",
     diagnosticIndexErrorSuggestion: "Check the list length and remember that indexes start at zero.",
+    advancedSolutionPraise: "Mompy loved this advanced solution!",
   },
   "pt-BR": {
     loadingMompy: "Carregando o Mompy",
@@ -273,6 +361,9 @@ const UI_TEXT = {
     currentLevel: "Nível atual",
     level: "Nível",
     settings: "Configurações",
+    gameComingSoon: "Jogo do Mompy — em breve",
+    settingsControlPanel: "Painel de controle do Mompy",
+    systemOnline: "Sistema online",
     expandWindow: "Expandir janela",
     restoreWindow: "Restaurar janela",
     trainingConsole: "Console de Treinamento Python",
@@ -305,6 +396,7 @@ const UI_TEXT = {
     correctAnswer: "Resposta correta",
     missionHelp: "Ajuda da missão",
     goal: "Objetivo",
+    scrollOrDragForMore: "Role ou arraste para ver mais ↓",
     decrease: "Diminuir",
     increase: "Aumentar",
     on: "LIGADO",
@@ -329,6 +421,7 @@ const UI_TEXT = {
     logOut: "Sair da conta",
     updates: "Atualizações",
     installedVersion: "Versão instalada",
+    updateStatus: "Status da atualização",
     checkUpdates: "Verificar atualizações",
     checking: "Verificando",
     openRelease: "Abrir versão",
@@ -339,6 +432,9 @@ const UI_TEXT = {
     upToDate: "Atualizado",
     exit: "Exit",
     runShortcut: "Executar",
+    indentShortcut: "Indentar código",
+    newLineShortcut: "Nova linha",
+    viewMoreShortcut: "Ver mais conteúdo",
     closeShortcut: "Fechar",
     lessonReady: "Aula pronta.",
     learn: "Aprender",
@@ -354,6 +450,11 @@ const UI_TEXT = {
     blockComplete: "Bloco {block} concluído · {stars}/{max} estrelas",
     blockUnlocked: "Bloco {block} desbloqueado",
     achievementUnlocked: "Conquista: {name}",
+    newReward: "Nova recompensa",
+    openRewardCapsule: "Abrir cápsula de recompensa",
+    openRewardCapsuleHint: "Clique ou pressione Enter para abrir",
+    rewardCapsuleOpening: "Abrindo cápsula de recompensa",
+    rewardRevealed: "Recompensa revelada",
     achievementFirstMission: "Primeira missão",
     achievementMissionFive: "Aquecimento do console",
     achievementMissionTen: "Dois dígitos",
@@ -421,6 +522,23 @@ const UI_TEXT = {
     achievementFilterLocked: "Bloqueadas",
     achievementVisibleSummary: "Mostrando {visible} de {total}",
     viewAchievements: "Ver coleção",
+    achievementCategoryConsistency: "Constância",
+    achievementCategoryPython: "Python",
+    achievementCategoryMissions: "Missões",
+    achievementCategorySecrets: "Segredos",
+    achievementTotalScore: "TOTAL SCORE: {score}",
+    achievementDetailsTitle: "DETALHES DA CONQUISTA",
+    achievementRequirement: "REQUISITO",
+    achievementProgressLabel: "PROGRESSO",
+    achievementDescriptionLabel: "DESCRIÇÃO",
+    achievementTrack: "Acompanhar",
+    achievementTracking: "Acompanhando",
+    achievementPlannedCategory: "As próximas conquistas desta categoria estão sendo planejadas.",
+    achievementProgressDays: "{current} / {target} dias",
+    achievementProgressStreak: "{current} / {target} dias seguidos",
+    achievementProgressMonths: "{current} / {target} meses",
+    achievementProgressMissions: "{current} / {target} missões",
+    achievementEncouragement: "Mantenha a constância e o código fluindo. Continue assim, o Mompy está orgulhoso do seu progresso!",
     rarityCommon: "Comum",
     rarityUncommon: "Incomum",
     rarityRare: "Rara",
@@ -433,6 +551,10 @@ const UI_TEXT = {
     checkAttempt: "Confira esta tentativa",
     lineLocation: "Linha {line}",
     lineColumnLocation: "Linha {line}, coluna {column}",
+    diagnosticCause: "Causa:",
+    diagnosticExplanation: "Por que isso aconteceu:",
+    diagnosticSourceLine: "Código nesta linha:",
+    diagnosticSuggestion: "Como corrigir:",
     tryThis: "Tente isto:",
     expected: "Esperado:",
     received: "Recebido:",
@@ -482,21 +604,22 @@ const UI_TEXT = {
     diagnosticIndexErrorTitle: "Posição da lista não encontrada",
     diagnosticIndexErrorSummary: "A posição solicitada está fora da lista.",
     diagnosticIndexErrorSuggestion: "Confira o tamanho da lista e lembre que os índices começam em zero.",
+    advancedSolutionPraise: "O Mompy se apaixonou por esta solução avançada!",
   },
 };
 
 const ACHIEVEMENT_DEFINITIONS = Object.freeze([
-  { id: "steady_start", family: "dedication", titleKey: "achievementSteadyStart", descriptionKey: "achievementSteadyStartDescription", rarityKey: "rarityCommon", rarity: "common", mark: "2D", glyph: "◴", image: "./assets/achievements/achievement-sinal-de-retorno.png?v=1" },
-  { id: "three_days_online", family: "dedication", titleKey: "achievementThreeDaysOnline", descriptionKey: "achievementThreeDaysOnlineDescription", rarityKey: "rarityCommon", rarity: "common", mark: "3D", glyph: "3", image: "./assets/achievements/achievement-tres-dias-online.png?v=1" },
-  { id: "initial_sequence", family: "dedication", titleKey: "achievementInitialSequence", descriptionKey: "achievementInitialSequenceDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "x3", glyph: "3", image: "./assets/achievements/achievement-sequencia-inicial-turquoise.png?v=1" },
-  { id: "code_week", family: "dedication", titleKey: "achievementCodeWeek", descriptionKey: "achievementCodeWeekDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "7D", glyph: "7", image: "./assets/achievements/achievement-semana-de-codigo-turquoise.png?v=1" },
-  { id: "always_on_week", family: "dedication", titleKey: "achievementAlwaysOnWeek", descriptionKey: "achievementAlwaysOnWeekDescription", rarityKey: "rarityRare", rarity: "rare", mark: "7x", glyph: "∞", image: "./assets/achievements/achievement-semana-sem-desligar-blue.png?v=1" },
-  { id: "frequent_operator", family: "dedication", titleKey: "achievementFrequentOperator", descriptionKey: "achievementFrequentOperatorDescription", rarityKey: "rarityRare", rarity: "rare", mark: "14D", glyph: "14", image: "./assets/achievements/achievement-operador-frequente-blue.png?v=1" },
-  { id: "month_on_console", family: "dedication", titleKey: "achievementMonthOnConsole", descriptionKey: "achievementMonthOnConsoleDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "30D", glyph: "30", image: "./assets/achievements/achievement-mes-no-console-purple.png?v=1" },
-  { id: "quarterly_signal", family: "dedication", titleKey: "achievementQuarterlySignal", descriptionKey: "achievementQuarterlySignalDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "3M", glyph: "Ⅲ", image: "./assets/achievements/achievement-sinal-trimestral-purple.png?v=1" },
-  { id: "programming_semester", family: "dedication", titleKey: "achievementProgrammingSemester", descriptionKey: "achievementProgrammingSemesterDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "6M", glyph: "Ⅵ", image: "./assets/achievements/achievement-semestre-programacao-gold.png?v=1" },
-  { id: "mompy_companion", family: "dedication", titleKey: "achievementMompyCompanion", descriptionKey: "achievementMompyCompanionDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "12M", glyph: "★", image: "./assets/achievements/achievement-companheiro-do-mompy-gold.png?v=1" },
-  { id: "first_mission", family: "progress", titleKey: "achievementFirstMission", descriptionKey: "achievementFirstMissionDescription", rarityKey: "rarityCommon", rarity: "common", mark: "01", glyph: "★" },
+  { id: "steady_start", category: "consistency", metric: "active_days", target: 2, family: "dedication", titleKey: "achievementSteadyStart", descriptionKey: "achievementSteadyStartDescription", rarityKey: "rarityCommon", rarity: "common", mark: "2D", glyph: "◴", image: "./assets/achievements/achievement-sinal-de-retorno.png?v=1" },
+  { id: "three_days_online", category: "consistency", metric: "active_days", target: 3, family: "dedication", titleKey: "achievementThreeDaysOnline", descriptionKey: "achievementThreeDaysOnlineDescription", rarityKey: "rarityCommon", rarity: "common", mark: "3D", glyph: "3", image: "./assets/achievements/achievement-tres-dias-online.png?v=1" },
+  { id: "initial_sequence", category: "consistency", metric: "activity_streak", target: 3, family: "dedication", titleKey: "achievementInitialSequence", descriptionKey: "achievementInitialSequenceDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "x3", glyph: "3", image: "./assets/achievements/achievement-sequencia-inicial-turquoise.png?v=1" },
+  { id: "code_week", category: "consistency", metric: "active_days", target: 7, family: "dedication", titleKey: "achievementCodeWeek", descriptionKey: "achievementCodeWeekDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "7D", glyph: "7", image: "./assets/achievements/achievement-semana-de-codigo-turquoise.png?v=1" },
+  { id: "always_on_week", category: "consistency", metric: "activity_streak", target: 7, family: "dedication", titleKey: "achievementAlwaysOnWeek", descriptionKey: "achievementAlwaysOnWeekDescription", rarityKey: "rarityRare", rarity: "rare", mark: "7x", glyph: "∞", image: "./assets/achievements/achievement-semana-sem-desligar-blue.png?v=1" },
+  { id: "frequent_operator", category: "consistency", metric: "active_days", target: 14, family: "dedication", titleKey: "achievementFrequentOperator", descriptionKey: "achievementFrequentOperatorDescription", rarityKey: "rarityRare", rarity: "rare", mark: "14D", glyph: "14", image: "./assets/achievements/achievement-operador-frequente-blue.png?v=1" },
+  { id: "month_on_console", category: "consistency", metric: "active_days", target: 30, family: "dedication", titleKey: "achievementMonthOnConsole", descriptionKey: "achievementMonthOnConsoleDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "30D", glyph: "30", image: "./assets/achievements/achievement-mes-no-console-purple.png?v=1" },
+  { id: "quarterly_signal", category: "consistency", metric: "active_months", target: 3, family: "dedication", titleKey: "achievementQuarterlySignal", descriptionKey: "achievementQuarterlySignalDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "3M", glyph: "Ⅲ", image: "./assets/achievements/achievement-sinal-trimestral-purple.png?v=1" },
+  { id: "programming_semester", category: "consistency", metric: "active_months", target: 6, family: "dedication", titleKey: "achievementProgrammingSemester", descriptionKey: "achievementProgrammingSemesterDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "6M", glyph: "Ⅵ", image: "./assets/achievements/achievement-semestre-programacao-gold.png?v=1" },
+  { id: "mompy_companion", category: "consistency", metric: "active_months", target: 12, family: "dedication", titleKey: "achievementMompyCompanion", descriptionKey: "achievementMompyCompanionDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "12M", glyph: "★", image: "./assets/achievements/achievement-companheiro-do-mompy-gold.png?v=1" },
+  { id: "first_mission", category: "python", metric: "completed_missions", target: 1, family: "progress", titleKey: "achievementFirstMission", descriptionKey: "achievementFirstMissionDescription", rarityKey: "rarityCommon", rarity: "common", mark: "01", glyph: "★", frames: PYTHON_CONSOLE_ACHIEVEMENT_FRAMES },
   { id: "mission_five", family: "progress", titleKey: "achievementMissionFive", descriptionKey: "achievementMissionFiveDescription", rarityKey: "rarityCommon", rarity: "common", mark: "05", glyph: "✦" },
   { id: "mission_ten", family: "progress", titleKey: "achievementMissionTen", descriptionKey: "achievementMissionTenDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "10", glyph: "◆" },
   { id: "halfway_hero", family: "progress", titleKey: "achievementHalfwayHero", descriptionKey: "achievementHalfwayHeroDescription", rarityKey: "rarityRare", rarity: "rare", mark: "1/2", glyph: "◐" },
@@ -516,6 +639,22 @@ const ACHIEVEMENT_DEFINITIONS = Object.freeze([
   { id: "dedicated_learner", family: "dedication", titleKey: "achievementDedicatedLearner", descriptionKey: "achievementDedicatedLearnerDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "14D", glyph: "◕" },
   { id: "veteran_learner", family: "dedication", titleKey: "achievementVeteranLearner", descriptionKey: "achievementVeteranLearnerDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "30D", glyph: "∞" },
 ]);
+
+const PLANNED_ACHIEVEMENT_TOTAL = 40;
+const ACHIEVEMENT_GLASS_ASSET = "./assets/achievements/achievement-glass-panel.png?v=1";
+const ACHIEVEMENT_METAL_RAIL_ASSET = "./assets/achievements/achievement-metal-rail.png?v=1";
+const CONSISTENCY_ACHIEVEMENTS = Object.freeze(
+  ACHIEVEMENT_DEFINITIONS.filter(({ category }) => category === "consistency"),
+);
+const PYTHON_ACHIEVEMENTS = Object.freeze(
+  ACHIEVEMENT_DEFINITIONS.filter(({ category }) => category === "python"),
+);
+const ACHIEVEMENTS_BY_CATEGORY = Object.freeze({
+  consistency: CONSISTENCY_ACHIEVEMENTS,
+  python: PYTHON_ACHIEVEMENTS,
+  missions: Object.freeze([]),
+  secrets: Object.freeze([]),
+});
 
 function getAchievementDefinition(achievementId) {
   return ACHIEVEMENT_DEFINITIONS.find(({ id }) => id === achievementId);
@@ -576,7 +715,7 @@ function applyLanguage(language, { persist = true } = {}) {
   if (trainingStarted && lastValidationResult) {
     renderDiagnostic(lastValidationResult);
   } else if (trainingStarted && missionCompleted && lastCompletedOutput !== null) {
-    renderCompletedMissionOutput(lastCompletedOutput);
+    renderCompletedMissionOutput(lastCompletedOutput, lastCompletedWasAdvanced);
   } else if (trainingStarted && !missionCompleted) {
     output.textContent = missionIntroText(currentMission());
   }
@@ -658,6 +797,9 @@ const defaultProgressState = {
   totalStars: 0,
   currentStreak: 0,
   bestStreak: 0,
+  activeDates: [],
+  achievements: [],
+  achievementProgress: {},
   lastUpdatedAt: null,
 };
 
@@ -680,6 +822,17 @@ const settingsState = {
   crtBrightness: 70,
   mompyAnimations: true,
 };
+
+const SETTINGS_SECTIONS = [
+  { id: "shortcuts" },
+  { id: "audio" },
+  { id: "interface" },
+  { id: "progress" },
+  { id: "account" },
+  { id: "updates" },
+];
+
+let activeSettingsSection = "shortcuts";
 
 let pythonBackendConnected = false;
 let pythonBackendSyncPromise = null;
@@ -783,6 +936,8 @@ function applyPythonProgress(progress) {
   const stars = progress.total_stars ?? progress.totalStars;
   const streak = progress.current_streak ?? progress.currentStreak;
   const best = progress.best_streak ?? progress.bestStreak;
+  const backendActiveDates = progress.active_dates || progress.activeDates;
+  const backendAchievementProgress = progress.achievement_progress || progress.achievementProgress;
 
   if (Number.isInteger(missionIndex)) {
     currentMissionIndex = clampMissionIndex(missionIndex);
@@ -807,12 +962,14 @@ function applyPythonProgress(progress) {
   bestStreak = Number(best) || 0;
   blockProgress = Array.isArray(progress.block_progress) ? progress.block_progress : [];
   earnedAchievements = Array.isArray(progress.achievements) ? progress.achievements : [];
+  activeDates = sanitizeActiveDates(backendActiveDates);
+  achievementProgress = backendAchievementProgress && typeof backendAchievementProgress === "object"
+    ? backendAchievementProgress
+    : buildConsistencyProgress(activeDates);
 
   updateProgressUI();
   saveLocalProgress({
-    currentMissionIndex,
-    completedMissionIds: [...completedMissionIds],
-    totalXp,
+    ...currentProgressPayload(),
     lastUpdatedAt: progress.last_updated_at || progress.lastUpdatedAt || new Date().toISOString(),
   });
 }
@@ -1445,12 +1602,15 @@ let currentStreak = 0;
 let bestStreak = 0;
 let blockProgress = [];
 let earnedAchievements = [];
+let activeDates = [];
+let achievementProgress = {};
 let completedBriefingIds = [];
 let skippedBriefingIds = [];
 
 const loadingScreen = document.querySelector("#loadingScreen");
 const loadingBranding = document.querySelector("#loadingBranding");
 const loadingProgress = document.querySelector("#loadingProgress");
+const loadingRunner = document.querySelector("#loadingRunner");
 const machine = document.querySelector(".machine");
 const startScreen = document.querySelector("#startScreen");
 const startMompySprite = document.querySelector("#startMompySprite");
@@ -1510,7 +1670,14 @@ let lastMissionReward = null;
 let completionTimer = null;
 let completionPending = false;
 let lastValidationResult = null;
+let activeRewardCapsule = null;
+let rewardCapsuleHandled = false;
+let rewardCapsulePresentationPending = false;
+let rewardCapsulePresentationToken = 0;
+let rewardCapsuleInstanceId = 0;
+let missionRewardSequenceScheduled = false;
 let lastCompletedOutput = null;
+let lastCompletedWasAdvanced = false;
 let startScreenAnimationActive = false;
 let startMompyTerminalTimer = null;
 let startMompyTypingTimer = null;
@@ -1520,6 +1687,8 @@ let startMompyTerminalToken = 0;
 let startTerminalExampleIndex = 0;
 let loadingInterval = null;
 let loadingDoneTimer = null;
+let loadingRunnerTimer = null;
+let loadingRunnerFrameIndex = 0;
 let hepteraktBootTimers = [];
 let mompyShutdownAnimating = false;
 let mompyShutdownTimers = [];
@@ -1591,6 +1760,71 @@ function clampAudioVolume(value, fallback) {
   return Math.min(1, Math.max(0, normalized));
 }
 
+function clampSettingPercentage(value, fallback) {
+  const number = Number(value);
+  return Number.isFinite(number) ? Math.min(100, Math.max(0, Math.round(number))) : fallback;
+}
+
+function applyCrtBrightness(value, { persist = true } = {}) {
+  settingsState.crtBrightness = clampSettingPercentage(value, settingsState.crtBrightness);
+  const brightnessFactor = 0.58 + settingsState.crtBrightness * 0.006;
+  machine.style.setProperty("--crt-brightness", brightnessFactor.toFixed(3));
+
+  if (persist) {
+    try {
+      localStorage.setItem(CRT_BRIGHTNESS_KEY, String(settingsState.crtBrightness));
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+}
+
+function setMompyAnimationsEnabled(value, { persist = true, syncRuntime = true } = {}) {
+  settingsState.mompyAnimations = Boolean(value);
+  document.documentElement.classList.toggle("mompy-animations-disabled", !settingsState.mompyAnimations);
+
+  if (persist) {
+    try {
+      localStorage.setItem(MOMPY_ANIMATIONS_KEY, String(settingsState.mompyAnimations));
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+
+  if (!syncRuntime) {
+    return;
+  }
+
+  if (!settingsState.mompyAnimations) {
+    stopStartScreenMompyAnimation({ keepFace: true });
+    clearMompyAmbientTimers();
+    stopTalking();
+  } else if (!trainingStarted && currentProfile && !startScreen.hidden) {
+    startStartScreenMompyAnimation();
+  } else if (trainingStarted && currentMompyState === "idle") {
+    scheduleMompyBlink();
+    scheduleMompyGaze();
+  }
+}
+
+function loadInterfaceSettings() {
+  let storedBrightness = null;
+  let storedAnimations = null;
+
+  try {
+    storedBrightness = localStorage.getItem(CRT_BRIGHTNESS_KEY);
+    storedAnimations = localStorage.getItem(MOMPY_ANIMATIONS_KEY);
+  } catch (error) {
+    console.warn(error);
+  }
+
+  applyCrtBrightness(storedBrightness === null ? settingsState.crtBrightness : storedBrightness, { persist: false });
+  setMompyAnimationsEnabled(storedAnimations === null ? true : storedAnimations === "true", {
+    persist: false,
+    syncRuntime: false,
+  });
+}
+
 const audioManager = {
   sfxEnabled: true,
   musicEnabled: true,
@@ -1609,6 +1843,12 @@ const audioManager = {
       success: new Audio(ASSETS.successSfx),
       error: new Audio(ASSETS.errorSfx),
       shutdown: new Audio(ASSETS.shutdownSfx),
+      achievementRail: new Audio(ASSETS.achievementRailSfx),
+      achievementGlass: new Audio(ASSETS.achievementGlassSfx),
+      achievementReveal: new Audio(ASSETS.achievementRevealSfx),
+      settingsGearEngage: new Audio(ASSETS.settingsGearEngageSfx),
+      settingsGearsTurn: new Audio(ASSETS.settingsGearsTurnSfx),
+      settingsPanelLock: new Audio(ASSETS.settingsPanelLockSfx),
     };
 
     Object.values(this.sounds).forEach((sound) => {
@@ -1683,6 +1923,30 @@ const audioManager = {
 
   playShutdown() {
     this.playSfx("shutdown");
+  },
+
+  playAchievementRail() {
+    this.playSfx("achievementRail");
+  },
+
+  playAchievementGlass() {
+    this.playSfx("achievementGlass");
+  },
+
+  playAchievementReveal() {
+    this.playSfx("achievementReveal");
+  },
+
+  playSettingsGearEngage() {
+    this.playSfx("settingsGearEngage");
+  },
+
+  playSettingsGearsTurn() {
+    this.playSfx("settingsGearsTurn");
+  },
+
+  playSettingsPanelLock() {
+    this.playSfx("settingsPanelLock");
   },
 
   startAmbientMusic() {
@@ -1819,6 +2083,50 @@ const audioManager = {
   },
 };
 
+const LOADING_RUNNER_FRAMES = [
+  "./assets/loading/mompy-run-01.png?v=2",
+  "./assets/loading/mompy-run-02-v3.png?v=1",
+  "./assets/loading/mompy-run-03-v3.png?v=1",
+  "./assets/loading/mompy-run-04-v3.png?v=1",
+  "./assets/loading/mompy-run-05.png?v=2",
+];
+
+LOADING_RUNNER_FRAMES.forEach((source) => {
+  const frame = new Image();
+  frame.src = source;
+});
+
+function setLoadingProgress(value) {
+  const safeValue = Math.max(0, Math.min(Number(value) || 0, 100));
+
+  if (loadingProgress) {
+    loadingProgress.style.width = `${safeValue}%`;
+  }
+
+  if (loadingRunner) {
+    loadingRunner.style.left = `${safeValue}%`;
+  }
+}
+
+function stopLoadingRunnerAnimation() {
+  clearInterval(loadingRunnerTimer);
+  loadingRunnerTimer = null;
+}
+
+function startLoadingRunnerAnimation() {
+  if (!loadingRunner) {
+    return;
+  }
+
+  stopLoadingRunnerAnimation();
+  loadingRunnerFrameIndex = 0;
+  loadingRunner.src = LOADING_RUNNER_FRAMES[loadingRunnerFrameIndex];
+  loadingRunnerTimer = setInterval(() => {
+    loadingRunnerFrameIndex = (loadingRunnerFrameIndex + 1) % LOADING_RUNNER_FRAMES.length;
+    loadingRunner.src = LOADING_RUNNER_FRAMES[loadingRunnerFrameIndex];
+  }, 115);
+}
+
 function showLoadingScreen() {
   if (!loadingScreen) {
     return;
@@ -1826,29 +2134,54 @@ function showLoadingScreen() {
 
   clearInterval(loadingInterval);
   clearTimeout(loadingDoneTimer);
+  stopLoadingRunnerAnimation();
   loadingScreen.hidden = false;
-  loadingScreen.classList.remove("is-branding", "is-branding-out", "is-loading");
-
-  if (loadingProgress) {
-    loadingProgress.style.width = "0%";
-  }
+  loadingScreen.classList.remove("is-intro", "is-intro-out", "is-branding", "is-branding-out", "is-loading");
+  setLoadingProgress(0);
 }
 
 function hideLoadingScreen() {
   clearInterval(loadingInterval);
   clearTimeout(loadingDoneTimer);
+  stopLoadingRunnerAnimation();
   loadingInterval = null;
   loadingDoneTimer = null;
 
   if (loadingScreen) {
     loadingScreen.hidden = true;
-    loadingScreen.classList.remove("is-branding", "is-branding-out", "is-loading");
+    loadingScreen.classList.remove("is-intro", "is-intro-out", "is-branding", "is-branding-out", "is-loading");
   }
 }
 
 function clearHepteraktBootTimers() {
   hepteraktBootTimers.forEach((timer) => clearTimeout(timer));
   hepteraktBootTimers = [];
+}
+
+function showMompyBoot(onComplete) {
+  if (!loadingScreen) {
+    onComplete();
+    return;
+  }
+
+  clearHepteraktBootTimers();
+  showLoadingScreen();
+  audioManager.stopAmbientMusic();
+  stopStartScreenMompyAnimation();
+  loadingScreen.classList.add("is-intro");
+
+  hepteraktBootTimers.push(
+    setTimeout(() => {
+      loadingScreen.classList.add("is-intro-out");
+    }, 1100),
+  );
+
+  hepteraktBootTimers.push(
+    setTimeout(() => {
+      loadingScreen.classList.remove("is-intro", "is-intro-out");
+      onComplete();
+    }, 2050),
+  );
 }
 
 function showHepteraktBoot(onComplete) {
@@ -1895,16 +2228,18 @@ function continueAfterHepteraktBoot() {
   audioManager.stopAmbientMusic();
   showLoadingScreen();
   loadingScreen.classList.add("is-loading");
+  startLoadingRunnerAnimation();
   stopStartScreenMompyAnimation();
 
   loadingInterval = setInterval(() => {
     value += Math.floor(Math.random() * 7) + 4;
     value = Math.min(value, 100);
-    loadingProgress.style.width = `${value}%`;
+    setLoadingProgress(value);
 
     if (value >= 100) {
       clearInterval(loadingInterval);
       loadingInterval = null;
+      stopLoadingRunnerAnimation();
 
       loadingDoneTimer = setTimeout(() => {
         hideLoadingScreen();
@@ -1920,7 +2255,7 @@ function startLoadingSequence() {
     return;
   }
 
-  showHepteraktBoot(continueAfterHepteraktBoot);
+  showMompyBoot(() => showHepteraktBoot(continueAfterHepteraktBoot));
 }
 
 function currentMission() {
@@ -1990,6 +2325,81 @@ function sanitizeBriefingIds(ids) {
   return [...new Set(ids.filter((id) => validIds.has(id)))];
 }
 
+function localDateKey(now = new Date()) {
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function sanitizeActiveDates(values) {
+  if (!Array.isArray(values)) {
+    return [];
+  }
+
+  return [...new Set(values.filter((value) => (
+    typeof value === "string"
+    && /^\d{4}-\d{2}-\d{2}$/.test(value)
+    && !Number.isNaN(Date.parse(`${value}T12:00:00`))
+  )))].sort();
+}
+
+function getActivityMetrics(values = activeDates) {
+  const dates = sanitizeActiveDates(values);
+  let activityStreak = 0;
+  let runningStreak = 0;
+  let previousDay = null;
+
+  dates.forEach((value) => {
+    const currentDay = new Date(`${value}T12:00:00`);
+    const isConsecutive = previousDay
+      && Math.round((currentDay - previousDay) / 86400000) === 1;
+    runningStreak = isConsecutive ? runningStreak + 1 : 1;
+    activityStreak = Math.max(activityStreak, runningStreak);
+    previousDay = currentDay;
+  });
+
+  return {
+    active_days: dates.length,
+    activity_streak: activityStreak,
+    active_months: new Set(dates.map((value) => value.slice(0, 7))).size,
+  };
+}
+
+function buildConsistencyProgress(values = activeDates) {
+  const metrics = getActivityMetrics(values);
+  return Object.fromEntries(CONSISTENCY_ACHIEVEMENTS.map((achievement) => [
+    achievement.id,
+    {
+      current: Math.min(metrics[achievement.metric] || 0, achievement.target),
+      target: achievement.target,
+      metric: achievement.metric,
+    },
+  ]));
+}
+
+function earnedConsistencyAchievements(values = activeDates) {
+  const progressById = buildConsistencyProgress(values);
+  return CONSISTENCY_ACHIEVEMENTS
+    .filter(({ id }) => progressById[id].current >= progressById[id].target)
+    .map(({ id }) => id);
+}
+
+function recordLocalAppOpen() {
+  const today = localDateKey();
+  if (!activeDates.includes(today)) {
+    activeDates = sanitizeActiveDates([...activeDates, today]);
+  }
+
+  achievementProgress = buildConsistencyProgress(activeDates);
+  const consistencyIds = new Set(CONSISTENCY_ACHIEVEMENTS.map(({ id }) => id));
+  earnedAchievements = [
+    ...earnedAchievements.filter((id) => !consistencyIds.has(id)),
+    ...earnedConsistencyAchievements(activeDates),
+  ];
+  saveLocalProgress();
+}
+
 function loadBriefingProgress() {
   try {
     const rawProgress = localStorage.getItem(BRIEFING_PROGRESS_KEY);
@@ -2047,6 +2457,12 @@ function loadProgress() {
       currentMissionIndex = defaultProgressState.currentMissionIndex;
       completedMissionIds = [...defaultProgressState.completedMissionIds];
       totalXp = defaultProgressState.totalXp;
+      totalStars = defaultProgressState.totalStars;
+      currentStreak = defaultProgressState.currentStreak;
+      bestStreak = defaultProgressState.bestStreak;
+      activeDates = [...defaultProgressState.activeDates];
+      earnedAchievements = [...defaultProgressState.achievements];
+      achievementProgress = { ...defaultProgressState.achievementProgress };
       backendLevelInfo = null;
       updateProgressUI();
       return { ...defaultProgressState };
@@ -2059,6 +2475,11 @@ function loadProgress() {
     totalStars = Number(progress.totalStars) || 0;
     currentStreak = Number(progress.currentStreak) || 0;
     bestStreak = Number(progress.bestStreak) || 0;
+    activeDates = sanitizeActiveDates(progress.activeDates || progress.active_dates);
+    earnedAchievements = Array.isArray(progress.achievements) ? [...progress.achievements] : [];
+    achievementProgress = progress.achievementProgress && typeof progress.achievementProgress === "object"
+      ? progress.achievementProgress
+      : buildConsistencyProgress(activeDates);
     backendLevelInfo = null;
     updateProgressUI();
     return {
@@ -2068,6 +2489,9 @@ function loadProgress() {
       totalStars,
       currentStreak,
       bestStreak,
+      activeDates: [...activeDates],
+      achievements: [...earnedAchievements],
+      achievementProgress: { ...achievementProgress },
       lastUpdatedAt: progress.lastUpdatedAt || null,
     };
   } catch (error) {
@@ -2078,6 +2502,9 @@ function loadProgress() {
     totalStars = defaultProgressState.totalStars;
     currentStreak = defaultProgressState.currentStreak;
     bestStreak = defaultProgressState.bestStreak;
+    activeDates = [...defaultProgressState.activeDates];
+    earnedAchievements = [...defaultProgressState.achievements];
+    achievementProgress = { ...defaultProgressState.achievementProgress };
     backendLevelInfo = null;
     updateProgressUI();
     return { ...defaultProgressState };
@@ -2092,6 +2519,9 @@ function currentProgressPayload() {
     totalStars,
     currentStreak,
     bestStreak,
+    activeDates: [...activeDates],
+    achievements: [...earnedAchievements],
+    achievementProgress: { ...achievementProgress },
     lastUpdatedAt: new Date().toISOString(),
   };
 }
@@ -2121,12 +2551,7 @@ async function refreshPythonProgress() {
 }
 
 function saveProgress() {
-  const progress = {
-    currentMissionIndex,
-    completedMissionIds: [...completedMissionIds],
-    totalXp,
-    lastUpdatedAt: new Date().toISOString(),
-  };
+  const progress = currentProgressPayload();
 
   saveLocalProgress(progress);
 
@@ -2139,6 +2564,7 @@ function saveProgress() {
 }
 
 async function resetProgress(options = {}) {
+  resetRewardCapsulePresentation();
   currentMissionIndex = 0;
   completedMissionIds = [];
   totalXp = 0;
@@ -2147,6 +2573,8 @@ async function resetProgress(options = {}) {
   bestStreak = 0;
   blockProgress = [];
   earnedAchievements = [];
+  activeDates = [];
+  achievementProgress = {};
   backendLevelInfo = null;
   missionCompleted = false;
   completionPending = false;
@@ -2220,6 +2648,517 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+function mompyButtonClasses(variant, ...classNames) {
+  return ["mompy-button", `mompy-button--${variant}`, ...classNames]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function emitRewardCapsuleSound(cue, reward) {
+  return window.dispatchEvent(new CustomEvent("mompy:reward-capsule-sound", {
+    cancelable: true,
+    detail: { cue, reward },
+  }));
+}
+
+class MompyRewardCapsule {
+  constructor({
+    reward,
+    onComplete = () => {},
+    onOpen = () => {},
+    onReveal = () => {},
+    onViewAchievements = null,
+    autoClose = false,
+  }) {
+    this.reward = reward;
+    this.onComplete = onComplete;
+    this.onOpen = onOpen;
+    this.onReveal = onReveal;
+    this.onViewAchievements = onViewAchievements;
+    this.autoClose = autoClose;
+    this.variant = Array.isArray(reward?.new_achievements)
+      && reward.new_achievements.some((achievementId) => getAchievementDefinition(achievementId)?.rarity === "legendary")
+      ? "legendary"
+      : "standard";
+    this.state = "closed";
+    this.timers = new Set();
+    this.root = null;
+    this.trigger = null;
+    this.frame = null;
+    this.hint = null;
+    this.status = null;
+    this.result = null;
+    this.actions = null;
+    this.previousFocus = null;
+    this.inertTarget = null;
+    this.reduceMotion = false;
+    this.handleKeydown = this.handleKeydown.bind(this);
+  }
+
+  mount(container) {
+    if (!(container instanceof HTMLElement)) {
+      throw new Error("MompyRewardCapsule needs a valid container.");
+    }
+
+    this.previousFocus = document.activeElement;
+    this.reduceMotion = shouldReduceMotion();
+    this.root = this.buildInterface();
+    this.root.classList.toggle("is-reduced-motion", this.reduceMotion);
+    this.inertTarget = container.querySelector(":scope > .overlay");
+
+    if (this.inertTarget) {
+      this.inertTarget.inert = true;
+    }
+
+    container.classList.add("has-reward-capsule");
+    container.append(this.root);
+    this.root.addEventListener("keydown", this.handleKeydown);
+    this.trigger.focus({ preventScroll: true });
+  }
+
+  buildInterface() {
+    const instanceId = ++rewardCapsuleInstanceId;
+    const titleId = `reward-capsule-title-${instanceId}`;
+    const hintId = `reward-capsule-hint-${instanceId}`;
+
+    const root = document.createElement("section");
+    root.className = "reward-capsule-overlay";
+    root.dataset.capsuleState = "closed";
+    root.dataset.capsuleVariant = this.variant;
+    root.setAttribute("role", "dialog");
+    root.setAttribute("aria-modal", "true");
+    root.setAttribute("aria-labelledby", titleId);
+    root.setAttribute("aria-busy", "false");
+    root.tabIndex = -1;
+
+    const experience = document.createElement("div");
+    experience.className = "reward-capsule-experience";
+
+    const title = document.createElement("h2");
+    title.id = titleId;
+    title.className = "reward-capsule-title";
+    title.textContent = t("newReward");
+
+    this.trigger = document.createElement("button");
+    this.trigger.type = "button";
+    this.trigger.className = "reward-capsule-trigger";
+    this.trigger.setAttribute("aria-label", t("openRewardCapsule"));
+    this.trigger.setAttribute("aria-describedby", hintId);
+    this.trigger.addEventListener("click", () => this.open());
+
+    const stage = document.createElement("span");
+    stage.className = "reward-capsule-stage";
+
+    const glow = document.createElement("span");
+    glow.className = "reward-capsule-glow";
+    glow.setAttribute("aria-hidden", "true");
+
+    this.frame = document.createElement(this.variant === "legendary" ? "span" : "img");
+    this.frame.className = `reward-capsule-frame${this.variant === "legendary" ? " is-legendary" : ""}`;
+    this.frame.dataset.capsuleFrame = "closed";
+    if (this.frame instanceof HTMLImageElement) {
+      this.frame.src = REWARD_CAPSULE_FRAMES.closed;
+      this.frame.alt = "";
+      this.frame.draggable = false;
+    }
+    this.frame.setAttribute("aria-hidden", "true");
+
+    const particles = document.createElement("span");
+    particles.className = "reward-capsule-particles";
+    particles.setAttribute("aria-hidden", "true");
+    for (let index = 0; index < 6; index += 1) {
+      const particle = document.createElement("span");
+      particle.className = `reward-capsule-particle particle-${index + 1}`;
+      particles.append(particle);
+    }
+
+    stage.append(glow, this.frame, particles);
+
+    this.hint = document.createElement("span");
+    this.hint.id = hintId;
+    this.hint.className = "reward-capsule-hint";
+    this.hint.textContent = t("openRewardCapsuleHint");
+
+    this.trigger.append(stage, this.hint);
+
+    this.status = document.createElement("span");
+    this.status.className = "reward-capsule-sr-only";
+    this.status.setAttribute("aria-live", "polite");
+
+    this.result = document.createElement("div");
+    this.result.className = "reward-capsule-result";
+    this.result.hidden = true;
+
+    const resultTitle = document.createElement("p");
+    resultTitle.className = "reward-capsule-result-title";
+    resultTitle.textContent = t("rewardRevealed");
+
+    const cards = document.createElement("div");
+    cards.className = "reward-capsule-cards";
+    cards.setAttribute("role", "list");
+    cards.setAttribute("aria-label", t("newReward"));
+    const achievementIds = Array.isArray(this.reward?.new_achievements)
+      ? this.reward.new_achievements
+      : [];
+    cards.dataset.count = String(achievementIds.length);
+    if (achievementIds.length > 2) {
+      cards.tabIndex = 0;
+    }
+    achievementIds.forEach((achievementId) => {
+      cards.append(this.buildRewardCard(achievementId));
+    });
+
+    this.result.append(resultTitle, cards);
+
+    this.actions = document.createElement("div");
+    this.actions.className = "reward-capsule-actions";
+    this.actions.hidden = true;
+
+    const continueButton = document.createElement("button");
+    continueButton.type = "button";
+    continueButton.className = mompyButtonClasses("primary", "reward-capsule-action");
+    continueButton.textContent = t("continue");
+    continueButton.addEventListener("click", () => this.complete());
+
+    const viewButton = document.createElement("button");
+    viewButton.type = "button";
+    viewButton.className = mompyButtonClasses("secondary", "reward-capsule-action");
+    viewButton.textContent = t("viewAchievements");
+    viewButton.addEventListener("click", () => this.viewAchievements());
+
+    this.actions.append(continueButton, viewButton);
+    experience.append(title, this.trigger, this.status, this.result, this.actions);
+    root.append(experience);
+    return root;
+  }
+
+  buildRewardCard(achievementId) {
+    const definition = getAchievementDefinition(achievementId);
+    const rarity = definition?.rarity || "common";
+    const card = document.createElement("article");
+    card.className = `reward-capsule-card rarity-${rarity}`;
+    card.setAttribute("role", "listitem");
+
+    const art = document.createElement("span");
+    art.className = "reward-capsule-card-art";
+    art.setAttribute("aria-hidden", "true");
+
+    if (Array.isArray(definition?.frames) && definition.frames.length) {
+      art.classList.add("is-animated-achievement");
+      definition.frames.forEach((source, index) => {
+        const image = document.createElement("img");
+        image.className = `python-console-frame python-console-frame-${index + 1}`;
+        image.src = source;
+        image.alt = "";
+        image.draggable = false;
+        art.append(image);
+      });
+    } else if (definition?.image) {
+      const image = document.createElement("img");
+      image.src = definition.image;
+      image.alt = "";
+      image.draggable = false;
+      art.append(image);
+    } else {
+      const glyph = document.createElement("span");
+      glyph.className = "reward-capsule-card-glyph";
+      glyph.textContent = definition?.glyph || "★";
+      art.append(glyph);
+    }
+
+    const name = document.createElement("h3");
+    name.textContent = t(definition?.titleKey || achievementId);
+
+    const rarityLabel = document.createElement("span");
+    rarityLabel.className = "reward-capsule-card-rarity";
+    rarityLabel.textContent = t(definition?.rarityKey || "rarityCommon");
+
+    const description = document.createElement("p");
+    description.textContent = definition?.descriptionKey
+      ? t(definition.descriptionKey)
+      : t("achievementUnlockedStatus");
+
+    card.append(art, name, rarityLabel, description);
+    return card;
+  }
+
+  schedule(callback, delay) {
+    const timer = window.setTimeout(() => {
+      this.timers.delete(timer);
+      callback();
+    }, delay);
+    this.timers.add(timer);
+  }
+
+  setFrame(state) {
+    this.state = state;
+    const frameState = state === "revealed" ? "open" : state;
+    this.root.dataset.capsuleState = state;
+    this.frame.dataset.capsuleFrame = frameState;
+    if (this.frame instanceof HTMLImageElement) {
+      this.frame.src = REWARD_CAPSULE_FRAMES[frameState];
+    }
+  }
+
+  open() {
+    if (this.state !== "closed") {
+      return;
+    }
+
+    this.trigger.disabled = true;
+    this.trigger.setAttribute("aria-label", t("rewardCapsuleOpening"));
+    this.root.setAttribute("aria-busy", "true");
+    this.status.textContent = t("rewardCapsuleOpening");
+    this.root.focus({ preventScroll: true });
+
+    if (this.reduceMotion) {
+      this.setFrame("open");
+      emitRewardCapsuleSound("capsuleOpenSound", this.reward);
+      this.onOpen(this.reward);
+      this.schedule(() => this.reveal(), 100);
+      return;
+    }
+
+    this.setFrame("unlocking");
+    emitRewardCapsuleSound("capsuleUnlockSound", this.reward);
+    this.schedule(() => {
+      this.setFrame("opening");
+      emitRewardCapsuleSound("capsuleOpenSound", this.reward);
+      this.schedule(() => {
+        this.setFrame("open");
+        this.onOpen(this.reward);
+        this.schedule(() => this.reveal(), 190);
+      }, 160);
+    }, 160);
+  }
+
+  reveal() {
+    if (this.state !== "open") {
+      return;
+    }
+
+    this.setFrame("revealed");
+    this.root.setAttribute("aria-busy", "false");
+    this.hint.hidden = true;
+    this.result.hidden = false;
+    this.actions.hidden = false;
+    this.status.textContent = t("rewardRevealed");
+    if (emitRewardCapsuleSound("achievementRevealSound", this.reward)) {
+      audioManager.playAchievementReveal();
+    }
+    this.onReveal(this.reward);
+
+    const firstAction = this.actions.querySelector("button");
+    firstAction?.focus({ preventScroll: true });
+
+    if (this.autoClose) {
+      this.schedule(() => this.complete(), 1600);
+    }
+  }
+
+  complete() {
+    const callback = this.onComplete;
+    const reward = this.reward;
+    this.destroy();
+    callback(reward);
+  }
+
+  viewAchievements() {
+    const callback = this.onViewAchievements;
+    const reward = this.reward;
+    this.destroy();
+    callback?.(reward);
+  }
+
+  handleKeydown(event) {
+    if (event.key !== "Tab") {
+      return;
+    }
+
+    const focusable = Array.from(this.root.querySelectorAll("button:not(:disabled)"));
+    if (!focusable.length) {
+      event.preventDefault();
+      this.root.focus({ preventScroll: true });
+      return;
+    }
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  destroy() {
+    this.timers.forEach((timer) => window.clearTimeout(timer));
+    this.timers.clear();
+    this.root?.removeEventListener("keydown", this.handleKeydown);
+    this.root?.remove();
+    machine?.classList.remove("has-reward-capsule");
+
+    if (this.inertTarget) {
+      this.inertTarget.inert = false;
+    }
+
+    if (this.previousFocus instanceof HTMLElement && this.previousFocus.isConnected) {
+      this.previousFocus.focus({ preventScroll: true });
+    }
+  }
+}
+
+function shouldPresentRewardCapsule(reward = lastMissionReward) {
+  return Boolean(
+    reward?.first_completion
+    && Array.isArray(reward.new_achievements)
+    && reward.new_achievements.length
+    && !rewardCapsuleHandled,
+  );
+}
+
+function resetRewardCapsulePresentation() {
+  rewardCapsulePresentationToken += 1;
+  rewardCapsulePresentationPending = false;
+  rewardCapsuleHandled = false;
+  missionRewardSequenceScheduled = false;
+  activeRewardCapsule?.destroy();
+  activeRewardCapsule = null;
+}
+
+async function beginRewardCapsulePresentation() {
+  if (activeRewardCapsule || rewardCapsulePresentationPending || !shouldPresentRewardCapsule()) {
+    return;
+  }
+
+  const token = rewardCapsulePresentationToken;
+  const reward = lastMissionReward;
+  let capsule = null;
+  rewardCapsulePresentationPending = true;
+
+  try {
+    await preloadRewardCapsuleFrames();
+
+    if (
+      token !== rewardCapsulePresentationToken
+      || reward !== lastMissionReward
+      || !missionCompleted
+      || !shouldPresentRewardCapsule(reward)
+    ) {
+      return;
+    }
+
+    capsule = new MompyRewardCapsule({
+      reward,
+      onReveal: () => {
+        rewardCapsuleHandled = true;
+      },
+      onComplete: () => {
+        if (activeRewardCapsule === capsule) {
+          activeRewardCapsule = null;
+        }
+        rewardCapsuleHandled = true;
+        renderMompyCompletionPrompt();
+        mompyScreenMessage.hidden = false;
+      },
+      onViewAchievements: () => {
+        if (activeRewardCapsule === capsule) {
+          activeRewardCapsule = null;
+        }
+        rewardCapsuleHandled = true;
+        showAchievements();
+      },
+    });
+    activeRewardCapsule = capsule;
+    capsule.mount(machine);
+  } catch (error) {
+    if (activeRewardCapsule === capsule) {
+      activeRewardCapsule = null;
+    }
+    capsule?.destroy();
+    console.warn("Reward capsule could not be shown; using the normal reward panel.", error);
+    if (token === rewardCapsulePresentationToken && reward === lastMissionReward && missionCompleted) {
+      renderMompyCompletionPrompt();
+      mompyScreenMessage.hidden = false;
+    }
+  } finally {
+    if (token === rewardCapsulePresentationToken) {
+      rewardCapsulePresentationPending = false;
+    }
+  }
+}
+
+function runLocalRewardCapsuleTestFromQuery() {
+  const isLocalHost = ["localhost", "127.0.0.1"].includes(location.hostname);
+  if (!isLocalHost) {
+    return;
+  }
+
+  const rawTestId = new URLSearchParams(location.search).get("capsuleTest");
+  if (!rawTestId) {
+    return;
+  }
+
+  const aliases = {
+    python: "first_mission",
+    standard: "first_mission",
+    legendary: "programming_semester",
+  };
+  const achievementId = aliases[rawTestId] || rawTestId;
+  const definition = getAchievementDefinition(achievementId);
+  if (!definition) {
+    console.warn(`Unknown local capsule test achievement: ${achievementId}`);
+    return;
+  }
+
+  let attempts = 0;
+  const launch = async () => {
+    attempts += 1;
+    if (!loadingScreen?.hidden) {
+      if (attempts < 100) {
+        window.setTimeout(launch, 120);
+      }
+      return;
+    }
+
+    try {
+      await preloadRewardCapsuleFrames();
+      activeRewardCapsule?.destroy();
+
+      const fakeReward = {
+        first_completion: true,
+        new_achievements: [achievementId],
+        stars: 3,
+        xp_awarded: 0,
+        current_streak: 0,
+        local_capsule_test: true,
+      };
+      let capsule = null;
+      const clearActiveCapsule = () => {
+        if (activeRewardCapsule === capsule) {
+          activeRewardCapsule = null;
+        }
+      };
+      capsule = new MompyRewardCapsule({
+        reward: fakeReward,
+        onComplete: clearActiveCapsule,
+        onViewAchievements: () => {
+          clearActiveCapsule();
+          showAchievements();
+        },
+      });
+      activeRewardCapsule = capsule;
+      capsule.mount(machine);
+    } catch (error) {
+      console.warn("Local reward capsule test could not be started.", error);
+    }
+  };
+
+  window.setTimeout(launch, 120);
+}
+
 function getBriefingForMission(missionIndex) {
   const briefing = learningBriefings.find((item) => item.beforeMissionIndex === missionIndex) || null;
   return localizeBriefing(briefing);
@@ -2243,7 +3182,7 @@ function findBriefingById(briefingId) {
 function renderMompyScreenPanel({ title, lines = [], actions = [], variant = "" }) {
   stopTalking();
   clearTimeout(settleTimer);
-  machine.classList.remove("is-success", "is-error");
+  machine.classList.remove("is-success", "is-error", "is-impressed");
   sprite.src = ASSETS.blank;
 
   mompyScreenMessage.hidden = false;
@@ -2272,23 +3211,27 @@ function renderMompyScreenPanel({ title, lines = [], actions = [], variant = "" 
   const actionShell = document.createElement("div");
   actionShell.className = "mompy-screen-actions";
 
+  if (variant === "check") {
+    actionShell.classList.add("is-answer-list");
+  }
+
   if (actions.length > 2) {
     actionShell.classList.add("is-stacked");
+  } else if (actions.length === 1) {
+    actionShell.classList.add("is-single");
   }
 
   actions.forEach((action) => {
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = action.label;
+    button.className = [
+      "mompy-screen-text-action",
+      variant === "check" ? "mompy-answer-choice" : "",
+      action.primary ? "is-primary" : "is-secondary",
+    ].filter(Boolean).join(" ");
 
-    if (action.primary) {
-      button.classList.add("is-primary");
-    }
-
-    button.addEventListener("click", () => {
-      audioManager.playClick();
-      action.onClick();
-    });
+    button.addEventListener("click", action.onClick);
 
     actionShell.append(button);
   });
@@ -2341,66 +3284,22 @@ function renderMompyCompletionPrompt() {
     appendLine(progression.join(" · "), "reward-detail reward-progression");
   }
 
-  const newAchievements = reward?.new_achievements || [];
-  if (newAchievements.length) {
-    mompyScreenMessage.classList.add("has-achievement");
-    const achievementRow = document.createElement("button");
-    achievementRow.type = "button";
-    achievementRow.className = "reward-achievement";
-    achievementRow.setAttribute("aria-label", t("viewAchievements"));
-    achievementRow.addEventListener("click", showAchievements);
-
-    const celebration = document.createElement("img");
-    celebration.className = "reward-celebration-sprite";
-    celebration.src = ASSETS.celebrate;
-    celebration.alt = "";
-    celebration.setAttribute("aria-hidden", "true");
-
-    const achievementStack = document.createElement("span");
-    achievementStack.className = "reward-achievement-stack";
-
-    newAchievements.forEach((achievementId) => {
-      const definition = getAchievementDefinition(achievementId);
-      const item = document.createElement("span");
-      item.className = `reward-achievement-item rarity-${definition?.rarity || "common"}`;
-
-      const medal = document.createElement("span");
-      medal.className = "reward-achievement-medal";
-      medal.setAttribute("aria-hidden", "true");
-      medal.textContent = definition?.glyph || "★";
-
-      const name = document.createElement("span");
-      name.className = "reward-achievement-text";
-      name.textContent = t("achievementUnlocked", {
-        name: t(definition?.titleKey || achievementId),
-      });
-
-      item.append(medal, name);
-      achievementStack.append(item);
-    });
-
-    const viewLabel = document.createElement("span");
-    viewLabel.className = "reward-achievement-view";
-    viewLabel.textContent = t("viewAchievements");
-
-    achievementStack.append(viewLabel);
-    achievementRow.append(celebration, achievementStack);
-    text.append(achievementRow);
-  } else {
-    appendLine(t("continueQuestion"), "reward-question");
-  }
+  // Achievement unlocks are presented by the full-screen reward capsule.
+  // Avoid duplicating them as a small notification on Mompy's own display.
+  appendLine(t("continueQuestion"), "reward-question");
 
   const actionShell = document.createElement("div");
   actionShell.className = "mompy-screen-actions";
 
   const repeatButton = document.createElement("button");
   repeatButton.type = "button";
+  repeatButton.className = "mompy-screen-text-action is-secondary";
   repeatButton.textContent = t("retry");
   repeatButton.addEventListener("click", repeatMission);
 
   const nextButton = document.createElement("button");
   nextButton.type = "button";
-  nextButton.className = "is-primary";
+  nextButton.className = "mompy-screen-text-action is-primary";
   nextButton.textContent = t("nextMission");
   nextButton.addEventListener("click", goToNextMission);
 
@@ -2488,7 +3387,7 @@ function renderBriefingStep(briefing, stepIndex) {
   });
 }
 
-function renderBriefingRetry(briefing, stepIndex) {
+function renderBriefingRetry(briefing, stepIndex, contextLine = "") {
   const step = briefing.steps[stepIndex];
 
   if (!step) {
@@ -2500,7 +3399,7 @@ function renderBriefingRetry(briefing, stepIndex) {
   setMompyState("briefing");
   renderMompyScreenPanel({
     title: step.title,
-    lines: [step.retryText || step.text],
+    lines: [contextLine, step.retryText || step.text].filter(Boolean),
     actions: [
       {
         label: t("gotIt"),
@@ -2617,6 +3516,20 @@ function handleBriefingCheckAnswer(briefing, stepIndex, option) {
   }
 
   audioManager.playError();
+  let explanationStepIndex = -1;
+  for (let index = stepIndex - 1; index >= 0; index -= 1) {
+    const candidate = briefing.steps[index];
+    if (candidate.type !== "check" && (candidate.retryText || candidate.text)) {
+      explanationStepIndex = index;
+      break;
+    }
+  }
+
+  if (explanationStepIndex >= 0) {
+    renderBriefingRetry(briefing, explanationStepIndex, step.failText);
+    return;
+  }
+
   renderBriefingCheck(briefing, stepIndex, step.failText);
 }
 
@@ -2688,6 +3601,8 @@ function randomDuration(minimum, maximum) {
 
 function canAnimateMompyGaze() {
   return (
+    settingsState.mompyAnimations
+    &&
     trainingStarted
     && currentMompyState === "idle"
     && Boolean(sprite)
@@ -2872,7 +3787,7 @@ function playShutdownSound() {
 }
 
 function playMompyShutdownAnimation() {
-  if (!trainingStarted || !sprite || mompyShutdownAnimating || talkTimer || completionPending || activeBriefingId) {
+  if (!settingsState.mompyAnimations || !trainingStarted || !sprite || mompyShutdownAnimating || talkTimer || completionPending || activeBriefingId) {
     return;
   }
 
@@ -2913,11 +3828,14 @@ function setMompyState(state, options = {}) {
   clearMompyAmbientTimers();
   stopTalking();
   clearTimeout(settleTimer);
-  machine.classList.remove("is-success", "is-error");
+  machine.classList.remove("is-success", "is-error", "is-impressed");
 
   if (state === "talking") {
     talkFrame = false;
     sprite.src = ASSETS.talk1;
+    if (!settingsState.mompyAnimations) {
+      return;
+    }
     talkTimer = setInterval(() => {
       talkFrame = !talkFrame;
       sprite.src = talkFrame ? ASSETS.talk2 : ASSETS.talk1;
@@ -2932,6 +3850,9 @@ function setMompyState(state, options = {}) {
     sprite.src = ASSETS.shutdown;
   } else if (state === "success") {
     machine.classList.add("is-success");
+    sprite.src = ASSETS.success;
+  } else if (state === "impressed") {
+    machine.classList.add("is-success", "is-impressed");
     sprite.src = ASSETS.success;
   } else if (state === "error") {
     machine.classList.add("is-error");
@@ -3343,6 +4264,11 @@ async function startPythonTerminalLoop(token = startMompyTerminalToken) {
 }
 
 function startStartScreenMompyAnimation() {
+  if (!settingsState.mompyAnimations) {
+    showStartMompyFace();
+    return;
+  }
+
   stopStartScreenMompyAnimation({ keepFace: true });
   startScreenAnimationActive = true;
   startMompyTerminalToken += 1;
@@ -3406,7 +4332,11 @@ async function showStartScreen() {
   renderStartUserInfo();
   if (profile) {
     closeOnboarding();
-    startStartScreenMompyAnimation();
+    if (settingsState.mompyAnimations) {
+      startStartScreenMompyAnimation();
+    } else {
+      showStartMompyFace();
+    }
   } else {
     openOnboarding();
   }
@@ -3424,7 +4354,7 @@ function enterTraining() {
   clearTimeout(completionTimer);
   startScreen.hidden = true;
   machine.classList.add("training-active");
-  machine.classList.remove("is-success", "is-error");
+  machine.classList.remove("is-success", "is-error", "is-impressed");
   clearMompyScreenMessage();
   setMissionActionsEnabled(true);
   openMissionOrBriefing({ intro: true });
@@ -3451,6 +4381,7 @@ function confirmStartOver() {
       {
         label: "Start from scratch",
         primary: true,
+        variant: "danger",
         onClick: () => {
           closeModal();
           startFreshTraining();
@@ -3558,12 +4489,14 @@ function missionIntroText(mission) {
 }
 
 function renderCurrentMission(options = {}) {
+  resetRewardCapsulePresentation();
   const mission = currentMission();
   missionCompleted = false;
   missionHintUsed = false;
   lastMissionReward = null;
   lastValidationResult = null;
   lastCompletedOutput = null;
+  lastCompletedWasAdvanced = false;
   completionPending = false;
   clearTimeout(completionTimer);
   clearMompyScreenMessage();
@@ -3650,11 +4583,57 @@ function setMissionActionsEnabled(enabled) {
 function showMissionCompleteOnMompy() {
   renderMompyCompletionPrompt();
   mompyScreenMessage.hidden = false;
+
+  const reward = lastMissionReward;
+  if (missionRewardSequenceScheduled || !reward?.first_completion || !reward.stars) {
+    return;
+  }
+
+  missionRewardSequenceScheduled = true;
+  const token = rewardCapsulePresentationToken;
+
+  completionTimer = setTimeout(() => {
+    if (
+      token !== rewardCapsulePresentationToken
+      || reward !== lastMissionReward
+      || !missionCompleted
+    ) {
+      return;
+    }
+
+    const flightDuration = animateMissionReward(reward);
+    if (!shouldPresentRewardCapsule(reward)) {
+      return;
+    }
+
+    completionTimer = setTimeout(() => {
+      if (
+        token !== rewardCapsulePresentationToken
+        || reward !== lastMissionReward
+        || !missionCompleted
+        || !shouldPresentRewardCapsule(reward)
+      ) {
+        return;
+      }
+
+      mompyScreenMessage.hidden = true;
+      beginRewardCapsulePresentation();
+    }, flightDuration + 180);
+  }, 1000);
 }
 
 function clearMompyScreenMessage() {
   mompyScreenMessage.hidden = true;
   mompyScreenMessage.className = "mompy-screen-message";
+}
+
+function resumeMompyAfterCodeEdit() {
+  if (mompyScreenMessage.classList.contains("is-diagnostic")) {
+    clearMompyScreenMessage();
+    setMompyState("idle");
+  }
+
+  pointMompyAtEditor();
 }
 
 function showMompyPanelState(asset) {
@@ -3702,6 +4681,16 @@ function restoreAfterModal() {
   }
 
   if (trainingStarted) {
+    if (mompyScreenMessage.classList.contains("is-diagnostic")) {
+      currentMompyState = "error";
+      clearMompyAmbientTimers();
+      stopTalking();
+      clearTimeout(settleTimer);
+      machine.classList.remove("is-success", "is-impressed");
+      machine.classList.add("is-error");
+      sprite.src = ASSETS.blank;
+      return;
+    }
     setMompyState("idle");
     return;
   }
@@ -3724,13 +4713,13 @@ function shouldReduceMotion() {
 
 function animateMissionReward(reward) {
   if (!reward?.first_completion || !reward.stars || shouldReduceMotion()) {
-    return;
+    return 0;
   }
 
   const source = document.querySelector(".mascot-panel")?.getBoundingClientRect();
   const target = document.querySelector(".level-panel")?.getBoundingClientRect();
   if (!source || !target) {
-    return;
+    return 0;
   }
 
   const startX = source.left + source.width * 0.5;
@@ -3758,10 +4747,38 @@ function animateMissionReward(reward) {
     });
     animation.addEventListener("finish", () => star.remove(), { once: true });
   });
+
+  return 760 + Math.max(0, reward.stars - 1) * 110;
+}
+
+function hasAdvancedSolutionSignal(...sources) {
+  const advancedQualityNames = new Set(["advanced", "professional", "expert", "elegant"]);
+
+  return sources.some((source) => {
+    if (!source || typeof source !== "object") {
+      return false;
+    }
+
+    if (
+      source.advanced_solution === true
+      || source.advancedSolution === true
+      || source.professional_solution === true
+      || source.professionalSolution === true
+    ) {
+      return true;
+    }
+
+    const quality = source.solution_quality
+      ?? source.solutionQuality
+      ?? source.solution_tier
+      ?? source.solutionTier;
+    return advancedQualityNames.has(String(quality || "").trim().toLowerCase());
+  });
 }
 
 function completeMission(result) {
   const mission = currentMission();
+  resetRewardCapsulePresentation();
   missionCompleted = true;
   completionPending = true;
   const alreadyCompleted = completedMissionIds.includes(mission.id);
@@ -3790,10 +4807,10 @@ function completeMission(result) {
   clearMompyScreenMessage();
   lastValidationResult = null;
   lastCompletedOutput = result.output ?? "";
-  renderCompletedMissionOutput(lastCompletedOutput);
+  lastCompletedWasAdvanced = Boolean(result.advancedSolution);
+  renderCompletedMissionOutput(lastCompletedOutput, lastCompletedWasAdvanced);
   audioManager.playSuccess();
-  setMompyState("success");
-  animateMissionReward(result.reward);
+  setMompyState(lastCompletedWasAdvanced ? "impressed" : "success");
   completionTimer = setTimeout(() => {
     if (!missionCompleted) {
       return;
@@ -3802,11 +4819,20 @@ function completeMission(result) {
     completionPending = false;
     setMompyState("complete");
     showMissionCompleteOnMompy();
-  }, 1500);
+  }, lastCompletedWasAdvanced ? 2300 : 1500);
 }
 
-function renderCompletedMissionOutput(programOutput) {
-  output.textContent = `${t("correctOutput")}\n${programOutput}\n\n${t("missionCompletedOutput")}`;
+function renderCompletedMissionOutput(programOutput, advancedSolution = false) {
+  const lines = [
+    `${t("correctOutput")}\n${programOutput}`,
+    t("missionCompletedOutput"),
+  ];
+
+  if (advancedSolution) {
+    lines.push(`♥ ${t("advancedSolutionPraise")} ♥`);
+  }
+
+  output.textContent = lines.join("\n\n");
 }
 
 function editorOffsetAt(lineNumber, columnNumber = 1) {
@@ -3856,6 +4882,46 @@ function appendDiagnosticText(parent, className, label, value) {
 
   paragraph.append(document.createTextNode(String(value)));
   parent.append(paragraph);
+}
+
+function normalizeDiagnosticPayload(diagnostic = {}, result = {}) {
+  const location = diagnostic.location && typeof diagnostic.location === "object"
+    ? diagnostic.location
+    : {};
+  const range = diagnostic.range && typeof diagnostic.range === "object"
+    ? diagnostic.range
+    : {};
+  const line = diagnostic.line ?? diagnostic.line_number ?? diagnostic.lineno ?? location.line ?? range.start_line;
+  const column = diagnostic.column ?? diagnostic.column_number ?? diagnostic.offset ?? location.column ?? range.start_column;
+  const endLine = diagnostic.end_line ?? diagnostic.endLine ?? range.end_line ?? line;
+  const endColumn = diagnostic.end_column ?? diagnostic.endColumn ?? range.end_column ?? column;
+  const summary = diagnostic.summary ?? diagnostic.message ?? diagnostic.detail ?? result.message;
+  const suggestion = diagnostic.suggestion
+    ?? diagnostic.action
+    ?? diagnostic.fix
+    ?? diagnostic.how_to_fix
+    ?? diagnostic.recommendation
+    ?? result.detail;
+
+  return {
+    ...diagnostic,
+    category: diagnostic.category || diagnostic.type || "mission",
+    title: diagnostic.title || diagnostic.name || result.title,
+    summary,
+    cause: diagnostic.cause ?? diagnostic.reason ?? summary,
+    explanation: diagnostic.explanation ?? diagnostic.detailed_explanation ?? diagnostic.details,
+    suggestion,
+    action: diagnostic.action ?? suggestion,
+    line,
+    column,
+    end_line: endLine,
+    end_column: endColumn,
+    source_line: diagnostic.source_line ?? diagnostic.sourceLine ?? diagnostic.source ?? location.source_line,
+    expected: diagnostic.expected ?? result.expectedOutput,
+    actual: diagnostic.actual ?? result.actualOutput,
+    hasExplicitCause: Boolean(diagnostic.cause || diagnostic.reason),
+    hasExplicitAction: Boolean(diagnostic.action),
+  };
 }
 
 function localizedDiagnostic(diagnostic) {
@@ -3938,21 +5004,155 @@ function localizedDiagnostic(diagnostic) {
         suggestion: t("diagnosticRuntimeSuggestion"),
       };
 
+  const translation = translations[String(diagnostic.code || "").toLowerCase()];
+  if (!translation) {
+    const suggestion = diagnostic.action || diagnostic.suggestion || fallback.suggestion;
+    return {
+      ...diagnostic,
+      title: diagnostic.title || fallback.title,
+      cause: diagnostic.cause || diagnostic.summary || fallback.summary,
+      summary: diagnostic.summary || fallback.summary,
+      suggestion,
+      action: suggestion,
+    };
+  }
+
+  const suggestion = diagnostic.hasExplicitAction ? diagnostic.action : translation.suggestion;
   return {
     ...diagnostic,
-    ...(translations[String(diagnostic.code || "").toLowerCase()] || fallback),
+    title: translation.title,
+    cause: diagnostic.hasExplicitCause ? diagnostic.cause : translation.summary,
+    summary: translation.summary,
+    suggestion,
+    action: suggestion,
   };
 }
 
-function renderDiagnostic(result) {
-  lastValidationResult = result;
-  const rawDiagnostic = result.diagnostics?.[0] || {
+function primaryDiagnostic(result = {}) {
+  const rawDiagnostic = result.diagnostics?.[0] || result.diagnostic || {
     category: "mission",
     title: t("missionNotComplete"),
     summary: result.message || t("checkMissionGoal"),
     suggestion: result.detail,
   };
-  const diagnostic = localizedDiagnostic(rawDiagnostic);
+  return localizedDiagnostic(normalizeDiagnosticPayload(rawDiagnostic, result));
+}
+
+function renderMompyDiagnostic(result = {}) {
+  const diagnostic = primaryDiagnostic(result);
+  const mission = currentMission();
+  const sourceLine = diagnostic.source_line || (
+    diagnostic.line ? editor.value.split("\n")[Number(diagnostic.line) - 1] : ""
+  );
+  const locationText = diagnostic.line
+    ? diagnostic.column
+      ? t("lineColumnLocation", { line: diagnostic.line, column: diagnostic.column })
+      : t("lineLocation", { line: diagnostic.line })
+    : "";
+
+  stopTalking();
+  clearTimeout(settleTimer);
+  currentMompyState = "error";
+  machine.classList.remove("is-success", "is-impressed");
+  machine.classList.add("is-error");
+  sprite.src = ASSETS.blank;
+  mompyScreenMessage.hidden = false;
+  mompyScreenMessage.className = "mompy-screen-message is-briefing is-diagnostic";
+
+  const viewport = document.createElement("div");
+  viewport.className = "mompy-screen-diagnostic-viewport";
+
+  const content = document.createElement("div");
+  content.className = "mompy-screen-text mompy-screen-diagnostic-content";
+  content.tabIndex = 0;
+  content.setAttribute("role", "region");
+  content.setAttribute("aria-label", t("missionHelp"));
+
+  const appendText = (label, value, className = "") => {
+    if (value == null || String(value).trim() === "") {
+      return;
+    }
+
+    const paragraph = document.createElement("p");
+    if (className) {
+      paragraph.className = className;
+    }
+    if (label) {
+      const strong = document.createElement("strong");
+      strong.textContent = label;
+      paragraph.append(strong, document.createTextNode(` ${String(value)}`));
+    } else {
+      paragraph.textContent = String(value);
+    }
+    content.append(paragraph);
+  };
+
+  appendText("", diagnostic.title || t("checkAttempt"), "mompy-screen-diagnostic-title");
+  appendText("", locationText, "mompy-screen-diagnostic-location");
+
+  if (sourceLine) {
+    const source = document.createElement("p");
+    source.className = "mompy-screen-diagnostic-source";
+    const label = document.createElement("strong");
+    label.textContent = t("diagnosticSourceLine");
+    const code = document.createElement("code");
+    code.textContent = String(sourceLine);
+    source.append(label, code);
+    content.append(source);
+  }
+
+  appendText(
+    t("diagnosticCause"),
+    diagnostic.cause || diagnostic.summary || result.message,
+    "mompy-screen-diagnostic-cause",
+  );
+  if (diagnostic.explanation && diagnostic.explanation !== diagnostic.cause) {
+    appendText(
+      t("diagnosticExplanation"),
+      diagnostic.explanation,
+      "mompy-screen-diagnostic-explanation",
+    );
+  }
+  appendText(
+    t("diagnosticSuggestion"),
+    diagnostic.action || diagnostic.suggestion || result.detail || mission.help,
+    "mompy-screen-diagnostic-fix",
+  );
+
+  if (diagnostic.category === "output") {
+    appendText(t("expected"), diagnostic.expected ?? result.expectedOutput ?? t("noOutput"));
+    appendText(t("received"), diagnostic.actual ?? result.actualOutput ?? t("noOutput"));
+  }
+
+  const helpText = String(mission.help || "").trim();
+  const suggestionText = String(diagnostic.action || diagnostic.suggestion || result.detail || "").trim();
+  if (helpText && helpText !== suggestionText) {
+    appendText("", helpText, "mompy-screen-diagnostic-help");
+  }
+  appendText(t("goal"), mission.objective, "mompy-screen-diagnostic-goal");
+
+  const scrollHint = document.createElement("p");
+  scrollHint.className = "mompy-screen-scroll-hint";
+  scrollHint.textContent = t("scrollOrDragForMore");
+  scrollHint.hidden = true;
+
+  const updateScrollHint = () => {
+    const hasOverflow = content.scrollHeight > content.clientHeight + 2;
+    const reachedEnd = content.scrollTop + content.clientHeight >= content.scrollHeight - 2;
+    scrollHint.hidden = !hasOverflow || reachedEnd;
+  };
+
+  content.addEventListener("scroll", updateScrollHint, { passive: true });
+  viewport.append(content, scrollHint);
+  mompyScreenMessage.replaceChildren(viewport);
+  bindPointerDragScroll(content);
+  window.requestAnimationFrame(updateScrollHint);
+  window.setTimeout(updateScrollHint, 80);
+}
+
+function renderDiagnostic(result) {
+  lastValidationResult = result;
+  const diagnostic = primaryDiagnostic(result);
 
   output.replaceChildren();
 
@@ -3978,16 +5178,58 @@ function renderDiagnostic(result) {
   }
 
   report.append(heading);
-  appendDiagnosticText(report, "diagnostic-summary", "", diagnostic.summary || result.message);
-  appendDiagnosticText(report, "diagnostic-suggestion", t("tryThis"), diagnostic.suggestion || result.detail);
+  const sourceLine = diagnostic.source_line || (
+    diagnostic.line ? editor.value.split("\n")[Number(diagnostic.line) - 1] : ""
+  );
+  if (sourceLine) {
+    const source = document.createElement("p");
+    source.className = "diagnostic-source";
+    const label = document.createElement("strong");
+    label.textContent = t("diagnosticSourceLine");
+    const code = document.createElement("code");
+    code.textContent = String(sourceLine);
+    source.append(label, code);
+    report.append(source);
+  }
+
+  appendDiagnosticText(
+    report,
+    "diagnostic-summary",
+    t("diagnosticCause"),
+    diagnostic.cause || diagnostic.summary || result.message,
+  );
+  if (diagnostic.explanation && diagnostic.explanation !== diagnostic.cause) {
+    appendDiagnosticText(
+      report,
+      "diagnostic-explanation",
+      t("diagnosticExplanation"),
+      diagnostic.explanation,
+    );
+  }
+  appendDiagnosticText(
+    report,
+    "diagnostic-suggestion",
+    t("diagnosticSuggestion"),
+    diagnostic.action || diagnostic.suggestion || result.detail,
+  );
 
   const expected = diagnostic.expected ?? result.expectedOutput;
   const actual = diagnostic.actual ?? result.actualOutput;
   if (diagnostic.category === "output" && (expected != null || actual != null)) {
     const comparison = document.createElement("div");
     comparison.className = "diagnostic-comparison";
-    appendDiagnosticText(comparison, "diagnostic-expected", t("expected"), expected || t("noOutput"));
-    appendDiagnosticText(comparison, "diagnostic-actual", t("received"), actual || t("noOutput"));
+    appendDiagnosticText(
+      comparison,
+      "diagnostic-expected",
+      t("expected"),
+      expected || t("noOutput"),
+    );
+    appendDiagnosticText(
+      comparison,
+      "diagnostic-actual",
+      t("received"),
+      actual || t("noOutput"),
+    );
     report.append(comparison);
     report.classList.add("has-comparison");
   }
@@ -3999,19 +5241,93 @@ function renderDiagnostic(result) {
   }
 }
 
+function showMissionExplanation(result = null, { automatic = false } = {}) {
+  if (!automatic && helpButton.disabled) {
+    return;
+  }
+
+  if (!automatic) {
+    finishMissionIntro();
+  }
+
+  missionHintUsed = true;
+  const diagnosticOnMompyScreen = Boolean(
+    result && mompyScreenMessage.classList.contains("is-diagnostic"),
+  );
+  if (!diagnosticOnMompyScreen) {
+    setMompyState("talking");
+  }
+  const mission = currentMission();
+  const diagnostic = result ? primaryDiagnostic(result) : null;
+  const sourceLine = diagnostic && (
+    diagnostic.source_line
+    || (diagnostic.line ? editor.value.split("\n")[Number(diagnostic.line) - 1] : "")
+  );
+  const locationText = diagnostic?.line
+    ? diagnostic.column
+      ? t("lineColumnLocation", { line: diagnostic.line, column: diagnostic.column })
+      : t("lineLocation", { line: diagnostic.line })
+    : "";
+  const expected = diagnostic?.expected ?? result?.expectedOutput;
+  const actual = diagnostic?.actual ?? result?.actualOutput;
+  const diagnosticMarkup = diagnostic ? `
+    <section class="mission-explanation-diagnostic">
+      <h3>${escapeHtml(diagnostic.title || t("checkAttempt"))}</h3>
+      ${locationText ? `<p class="mission-explanation-location">${escapeHtml(locationText)}</p>` : ""}
+      ${sourceLine ? `<p class="mission-explanation-source"><strong>${escapeHtml(t("diagnosticSourceLine"))}</strong><code>${escapeHtml(sourceLine)}</code></p>` : ""}
+      <p><strong>${escapeHtml(t("diagnosticCause"))}</strong> ${escapeHtml(diagnostic.cause || diagnostic.summary || result?.message)}</p>
+      ${diagnostic.explanation && diagnostic.explanation !== diagnostic.cause ? `<p><strong>${escapeHtml(t("diagnosticExplanation"))}</strong> ${escapeHtml(diagnostic.explanation)}</p>` : ""}
+      <p><strong>${escapeHtml(t("diagnosticSuggestion"))}</strong> ${escapeHtml(diagnostic.action || diagnostic.suggestion || result?.detail || mission.help)}</p>
+      ${diagnostic.category === "output" ? `
+        <div class="mission-explanation-comparison">
+          <p><strong>${escapeHtml(t("expected"))}</strong> ${escapeHtml(expected || t("noOutput"))}</p>
+          <p><strong>${escapeHtml(t("received"))}</strong> ${escapeHtml(actual || t("noOutput"))}</p>
+        </div>
+      ` : ""}
+    </section>
+  ` : "";
+
+  openModal({
+    title: t("missionHelp"),
+    variant: "mission-help",
+    body: `
+      <div class="mission-explanation ${automatic ? "is-automatic" : ""}">
+        ${diagnosticMarkup}
+        <p class="mission-explanation-help">${escapeHtml(mission.help)}</p>
+        <p><strong>${escapeHtml(t("goal"))}:</strong> ${escapeHtml(mission.objective)}</p>
+      </div>
+    `,
+    actions: [
+      {
+        label: t("gotIt"),
+        primary: true,
+        onClick: () => {
+          closeModal();
+          if (!mompyScreenMessage.classList.contains("is-diagnostic")) {
+            setMompyState("idle");
+          }
+          editor.focus();
+        },
+      },
+    ],
+  });
+}
+
 function failMission(result) {
   renderDiagnostic(result);
   audioManager.playError();
-  setMompyState("error", { returnToIdle: 3200 });
+  renderMompyDiagnostic(result);
 }
 
 function repeatMission() {
+  resetRewardCapsulePresentation();
   missionCompleted = false;
   completionPending = false;
   missionHintUsed = false;
   lastMissionReward = null;
   lastValidationResult = null;
   lastCompletedOutput = null;
+  lastCompletedWasAdvanced = false;
   clearTimeout(completionTimer);
   clearMompyScreenMessage();
   setMissionActionsEnabled(true);
@@ -4097,6 +5413,7 @@ async function validateCode(code) {
       detail: backendValidation.correct
         ? backendValidation.message || t("missionCompletedOutput")
         : backendValidation.runtime_error || backendValidation.hints?.[0] || backendValidation.message || mission.help,
+      advancedSolution: hasAdvancedSolutionSignal(backendValidation, submission, submission?.reward),
       progress: submission?.progress,
       reward: submission?.reward,
     };
@@ -4119,10 +5436,14 @@ async function runCode() {
   }
 
   finishMissionIntro();
+  if (mompyScreenMessage.classList.contains("is-diagnostic")) {
+    clearMompyScreenMessage();
+  }
   const code = editor.value;
   runButton.disabled = true;
   lastValidationResult = null;
   lastCompletedOutput = null;
+  lastCompletedWasAdvanced = false;
   output.textContent = t("runningValidation");
   audioManager.playRun();
   setMompyState("talking");
@@ -4144,12 +5465,17 @@ async function runCode() {
       runButton.disabled = false;
     }
 
-    editor.focus();
+    if (modalBackdrop.hidden) {
+      editor.focus();
+    }
   }
 }
 
-function openModal({ title, body, actions = [] }) {
+function openModal({ title, body, actions = [], variant = "default" }) {
+  const immersiveVariant = variant === "achievements" || variant === "settings";
+  const modal = modalBackdrop.querySelector(".modal");
   lastFocusedElement = document.activeElement;
+  modalBackdrop.dataset.modalVariant = variant;
   modalTitle.textContent = title;
   modalBody.innerHTML = body;
   modalActions.replaceChildren();
@@ -4157,14 +5483,26 @@ function openModal({ title, body, actions = [] }) {
   actions.forEach((action) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = action.primary ? "modal-button primary" : "modal-button";
+    const buttonVariant = action.variant || (action.primary ? "primary" : "secondary");
+    button.className = mompyButtonClasses(
+      buttonVariant,
+      "modal-button",
+      action.primary ? "primary" : "",
+    );
     button.textContent = action.label;
     button.addEventListener("click", action.onClick);
     modalActions.append(button);
   });
 
   modalBackdrop.hidden = false;
+  modalCloseButton.disabled = immersiveVariant;
   const firstAction = modalActions.querySelector("button");
+
+  if (immersiveVariant) {
+    modal?.setAttribute("tabindex", "-1");
+    modal?.focus({ preventScroll: true });
+    return;
+  }
 
   if (firstAction) {
     firstAction.focus();
@@ -4175,6 +5513,9 @@ function openModal({ title, body, actions = [] }) {
 
 function closeModal() {
   modalBackdrop.hidden = true;
+  modalCloseButton.disabled = false;
+  modalBackdrop.querySelector(".modal")?.removeAttribute("tabindex");
+  delete modalBackdrop.dataset.modalVariant;
   modalTitle.textContent = "";
   modalBody.textContent = "";
   modalActions.replaceChildren();
@@ -4223,31 +5564,14 @@ function showBackConfirmation() {
 }
 
 function showHelp() {
-  if (helpButton.disabled) {
-    return;
+  const hadDiagnostic = mompyScreenMessage.classList.contains("is-diagnostic");
+  const diagnosticResult = hadDiagnostic ? lastValidationResult : null;
+
+  if (hadDiagnostic) {
+    clearMompyScreenMessage();
   }
 
-  finishMissionIntro();
-  missionHintUsed = true;
-  setMompyState("talking");
-  const mission = currentMission();
-  openModal({
-    title: t("missionHelp"),
-    body: `
-      <p>${mission.help}</p>
-      <p><strong>${t("goal")}:</strong> ${mission.objective}</p>
-    `,
-    actions: [
-      {
-        label: t("gotIt"),
-        primary: true,
-        onClick: () => {
-          closeModal();
-          setMompyState("idle");
-        },
-      },
-    ],
-  });
+  showMissionExplanation(diagnosticResult);
 }
 
 function toggleLabel(value) {
@@ -4258,11 +5582,11 @@ function settingMeter(settingName) {
   const value = settingsState[settingName];
   return `
     <div class="setting-stepper">
-      <button class="setting-step" type="button" data-setting-step="${settingName}" data-delta="-10" aria-label="${t("decrease")}">-</button>
+      <button class="setting-step mompy-button mompy-button--icon" type="button" data-setting-step="${settingName}" data-delta="-10" aria-label="${t("decrease")}">-</button>
       <span class="setting-meter" data-setting-meter="${settingName}" style="--value: ${value}%">
         <span data-setting-value="${settingName}">${value}%</span>
       </span>
-      <button class="setting-step" type="button" data-setting-step="${settingName}" data-delta="10" aria-label="${t("increase")}">+</button>
+      <button class="setting-step mompy-button mompy-button--icon" type="button" data-setting-step="${settingName}" data-delta="10" aria-label="${t("increase")}">+</button>
     </div>
   `;
 }
@@ -4283,95 +5607,217 @@ function updateStatusText() {
   return t("upToDate");
 }
 
-function renderSettingsBody() {
-  return `
-    <div class="settings-grid">
-      <section class="settings-section">
-        <h3>${t("shortcuts")}</h3>
-        <div class="settings-row"><span><code>Ctrl + Enter</code></span><span class="settings-control">${t("runShortcut")}</span></div>
-        <div class="settings-row"><span><code>F1</code></span><span class="settings-control">${t("help")}</span></div>
-        <div class="settings-row"><span><code>Esc</code></span><span class="settings-control">${t("closeShortcut")}</span></div>
-      </section>
+function settingsSectionMeta(sectionId) {
+  return SETTINGS_SECTIONS.find(({ id }) => id === sectionId) || SETTINGS_SECTIONS[0];
+}
 
-      <section class="settings-section">
-        <h3>${t("audio")}</h3>
-        <div class="settings-row">
-          <span>${t("ambientMusic")}</span>
-          <button class="settings-control settings-toggle" type="button" data-setting-toggle="ambientMusic" aria-pressed="${settingsState.ambientMusic}">
-            ${toggleLabel(settingsState.ambientMusic)}
-          </button>
-        </div>
-        <div class="settings-row"><span>${t("musicVolume")}</span>${settingMeter("musicVolume")}</div>
-        <div class="settings-row">
-          <span>${t("soundEffects")}</span>
-          <button class="settings-control settings-toggle" type="button" data-setting-toggle="soundEffects" aria-pressed="${settingsState.soundEffects}">
-            ${toggleLabel(settingsState.soundEffects)}
-          </button>
-        </div>
-        <div class="settings-row"><span>${t("effectsVolume")}</span>${settingMeter("effectsVolume")}</div>
-      </section>
+function renderSettingsSection(sectionId) {
+  const section = settingsSectionMeta(sectionId);
 
-      <section class="settings-section">
-        <h3>${t("interface")}</h3>
-        <div class="settings-row settings-language-row">
-          <span>${t("language")}</span>
-          <div class="language-selector" role="group" aria-label="${t("language")}">
-            <button class="language-option" type="button" data-language-option="en-US" aria-pressed="${currentLanguage === "en-US"}">English</button>
-            <button class="language-option" type="button" data-language-option="pt-BR" aria-pressed="${currentLanguage === "pt-BR"}">Português</button>
+  if (section.id === "audio") {
+    return `
+      <section class="settings-active-section settings-active-section--audio" aria-label="${t(section.id)}">
+        <div class="settings-section-rows">
+          <div class="settings-slot" data-settings-slot="a">
+            <div class="settings-row">
+              <span>${t("ambientMusic")}</span>
+              <button class="settings-control settings-toggle mompy-toggle" type="button" data-setting-toggle="ambientMusic" aria-pressed="${settingsState.ambientMusic}">
+                ${toggleLabel(settingsState.ambientMusic)}
+              </button>
+            </div>
+          </div>
+          <div class="settings-slot" data-settings-slot="b">
+            <div class="settings-row"><span>${t("musicVolume")}</span>${settingMeter("musicVolume")}</div>
+          </div>
+          <div class="settings-slot" data-settings-slot="c">
+            <div class="settings-row">
+              <span>${t("soundEffects")}</span>
+              <button class="settings-control settings-toggle mompy-toggle" type="button" data-setting-toggle="soundEffects" aria-pressed="${settingsState.soundEffects}">
+                ${toggleLabel(settingsState.soundEffects)}
+              </button>
+            </div>
+          </div>
+          <div class="settings-slot" data-settings-slot="d">
+            <div class="settings-row"><span>${t("effectsVolume")}</span>${settingMeter("effectsVolume")}</div>
           </div>
         </div>
-        <div class="settings-row"><span>${t("crtBrightness")}</span>${settingMeter("crtBrightness")}</div>
-        <div class="settings-row">
-          <span>${t("mompyAnimations")}</span>
-          <button class="settings-control settings-toggle" type="button" data-setting-toggle="mompyAnimations" aria-pressed="${settingsState.mompyAnimations}">
-            ${toggleLabel(settingsState.mompyAnimations)}
-          </button>
-        </div>
       </section>
+    `;
+  }
 
-      <section class="settings-section">
-        <h3>${t("progress")}</h3>
-        <div class="settings-row">
-          <span>${t("missionsCompleted")}</span>
-          <span class="settings-control">${completedMissionIds.length} / ${PLANNED_TOTAL_MISSIONS}</span>
-        </div>
-        <div class="settings-row">
-          <span>${t("currentMissionSetting")}</span>
-          <span class="settings-control">${String(currentMissionIndex + 1).padStart(2, "0")}</span>
-        </div>
-        <div class="settings-row"><span>${t("stars")}</span><span class="settings-control">${totalStars} / ${PLANNED_TOTAL_MISSIONS * 3}</span></div>
-        <div class="settings-row"><span>${t("streak")}</span><span class="settings-control">${currentStreak}</span></div>
-        <div class="settings-row"><span>${t("bestStreak")}</span><span class="settings-control">${bestStreak}</span></div>
-        <div class="settings-row"><span>${t("achievements")}</span><span class="settings-control">${earnedAchievements.length}</span></div>
-        <div class="settings-row">
-          <span>${t("localProgress")}</span>
-          <button id="resetProgressButton" class="settings-inline-button" type="button">${t("resetProgress")}</button>
+  if (section.id === "interface") {
+    return `
+      <section class="settings-active-section settings-active-section--interface" aria-label="${t(section.id)}">
+        <div class="settings-section-rows">
+          <div class="settings-slot" data-settings-slot="a">
+            <div class="settings-row settings-language-row">
+              <span>${t("language")}</span>
+              <div class="language-selector" role="group" aria-label="${t("language")}">
+                <button class="language-option mompy-button mompy-button--tab" type="button" data-language-option="en-US" aria-pressed="${currentLanguage === "en-US"}">English</button>
+                <button class="language-option mompy-button mompy-button--tab" type="button" data-language-option="pt-BR" aria-pressed="${currentLanguage === "pt-BR"}">Português</button>
+              </div>
+            </div>
+          </div>
+          <div class="settings-slot" data-settings-slot="b">
+            <div class="settings-row"><span>${t("crtBrightness")}</span>${settingMeter("crtBrightness")}</div>
+          </div>
+          <div class="settings-slot" data-settings-slot="c">
+            <div class="settings-row">
+              <span>${t("mompyAnimations")}</span>
+              <button class="settings-control settings-toggle mompy-toggle" type="button" data-setting-toggle="mompyAnimations" aria-pressed="${settingsState.mompyAnimations}">
+                ${toggleLabel(settingsState.mompyAnimations)}
+              </button>
+            </div>
+          </div>
         </div>
       </section>
+    `;
+  }
 
-      <section class="settings-section">
-        <h3>${t("account")}</h3>
-        <div class="settings-row">
-          <span>${t("currentUser")}</span>
-          <span class="settings-control">${currentUser.name}</span>
-        </div>
-        <div class="settings-row">
-          <span>${t("session")}</span>
-          <button id="logoutUserButton" class="settings-inline-button" type="button">${t("logOut")}</button>
+  if (section.id === "progress") {
+    return `
+      <section class="settings-active-section settings-active-section--progress" aria-label="${t(section.id)}">
+        <div class="settings-section-rows">
+          <div class="settings-slot settings-slot--stacked" data-settings-slot="a">
+            <div class="settings-row"><span>${t("missionsCompleted")}</span><span class="settings-control">${completedMissionIds.length} / ${PLANNED_TOTAL_MISSIONS}</span></div>
+            <div class="settings-row"><span>${t("currentMissionSetting")}</span><span class="settings-control">${String(currentMissionIndex + 1).padStart(2, "0")}</span></div>
+          </div>
+          <div class="settings-slot" data-settings-slot="b">
+            <div class="settings-row"><span>${t("stars")}</span><span class="settings-control">${totalStars} / ${PLANNED_TOTAL_MISSIONS * 3}</span></div>
+          </div>
+          <div class="settings-slot" data-settings-slot="c">
+            <div class="settings-row"><span>${t("achievements")}</span><span class="settings-control">${earnedAchievements.length}</span></div>
+          </div>
+          <div class="settings-slot settings-slot--halves" data-settings-slot="d">
+            <div class="settings-row"><span>${t("streak")}</span><span class="settings-control">${currentStreak}</span></div>
+            <div class="settings-row"><span>${t("bestStreak")}</span><span class="settings-control">${bestStreak}</span></div>
+          </div>
+          <div class="settings-slot" data-settings-slot="e">
+            <div class="settings-row settings-action-row">
+              <span>${t("localProgress")}</span>
+              <button id="resetProgressButton" class="settings-inline-button mompy-button mompy-button--danger" type="button">${t("resetProgress")}</button>
+            </div>
+          </div>
         </div>
       </section>
+    `;
+  }
 
-      <section class="settings-section">
-        <h3>${t("updates")}</h3>
-        <div class="settings-row">
-          <span>${t("installedVersion")}</span>
-          <span class="settings-control">v${appVersion}</span>
-        </div>
-        <div class="settings-row">
-          <span id="updateStatusText">${updateStatusText()}</span>
-          <button id="checkUpdatesButton" class="settings-inline-button" type="button">${t("checkUpdates")}</button>
+  if (section.id === "account") {
+    return `
+      <section class="settings-active-section settings-active-section--account" aria-label="${t(section.id)}">
+        <div class="settings-section-rows">
+          <div class="settings-slot" data-settings-slot="a">
+            <div class="settings-row"><span>${t("currentUser")}</span><span class="settings-control">${escapeHtml(currentUser.name)}</span></div>
+          </div>
+          <div class="settings-slot" data-settings-slot="e">
+            <div class="settings-row settings-action-row">
+              <span>${t("session")}</span>
+              <button id="logoutUserButton" class="settings-inline-button mompy-button mompy-button--danger" type="button">${t("logOut")}</button>
+            </div>
+          </div>
         </div>
       </section>
+    `;
+  }
+
+  if (section.id === "updates") {
+    return `
+      <section class="settings-active-section settings-active-section--updates" aria-label="${t(section.id)}">
+        <div class="settings-section-rows">
+          <div class="settings-slot" data-settings-slot="a">
+            <div class="settings-row"><span>${t("installedVersion")}</span><span class="settings-control">v${escapeHtml(appVersion)}</span></div>
+          </div>
+          <div class="settings-slot" data-settings-slot="b">
+            <div class="settings-row"><span>${t("updateStatus")}</span><span id="updateStatusText" class="settings-control settings-update-status">${escapeHtml(updateStatusText())}</span></div>
+          </div>
+          <div class="settings-slot" data-settings-slot="e">
+            <div class="settings-row settings-action-row">
+              <span></span>
+              <button id="checkUpdatesButton" class="settings-inline-button mompy-button mompy-button--secondary" type="button">${updateStatusCache?.update_available ? t("openRelease") : t("checkUpdates")}</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  return `
+    <section class="settings-active-section settings-active-section--shortcuts" aria-label="${t(section.id)}">
+      <div class="settings-section-rows">
+        <div class="settings-slot" data-settings-slot="a">
+          <div class="settings-row"><code>Ctrl + Enter</code><span class="settings-control">${t("runShortcut")}</span></div>
+        </div>
+        <div class="settings-slot" data-settings-slot="b">
+          <div class="settings-row"><code>F1</code><span class="settings-control">${t("help")}</span></div>
+        </div>
+        <div class="settings-slot" data-settings-slot="c">
+          <div class="settings-row"><code>Esc</code><span class="settings-control">${t("closeShortcut")}</span></div>
+        </div>
+        <div class="settings-slot settings-slot--halves" data-settings-slot="d">
+          <div class="settings-row"><code>Tab</code><span class="settings-control">${t("indentShortcut")}</span></div>
+          <div class="settings-row"><code>Enter</code><span class="settings-control">${t("newLineShortcut")}</span></div>
+        </div>
+        <div class="settings-slot" data-settings-slot="e">
+          <div class="settings-row"><code>Scroll / Drag</code><span class="settings-control">${t("viewMoreShortcut")}</span></div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderSettingsBody({ animate = true } = {}) {
+  const animateOpening = animate && !shouldReduceMotion();
+  const navigation = SETTINGS_SECTIONS.map((section) => {
+    const active = section.id === activeSettingsSection;
+    return `
+      <button
+        class="settings-nav-button mompy-button mompy-button--nav${active ? " is-active" : ""}"
+        type="button"
+        role="tab"
+        aria-selected="${active}"
+        aria-controls="settingsSectionContent"
+        data-settings-section="${section.id}"
+      >
+        <span class="settings-nav-label">${t(section.id)}</span>
+      </button>
+    `;
+  }).join("");
+
+  return `
+    <div class="settings-machine ${animateOpening ? "is-opening" : "is-static"}" data-settings-machine>
+      <img class="settings-machine-background" src="${ASSETS.settingsPanel}" alt="" draggable="false" aria-hidden="true" />
+
+      <div class="settings-gear-stage" aria-hidden="true">
+        <img class="settings-gear settings-gear--large" src="${ASSETS.settingsGearLarge}" alt="" draggable="false" />
+        <img class="settings-gear settings-gear--medium" src="${ASSETS.settingsGearMedium}" alt="" draggable="false" />
+        <img class="settings-gear settings-gear--small" src="${ASSETS.settingsGearSmall}" alt="" draggable="false" />
+      </div>
+
+      <div class="settings-interface-layer"${animateOpening ? " inert" : ""}>
+        <header class="settings-machine-header">
+          <img class="settings-machine-header-icon" src="${ASSETS.settings}" alt="" draggable="false" aria-hidden="true" />
+          <div class="settings-machine-heading">
+            <p class="settings-machine-title">${t("settings")}</p>
+            <p class="settings-machine-subtitle">${t("settingsControlPanel")}</p>
+          </div>
+        </header>
+
+        <nav class="settings-machine-navigation" role="tablist" aria-label="${t("settings")}">
+          ${navigation}
+        </nav>
+
+        <main id="settingsSectionContent" class="settings-machine-content" role="tabpanel" aria-live="polite">
+          ${renderSettingsSection(activeSettingsSection)}
+        </main>
+
+        <div class="settings-system-status" aria-label="${t("systemOnline")}">
+          <span aria-hidden="true"></span>
+          <strong>${t("systemOnline")}</strong>
+        </div>
+
+        <button class="settings-machine-exit" type="button" data-settings-exit>${t("exit")}</button>
+      </div>
     </div>
   `;
 }
@@ -4389,13 +5835,34 @@ function updateSettingView(settingName) {
   meter.style.setProperty("--value", `${value}%`);
 }
 
-function bindSettingsControls() {
+function renderActiveSettingsSection({ focus = false } = {}) {
+  const content = modalBody.querySelector("#settingsSectionContent");
+
+  if (!content) {
+    return;
+  }
+
+  content.innerHTML = renderSettingsSection(activeSettingsSection);
+  modalBody.querySelectorAll("[data-settings-section]").forEach((button) => {
+    const active = button.dataset.settingsSection === activeSettingsSection;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+  bindActiveSettingsControls();
+
+  if (focus) {
+    modalBody.querySelector(`[data-settings-section="${activeSettingsSection}"]`)?.focus({ preventScroll: true });
+  }
+}
+
+function bindActiveSettingsControls() {
   modalBody.querySelectorAll("[data-language-option]").forEach((button) => {
     button.addEventListener("click", async () => {
       await savePreferredLanguage(button.dataset.languageOption);
       modalTitle.textContent = t("settings");
-      modalBody.innerHTML = renderSettingsBody();
+      modalBody.innerHTML = renderSettingsBody({ animate: false });
       bindSettingsControls();
+      modalBody.querySelector(`[data-settings-section="${activeSettingsSection}"]`)?.focus({ preventScroll: true });
     });
   });
 
@@ -4407,6 +5874,8 @@ function bindSettingsControls() {
         audioManager.setMusicEnabled(!settingsState.ambientMusic);
       } else if (settingName === "soundEffects") {
         audioManager.setSfxEnabled(!settingsState.soundEffects);
+      } else if (settingName === "mompyAnimations") {
+        setMompyAnimationsEnabled(!settingsState.mompyAnimations);
       } else {
         settingsState[settingName] = !settingsState[settingName];
       }
@@ -4426,6 +5895,8 @@ function bindSettingsControls() {
         audioManager.setMusicVolume(nextValue / 100);
       } else if (settingName === "effectsVolume") {
         audioManager.setSfxVolume(nextValue / 100);
+      } else if (settingName === "crtBrightness") {
+        applyCrtBrightness(nextValue);
       } else {
         settingsState[settingName] = nextValue;
       }
@@ -4437,6 +5908,22 @@ function bindSettingsControls() {
   modalBody.querySelector("#logoutUserButton")?.addEventListener("click", confirmLogoutUser);
   modalBody.querySelector("#resetProgressButton")?.addEventListener("click", confirmResetProgress);
   modalBody.querySelector("#checkUpdatesButton")?.addEventListener("click", checkUpdatesFromSettings);
+}
+
+function bindSettingsControls() {
+  modalBody.querySelectorAll("[data-settings-section]").forEach((button) => {
+    button.addEventListener("click", () => {
+      activeSettingsSection = settingsSectionMeta(button.dataset.settingsSection).id;
+      renderActiveSettingsSection();
+    });
+  });
+
+  modalBody.querySelector("[data-settings-exit]")?.addEventListener("click", () => {
+    closeModal();
+    restoreAfterModal();
+  });
+
+  bindActiveSettingsControls();
 }
 
 async function checkUpdatesFromSettings() {
@@ -4478,138 +5965,318 @@ function showSettings() {
 
   showMompyPanelState(ASSETS.settings);
 
+  const animateOpening = !shouldReduceMotion();
+
   openModal({
     title: t("settings"),
-    body: renderSettingsBody(),
-    actions: [
-      {
-        label: t("exit"),
-        onClick: confirmExitApp,
-      },
-    ],
+    body: renderSettingsBody({ animate: animateOpening }),
+    variant: "settings",
   });
   bindSettingsControls();
+
+  if (!animateOpening) {
+    audioManager.playSettingsPanelLock();
+    modalBody.querySelector(`[data-settings-section="${activeSettingsSection}"]`)?.focus({ preventScroll: true });
+  }
 }
 
-function renderAchievementsBody() {
-  const unlocked = new Set(earnedAchievements);
-  const completionPercent = Math.round((earnedAchievements.length / ACHIEVEMENT_DEFINITIONS.length) * 100);
-  const badges = ACHIEVEMENT_DEFINITIONS.map((achievement) => {
-    const isUnlocked = unlocked.has(achievement.id);
-    const visual = achievement.image
-      ? `<span class="achievement-art-shell" aria-hidden="true"><img class="achievement-art" src="${achievement.image}" alt="" draggable="false" /></span>`
-      : `<span class="achievement-medal" aria-hidden="true"><span class="achievement-glyph">${achievement.glyph}</span><small>${achievement.mark}</small></span>`;
-    return `
-      <button type="button" class="achievement-badge ${achievement.image ? "has-art" : ""} ${isUnlocked ? "is-unlocked" : "is-locked"} rarity-${achievement.rarity} family-${achievement.family}" data-achievement-id="${achievement.id}" data-achievement-state="${isUnlocked ? "unlocked" : "locked"}" aria-label="${t(achievement.titleKey)}. ${t(isUnlocked ? "achievementUnlockedStatus" : "achievementLockedStatus")}. ${t(achievement.rarityKey)}.">
-        ${visual}
-        <div class="achievement-copy">
-          <h3>${t(achievement.titleKey)}</h3>
-          <p>${t(achievement.descriptionKey)}</p>
-          <span class="achievement-state">${t(isUnlocked ? "achievementUnlockedStatus" : "achievementLockedStatus")}</span>
-          <span class="achievement-rarity"> · ${t(achievement.rarityKey)}</span>
-        </div>
-      </button>
-    `;
-  }).join("");
+const ACHIEVEMENT_TRACKING_KEY = "mompy_tracked_achievement_v1";
+const ACHIEVEMENT_CATEGORIES = Object.freeze([
+  { id: "consistency", titleKey: "achievementCategoryConsistency" },
+  { id: "python", titleKey: "achievementCategoryPython" },
+  { id: "missions", titleKey: "achievementCategoryMissions" },
+  { id: "secrets", titleKey: "achievementCategorySecrets" },
+]);
 
+function getAchievementProgress(achievement) {
+  const stored = achievementProgress[achievement.id];
+  const live = buildConsistencyProgress(activeDates)[achievement.id];
+  const target = Number(stored?.target ?? achievement.target ?? 1);
+  const metric = stored?.metric || achievement.metric || "active_days";
+  const localCurrent = metric === "completed_missions" ? completedMissionIds.length : 0;
+  const current = Math.min(
+    Math.max(Number(stored?.current) || 0, Number(live?.current) || 0, localCurrent),
+    target,
+  );
+  return {
+    current,
+    target,
+    metric,
+    percent: target > 0 ? Math.min(100, Math.round((current / target) * 100)) : 0,
+  };
+}
+
+function achievementProgressText(progress) {
+  const key = progress.metric === "completed_missions"
+    ? "achievementProgressMissions"
+    : progress.metric === "active_months"
+    ? "achievementProgressMonths"
+    : progress.metric === "activity_streak"
+      ? "achievementProgressStreak"
+      : "achievementProgressDays";
+  return t(key, progress);
+}
+
+function achievementVisual(achievement, className = "") {
+  if (Array.isArray(achievement.frames) && achievement.frames.length) {
+    const frames = achievement.frames.map((source, index) => `<img class="achievement-art python-console-frame python-console-frame-${index + 1}" src="${source}" alt="" draggable="false" />`).join("");
+    return `<span class="achievement-art-shell is-animated-achievement ${className}" aria-hidden="true">${frames}</span>`;
+  }
+  if (achievement.image) {
+    return `<span class="achievement-art-shell ${className}" aria-hidden="true"><img class="achievement-art" src="${achievement.image}" alt="" draggable="false" /></span>`;
+  }
+  return `<span class="achievement-medal ${className}" aria-hidden="true"><span class="achievement-glyph">${achievement.glyph}</span><small>${achievement.mark}</small></span>`;
+}
+
+function renderAchievementCard(achievement, selectedId) {
+  const isUnlocked = earnedAchievements.includes(achievement.id);
+  const progress = getAchievementProgress(achievement);
   return `
-    <div class="achievements-board">
-      <div class="achievements-overview">
-        <div class="achievements-summary">
-          <span>${t("achievementsSummary", {
-            earned: earnedAchievements.length,
-            total: ACHIEVEMENT_DEFINITIONS.length,
-          })}</span>
-          <span class="achievements-progress" aria-hidden="true" style="--achievement-progress: ${completionPercent}%">
-            <span></span>
-          </span>
-        </div>
-        <strong>★ ${totalStars}</strong>
+    <button type="button" class="${["achievement-badge", "has-art", achievement.id === selectedId ? "is-selected" : "", isUnlocked ? "is-unlocked" : "is-locked", `rarity-${achievement.rarity}`].filter(Boolean).join(" ")}" data-achievement-id="${achievement.id}" aria-pressed="${achievement.id === selectedId}" aria-label="${t(achievement.titleKey)}. ${t(isUnlocked ? "achievementUnlockedStatus" : "achievementLockedStatus")}. ${t(achievement.rarityKey)}.">
+      <span class="achievement-card-rarity">${t(achievement.rarityKey)}</span>
+      <span class="achievement-card-art-wrapper">
+        ${achievementVisual(achievement)}
+      </span>
+      <span class="achievement-card-title">${t(achievement.titleKey)}</span>
+      <span class="achievement-card-progress">
+        <span class="achievement-card-track" aria-hidden="true"><span style="--achievement-card-progress: ${progress.percent}%"></span></span>
+        <strong>${progress.current} / ${progress.target}</strong>
+      </span>
+    </button>
+  `;
+}
+
+function renderAchievementDetailsPanel(achievement) {
+  if (!achievement) {
+    return `<p class="achievement-category-empty">${t("achievementPlannedCategory")}</p>`;
+  }
+
+  const isUnlocked = earnedAchievements.includes(achievement.id);
+  const progress = getAchievementProgress(achievement);
+  const isTracked = localStorage.getItem(ACHIEVEMENT_TRACKING_KEY) === achievement.id;
+  return `
+    <div class="${["achievement-detail", isUnlocked ? "is-unlocked" : "is-locked", `rarity-${achievement.rarity}`].join(" ")}">
+      <h3>${t("achievementDetailsTitle")}</h3>
+      <div class="achievement-detail-art-wrapper">
+        ${achievementVisual(achievement, "achievement-detail-art")}
       </div>
-      <div class="achievement-toolbar" role="group" aria-label="${t("achievements")}">
-        <button type="button" class="achievement-filter is-active" data-achievement-filter="all" aria-pressed="true">${t("achievementFilterAll")}</button>
-        <button type="button" class="achievement-filter" data-achievement-filter="unlocked" aria-pressed="false">${t("achievementFilterUnlocked")}</button>
-        <button type="button" class="achievement-filter" data-achievement-filter="locked" aria-pressed="false">${t("achievementFilterLocked")}</button>
-        <span class="achievements-visible-summary" aria-live="polite">${t("achievementVisibleSummary", {
-          visible: ACHIEVEMENT_DEFINITIONS.length,
-          total: ACHIEVEMENT_DEFINITIONS.length,
-        })}</span>
-      </div>
-      <div class="achievement-grid">${badges}</div>
+      <h4>${t(achievement.titleKey)}</h4>
+      <span class="achievement-detail-rarity">${t(achievement.rarityKey)}</span>
+      <section>
+        <strong>${t("achievementRequirement")}</strong>
+        <p>${t(achievement.descriptionKey)}</p>
+      </section>
+      <section>
+        <strong>${t("achievementProgressLabel")}</strong>
+        <p class="achievement-detail-progress-value">${achievementProgressText(progress)}</p>
+        <span class="achievement-detail-progress" aria-hidden="true"><span style="--achievement-detail-progress: ${progress.percent}%"></span></span>
+      </section>
+      <section>
+        <strong>${t("achievementDescriptionLabel")}</strong>
+        <p>${t("achievementEncouragement")}</p>
+      </section>
+      <button class="achievement-track-button mompy-button mompy-button--secondary ${isTracked ? "is-tracked" : ""}" type="button" data-track-achievement="${achievement.id}">
+        ${t(isTracked ? "achievementTracking" : "achievementTrack")} <span aria-hidden="true">›</span>
+      </button>
     </div>
   `;
 }
 
-function showAchievementDetails(achievementId) {
-  const achievement = getAchievementDefinition(achievementId);
-
-  if (!achievement) {
-    return;
+function renderAchievementCategory(categoryId, selectedId) {
+  const achievements = ACHIEVEMENTS_BY_CATEGORY[categoryId] || [];
+  if (!achievements.length) {
+    return `<div class="achievement-category-empty"><strong>${t("achievementPlannedCategory")}</strong></div>`;
   }
+  return achievements.map((achievement) => renderAchievementCard(achievement, selectedId)).join("");
+}
 
-  const isUnlocked = earnedAchievements.includes(achievement.id);
-  const visual = achievement.image
-    ? `<span class="achievement-art-shell achievement-detail-art" aria-hidden="true"><img class="achievement-art" src="${achievement.image}" alt="" draggable="false" /></span>`
-    : `<span class="achievement-medal achievement-detail-medal" aria-hidden="true"><span class="achievement-glyph">${achievement.glyph}</span><small>${achievement.mark}</small></span>`;
-  openModal({
-    title: t(achievement.titleKey),
-    body: `
-      <div class="achievement-detail ${achievement.image ? "has-art" : ""} rarity-${achievement.rarity} family-${achievement.family} ${isUnlocked ? "is-unlocked" : "is-locked"}">
-        ${visual}
-        <div class="achievement-detail-copy">
-          <p>${t(achievement.descriptionKey)}</p>
-          <div class="achievement-detail-meta">
-            <strong>${t(isUnlocked ? "achievementUnlockedStatus" : "achievementLockedStatus")}</strong>
-            <span>${t(achievement.rarityKey)}</span>
-          </div>
+function renderAchievementsBody() {
+  const unlockedAchievements = ACHIEVEMENT_DEFINITIONS.filter(({ id }) => earnedAchievements.includes(id));
+  const trackedId = localStorage.getItem(ACHIEVEMENT_TRACKING_KEY);
+  const selected = CONSISTENCY_ACHIEVEMENTS.find(({ id }) => id === trackedId)
+    || CONSISTENCY_ACHIEVEMENTS[0];
+  const score = totalXp + (totalStars * 10);
+  const categoryTabs = ACHIEVEMENT_CATEGORIES.map((category, index) => `
+    <button type="button" class="achievement-category-tab mompy-button mompy-button--tab ${index === 0 ? "is-active" : ""}" data-achievement-category="${category.id}" aria-pressed="${index === 0}">${t(category.titleKey)}</button>
+  `).join("");
+
+  return `
+    <div class="achievement-machine">
+      <div class="achievements-content" inert>
+        <div class="achievements-board">
+          <header class="achievements-header">
+            <img src="${ASSETS.achievements}" alt="" aria-hidden="true" draggable="false" />
+            <div>
+              <h2>${t("achievements")}</h2>
+              <strong>${String(unlockedAchievements.length).padStart(2, "0")} / ${PLANNED_ACHIEVEMENT_TOTAL}</strong>
+              <span>${t("achievementTotalScore", { score })}</span>
+            </div>
+          </header>
+          <nav class="achievement-category-tabs" aria-label="${t("achievements")}">${categoryTabs}</nav>
+          <div class="achievement-grid" data-achievement-list tabindex="0" aria-label="${t("achievements")}">${renderAchievementCategory("consistency", selected.id)}</div>
+          <aside class="achievement-details-panel" data-achievement-details tabindex="0" aria-label="${t("achievementDetailsTitle")}">${renderAchievementDetailsPanel(selected)}</aside>
         </div>
       </div>
-    `,
-    actions: [
-      {
-        label: t("achievements"),
-        onClick: showAchievements,
-      },
-    ],
+      <div class="achievement-glass" aria-hidden="true">
+        <div class="achievement-glass-panel">
+          <img src="${ACHIEVEMENT_GLASS_ASSET}" alt="" draggable="false" />
+        </div>
+      </div>
+      <div class="achievement-metal-rail" aria-hidden="true">
+        <img src="${ACHIEVEMENT_METAL_RAIL_ASSET}" alt="" draggable="false" />
+      </div>
+    </div>
+  `;
+}
+
+function bindAchievementDetailTracking() {
+  modalBody.querySelector("[data-track-achievement]")?.addEventListener("click", (event) => {
+    const achievementId = event.currentTarget.dataset.trackAchievement;
+    localStorage.setItem(ACHIEVEMENT_TRACKING_KEY, achievementId);
+    const details = modalBody.querySelector("[data-achievement-details]");
+    if (details) {
+      details.innerHTML = renderAchievementDetailsPanel(getAchievementDefinition(achievementId));
+      bindAchievementDetailTracking();
+    }
   });
 }
 
+function showAchievementDetails(achievementId) {
+  const achievement = getAchievementDefinition(achievementId);
+  const details = modalBody.querySelector("[data-achievement-details]");
+  if (!achievement || !details) {
+    return;
+  }
+
+  modalBody.querySelectorAll("[data-achievement-id]").forEach((card) => {
+    const isSelected = card.dataset.achievementId === achievementId;
+    card.classList.toggle("is-selected", isSelected);
+    card.setAttribute("aria-pressed", String(isSelected));
+  });
+  details.innerHTML = renderAchievementDetailsPanel(achievement);
+  bindAchievementDetailTracking();
+}
+
+function bindPointerDragScroll(element) {
+  if (!element || element.dataset.dragScrollBound === "true") {
+    return;
+  }
+
+  element.dataset.dragScrollBound = "true";
+  let pointerId = null;
+  let startY = 0;
+  let startScrollTop = 0;
+  let dragging = false;
+  let suppressClick = false;
+  const dragThreshold = 7;
+
+  const finishDrag = (event) => {
+    if (pointerId === null || (event?.pointerId != null && event.pointerId !== pointerId)) {
+      return;
+    }
+
+    if (dragging) {
+      suppressClick = true;
+      window.setTimeout(() => {
+        suppressClick = false;
+      }, 0);
+    }
+
+    if (element.hasPointerCapture?.(pointerId)) {
+      element.releasePointerCapture(pointerId);
+    }
+    element.classList.remove("is-drag-scrolling");
+    pointerId = null;
+    dragging = false;
+  };
+
+  element.addEventListener("pointerdown", (event) => {
+    if (
+      event.pointerType === "touch"
+      || event.button !== 0
+      || !event.isPrimary
+      || element.scrollHeight <= element.clientHeight
+    ) {
+      return;
+    }
+
+    pointerId = event.pointerId;
+    startY = event.clientY;
+    startScrollTop = element.scrollTop;
+    dragging = false;
+    suppressClick = false;
+  });
+
+  element.addEventListener("pointermove", (event) => {
+    if (pointerId === null || event.pointerId !== pointerId) {
+      return;
+    }
+
+    const deltaY = event.clientY - startY;
+    if (!dragging && Math.abs(deltaY) < dragThreshold) {
+      return;
+    }
+
+    if (!dragging) {
+      dragging = true;
+      element.classList.add("is-drag-scrolling");
+      element.setPointerCapture?.(pointerId);
+    }
+
+    event.preventDefault();
+    element.scrollTop = startScrollTop - deltaY;
+  });
+
+  element.addEventListener("pointerup", finishDrag);
+  element.addEventListener("pointercancel", finishDrag);
+  element.addEventListener("lostpointercapture", finishDrag);
+  element.addEventListener("click", (event) => {
+    if (!suppressClick) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    suppressClick = false;
+  }, true);
+}
+
 function bindAchievementControls() {
-  const filters = [...modalBody.querySelectorAll("[data-achievement-filter]")];
-  const badges = [...modalBody.querySelectorAll("[data-achievement-state]")];
-  const summary = modalBody.querySelector(".achievements-visible-summary");
+  const list = modalBody.querySelector("[data-achievement-list]");
+  const details = modalBody.querySelector("[data-achievement-details]");
+  bindPointerDragScroll(list);
+  bindPointerDragScroll(details);
+  const bindCards = () => {
+    modalBody.querySelectorAll("[data-achievement-id]").forEach((card) => {
+      card.addEventListener("click", () => showAchievementDetails(card.dataset.achievementId));
+    });
+  };
 
-  filters.forEach((filterButton) => {
-    filterButton.addEventListener("click", () => {
-      const filter = filterButton.dataset.achievementFilter;
-      let visibleCount = 0;
-
-      badges.forEach((badge) => {
-        const isVisible = filter === "all" || badge.dataset.achievementState === filter;
-        badge.hidden = !isVisible;
-        visibleCount += Number(isVisible);
-      });
-
-      filters.forEach((button) => {
-        const isActive = button === filterButton;
+  modalBody.querySelectorAll("[data-achievement-category]").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const categoryId = tab.dataset.achievementCategory;
+      modalBody.querySelectorAll("[data-achievement-category]").forEach((button) => {
+        const isActive = button === tab;
         button.classList.toggle("is-active", isActive);
         button.setAttribute("aria-pressed", String(isActive));
       });
 
-      if (summary) {
-        summary.textContent = t("achievementVisibleSummary", {
-          visible: visibleCount,
-          total: ACHIEVEMENT_DEFINITIONS.length,
-        });
+      const categoryAchievements = ACHIEVEMENTS_BY_CATEGORY[categoryId] || [];
+      if (categoryAchievements.length) {
+        const selected = categoryAchievements[0];
+        list.innerHTML = renderAchievementCategory(categoryId, selected.id);
+        details.innerHTML = renderAchievementDetailsPanel(selected);
+        bindCards();
+        bindAchievementDetailTracking();
+      } else {
+        list.innerHTML = renderAchievementCategory(categoryId, null);
+        details.innerHTML = `<p class="achievement-category-empty">${t("achievementPlannedCategory")}</p>`;
       }
     });
   });
 
-  badges.forEach((badge) => {
-    badge.addEventListener("click", () => {
-      showAchievementDetails(badge.dataset.achievementId);
-    });
-  });
+  bindCards();
+  bindAchievementDetailTracking();
 }
 
 function showAchievements() {
@@ -4624,6 +6291,7 @@ function showAchievements() {
   openModal({
     title: t("achievements"),
     body: renderAchievementsBody(),
+    variant: "achievements",
   });
   bindAchievementControls();
 }
@@ -4640,6 +6308,7 @@ function confirmExitApp() {
       {
         label: "Exit",
         primary: true,
+        variant: "secondary",
         onClick: () => {
           closeModal();
           exitApp();
@@ -4661,6 +6330,7 @@ function confirmLogoutUser() {
       {
         label: "Log out",
         primary: true,
+        variant: "danger",
         onClick: () => {
           logoutUser();
           closeModal();
@@ -4683,6 +6353,7 @@ function confirmResetProgress() {
       {
         label: "Reset progress",
         primary: true,
+        variant: "danger",
         onClick: () => {
           resetProgress();
           closeModal();
@@ -4700,11 +6371,13 @@ function confirmResetProgress() {
 }
 
 function logoutUser() {
+  resetRewardCapsulePresentation();
   console.log("Logging out current user");
   clearUserProfile();
 }
 
 function exitApp() {
+  resetRewardCapsulePresentation();
   audioManager.playShutdown();
   audioManager.stopAmbientMusic();
   clearMompyScreenMessage();
@@ -4771,16 +6444,96 @@ document.addEventListener("keydown", unlockAudioOnFirstInteraction, { once: true
 document.addEventListener("click", (event) => {
   const button = event.target.closest("button");
 
-  if (!button || button.id === "runButton") {
+  if (!button || button.id === "runButton" || button.id === "achievementsButton" || button.id === "settingsButton") {
     return;
   }
 
   audioManager.playClick();
 });
 
+modalBody.addEventListener("animationstart", (event) => {
+  const variant = modalBackdrop.dataset.modalVariant;
+
+  if (variant === "settings") {
+    if (event.animationName === "settings-panel-engage" && event.target.classList.contains("settings-machine-background")) {
+      audioManager.playSettingsGearEngage();
+      return;
+    }
+
+    if (event.animationName === "settings-gears-turn" && event.target.classList.contains("settings-gear-stage")) {
+      audioManager.playSettingsGearsTurn();
+      return;
+    }
+
+    if (event.animationName === "settings-interface-reveal" && event.target.classList.contains("settings-interface-layer")) {
+      audioManager.playSettingsPanelLock();
+    }
+    return;
+  }
+
+  if (variant !== "achievements") {
+    return;
+  }
+
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+    if (event.animationName === "achievement-content-reveal" && event.target.classList.contains("achievements-content")) {
+      audioManager.playAchievementReveal();
+    }
+    return;
+  }
+
+  if (event.animationName === "achievement-rail-arrive" && event.target.classList.contains("achievement-metal-rail")) {
+    audioManager.playAchievementRail();
+    return;
+  }
+
+  if (event.animationName === "achievement-glass-descend" && event.target.classList.contains("achievement-glass-panel")) {
+    audioManager.playAchievementGlass();
+    return;
+  }
+
+  if (event.animationName === "achievement-content-reveal" && event.target.classList.contains("achievements-content")) {
+    audioManager.playAchievementReveal();
+  }
+});
+
+modalBody.addEventListener("animationend", (event) => {
+  const variant = modalBackdrop.dataset.modalVariant;
+
+  if (variant === "settings") {
+    if (event.animationName !== "settings-interface-reveal" || !event.target.classList.contains("settings-interface-layer")) {
+      return;
+    }
+
+    event.target.inert = false;
+    modalBody.querySelector(`[data-settings-section="${activeSettingsSection}"]`)?.focus({ preventScroll: true });
+    return;
+  }
+
+  if (variant !== "achievements") {
+    return;
+  }
+
+  const animatedPiece = event.target.closest?.(
+    ".achievement-metal-rail, .achievement-glass-panel, .achievements-content",
+  );
+
+  if (animatedPiece === event.target) {
+    animatedPiece.style.willChange = "auto";
+  }
+
+  if (event.animationName !== "achievement-content-reveal" || !event.target.classList.contains("achievements-content")) {
+    return;
+  }
+
+  event.target.inert = false;
+  modalCloseButton.disabled = false;
+  modalCloseButton.focus({ preventScroll: true });
+});
+
 editor.addEventListener("input", () => {
   updateLineNumbers();
-  pointMompyAtEditor();
+  resumeMompyAfterCodeEdit();
 });
 editor.addEventListener("keydown", (event) => {
   if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
@@ -4798,7 +6551,7 @@ editor.addEventListener("keydown", (event) => {
     editor.value = `${editor.value.slice(0, start)}    ${editor.value.slice(end)}`;
     editor.selectionStart = editor.selectionEnd = start + 4;
     updateLineNumbers();
-    pointMompyAtEditor();
+    resumeMompyAfterCodeEdit();
   }
 });
 
@@ -4864,15 +6617,22 @@ document.addEventListener("keydown", (event) => {
 
 audioManager.init();
 loadUserProfile();
+loadInterfaceSettings();
 loadProgress();
+recordLocalAppOpen();
 loadBriefingProgress();
 renderMission(currentMission());
 editor.value = currentMission().starterCode || editor.value;
 updateLineNumbers();
 updateFullscreenButton();
+preloadRewardCapsuleFrames().catch((error) => {
+  console.warn("Reward capsule frames could not be preloaded.", error);
+});
 startLoadingSequence();
 
 const isLocalPreview = ["localhost", "127.0.0.1"].includes(location.hostname);
+
+runLocalRewardCapsuleTestFromQuery();
 
 if ("serviceWorker" in navigator && isLocalPreview) {
   navigator.serviceWorker

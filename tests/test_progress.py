@@ -1,3 +1,4 @@
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -5,6 +6,7 @@ from pathlib import Path
 from backend.progress import (
     complete_mission,
     load_progress,
+    record_app_open,
     reset_progress,
     set_current_mission_index,
     submit_mission_result,
@@ -104,6 +106,59 @@ class ProgressTests(unittest.TestCase):
             self.assertIn("returning_learner", progress["achievements"])
             self.assertNotIn("dedicated_learner", progress["achievements"])
             self.assertNotIn("veteran_learner", progress["achievements"])
+
+    def test_consistency_achievements_use_days_and_consecutive_sequences(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress.json"
+            dates = [f"2026-01-{day:02d}" for day in range(1, 31)]
+            path.write_text(
+                '{"active_dates":' + json.dumps(dates) + "}",
+                encoding="utf-8",
+            )
+
+            progress = load_progress(path)
+            for achievement_id in (
+                "steady_start",
+                "three_days_online",
+                "initial_sequence",
+                "code_week",
+                "always_on_week",
+                "frequent_operator",
+                "month_on_console",
+            ):
+                self.assertIn(achievement_id, progress["achievements"])
+            self.assertEqual(progress["active_days"], 30)
+            self.assertEqual(progress["activity_streak"], 30)
+            self.assertEqual(
+                progress["achievement_progress"]["month_on_console"],
+                {"current": 30, "target": 30, "metric": "active_days"},
+            )
+
+    def test_monthly_consistency_achievements_use_distinct_months(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress.json"
+            dates = [f"2026-{month:02d}-01" for month in range(1, 13)]
+            path.write_text(
+                '{"active_dates":' + json.dumps(dates) + "}",
+                encoding="utf-8",
+            )
+
+            progress = load_progress(path)
+            self.assertIn("quarterly_signal", progress["achievements"])
+            self.assertIn("programming_semester", progress["achievements"])
+            self.assertIn("mompy_companion", progress["achievements"])
+            self.assertEqual(progress["active_months"], 12)
+
+    def test_record_app_open_counts_each_calendar_day_once(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress.json"
+            record_app_open(path, active_date="2026-08-20")
+            repeated = record_app_open(path, active_date="2026-08-20")
+            returned = record_app_open(path, active_date="2026-08-21")
+
+            self.assertEqual(repeated["active_days"], 1)
+            self.assertEqual(returned["active_days"], 2)
+            self.assertIn("steady_start", returned["achievements"])
 
     def test_twenty_achievements_have_reachable_progression(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -115,6 +115,8 @@ def _diagnostic(
     column: int | None = None,
     end_line: int | None = None,
     end_column: int | None = None,
+    cause: str | None = None,
+    action: str | None = None,
 ) -> dict:
     return {
         "category": category,
@@ -123,6 +125,8 @@ def _diagnostic(
         "title": title,
         "summary": summary,
         "suggestion": suggestion,
+        "cause": cause or summary,
+        "action": action or suggestion,
         "line": line,
         "column": column,
         "end_line": end_line,
