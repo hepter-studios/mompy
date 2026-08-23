@@ -5540,6 +5540,7 @@ function showBackConfirmation() {
 
   openModal({
     title: "Go back a mission",
+    variant: "mission-help",
     body: "<p>Are you sure you want to go back to the previous mission?</p>",
     actions: [
       {
