@@ -41,6 +41,10 @@ const ASSETS = {
   settingsGearsTurnSfx: "./assets/audio/settings-gears-turn.wav?v=1",
   settingsPanelLockSfx: "./assets/audio/settings-panel-lock.wav?v=1",
   ambientLoop: "./assets/audio/mompy_crt_ambient_loop_minimal.wav",
+  classroomIndustrialLoop: "./assets/audio/classroom/02_industrial_motors_ventilation_loop.mp3?v=1",
+  classroomElectricalLoop: "./assets/audio/classroom/03_energy_wires_electrical_loop.mp3?v=1",
+  classroomComputersLoop: "./assets/audio/classroom/04_old_computers_crt_terminal_loop.mp3?v=1",
+  classroomRelaysLoop: "./assets/audio/classroom/05_robotics_relays_metal_details_loop.mp3?v=1",
 };
 
 const REWARD_CAPSULE_FRAMES = Object.freeze({
@@ -100,7 +104,7 @@ const CRT_BRIGHTNESS_KEY = "mompy_crt_brightness_v1";
 const MOMPY_ANIMATIONS_KEY = "mompy_animations_v1";
 const DEFAULT_USER_NAME = "Guest";
 const PLANNED_TOTAL_MISSIONS = 40;
-const FALLBACK_APP_VERSION = "0.1.4";
+const FALLBACK_APP_VERSION = "0.1.5";
 const SUPPORTED_LANGUAGES = ["en-US", "pt-BR"];
 
 const UI_TEXT = {
@@ -204,17 +208,18 @@ const UI_TEXT = {
     openRewardCapsuleHint: "Click or press Enter to open",
     rewardCapsuleOpening: "Opening reward capsule",
     rewardRevealed: "Reward revealed",
-    achievementFirstMission: "First mission",
+    achievementFirstMission: "First Transmission",
     achievementMissionFive: "Console warm-up",
     achievementMissionTen: "Double digits",
     achievementMissionThirty: "Deep circuit",
     achievementPerfectMission: "Perfect start",
-    achievementStarCollector25: "Star cache",
+    achievementStarCollector25: "Code Constellation",
     achievementStarCollector60: "Bright archive",
     achievementStarMaster100: "Centurion signal",
     achievementFirstBlock: "First block",
     achievementThreeBlocks: "Three blocks strong",
     achievementSixBlocks: "Core curriculum",
+    achievementPerfectBlock: "Perfect Block",
     achievementCleanStreak3: "Three-mission streak",
     achievementCleanStreak5: "Focused run",
     achievementCleanStreak10: "Unbroken circuit",
@@ -233,7 +238,27 @@ const UI_TEXT = {
     achievementReturningLearner: "Returning learner",
     achievementDedicatedLearner: "Dedicated operator",
     achievementVeteranLearner: "Mompy veteran",
-    achievementFirstMissionDescription: "Complete your first Python mission.",
+    achievementPythonConsole: "Voice in the Console",
+    achievementPythonVariables: "Variable Memory",
+    achievementPythonBranches: "Path of Decisions",
+    achievementPythonLoops: "Loop Tamer",
+    achievementPythonLists: "List Collector",
+    achievementPythonFunctions: "Function Architect",
+    achievementPythonDictionaries: "Dictionary Guardian",
+    achievementPythonWhile: "While Master",
+    achievementPythonDebug: "Bug Hunter",
+    achievementPythonPrecision: "Machine Precision",
+    achievementPythonConsoleDescription: "Complete missions 01–05 about print and text.",
+    achievementPythonVariablesDescription: "Complete missions 06–10 about variables and values.",
+    achievementPythonBranchesDescription: "Complete missions 11–15 about if, comparisons, and else.",
+    achievementPythonLoopsDescription: "Complete missions 16–20 about repetition with for.",
+    achievementPythonListsDescription: "Complete missions 21–25 about lists.",
+    achievementPythonFunctionsDescription: "Complete missions 26–30 about functions, parameters, and return values.",
+    achievementPythonDictionariesDescription: "Complete missions 31–35 about keys and values.",
+    achievementPythonWhileDescription: "Complete missions 36–40 about repetition with while.",
+    achievementPythonDebugDescription: "Correct and complete five missions after at least one incorrect attempt.",
+    achievementPythonPrecisionDescription: "Earn three stars in ten missions on the first attempt and without using a hint.",
+    achievementFirstMissionDescription: "Complete your first mission and send Mompy's first successful transmission.",
     achievementMissionFiveDescription: "Complete five missions.",
     achievementMissionTenDescription: "Complete ten missions.",
     achievementMissionThirtyDescription: "Complete thirty missions.",
@@ -244,6 +269,7 @@ const UI_TEXT = {
     achievementFirstBlockDescription: "Complete every mission in the first block.",
     achievementThreeBlocksDescription: "Complete blocks one through three.",
     achievementSixBlocksDescription: "Complete blocks one through six.",
+    achievementPerfectBlockDescription: "Complete all five missions in any block with three stars in each one.",
     achievementCleanStreak3Description: "Complete three missions without a wrong attempt.",
     achievementCleanStreak5Description: "Reach a clean streak of five missions.",
     achievementCleanStreak10Description: "Reach a clean streak of ten missions.",
@@ -287,7 +313,13 @@ const UI_TEXT = {
     achievementProgressStreak: "{current} / {target} consecutive days",
     achievementProgressMonths: "{current} / {target} months",
     achievementProgressMissions: "{current} / {target} missions",
+    achievementProgressRecoveries: "{current} / {target} corrected missions",
+    achievementProgressPerfectMissions: "{current} / {target} perfect missions",
+    achievementProgressStars: "{current} / {target} stars",
+    achievementProgressPerfectBlocks: "{current} / {target} perfect block",
     achievementEncouragement: "Keep Mompy in your routine and keep the code flowing. Mompy is proud of your progress!",
+    achievementPythonEncouragement: "Keep exploring Python concepts. Every completed challenge makes your code stronger!",
+    achievementMissionEncouragement: "Keep advancing through the journey, collecting stars, and completing every mission!",
     rarityCommon: "Common",
     rarityUncommon: "Uncommon",
     rarityRare: "Rare",
@@ -455,17 +487,18 @@ const UI_TEXT = {
     openRewardCapsuleHint: "Clique ou pressione Enter para abrir",
     rewardCapsuleOpening: "Abrindo cápsula de recompensa",
     rewardRevealed: "Recompensa revelada",
-    achievementFirstMission: "Primeira missão",
+    achievementFirstMission: "Primeira Transmissão",
     achievementMissionFive: "Aquecimento do console",
     achievementMissionTen: "Dois dígitos",
     achievementMissionThirty: "Circuito profundo",
     achievementPerfectMission: "Início perfeito",
-    achievementStarCollector25: "Reserva de estrelas",
+    achievementStarCollector25: "Constelação de Código",
     achievementStarCollector60: "Arquivo brilhante",
     achievementStarMaster100: "Sinal centenário",
     achievementFirstBlock: "Primeiro bloco",
     achievementThreeBlocks: "Três blocos firmes",
     achievementSixBlocks: "Currículo essencial",
+    achievementPerfectBlock: "Bloco Perfeito",
     achievementCleanStreak3: "Sequência de três missões",
     achievementCleanStreak5: "Ritmo focado",
     achievementCleanStreak10: "Circuito ininterrupto",
@@ -484,7 +517,27 @@ const UI_TEXT = {
     achievementReturningLearner: "Aprendiz constante",
     achievementDedicatedLearner: "Operador dedicado",
     achievementVeteranLearner: "Veterano do Mompy",
-    achievementFirstMissionDescription: "Conclua sua primeira missão de Python.",
+    achievementPythonConsole: "Voz no Console",
+    achievementPythonVariables: "Memória de Variáveis",
+    achievementPythonBranches: "Caminho das Decisões",
+    achievementPythonLoops: "Domador de Laços",
+    achievementPythonLists: "Colecionador de Listas",
+    achievementPythonFunctions: "Arquiteto de Funções",
+    achievementPythonDictionaries: "Guardião dos Dicionários",
+    achievementPythonWhile: "Mestre do While",
+    achievementPythonDebug: "Caçador de Bugs",
+    achievementPythonPrecision: "Precisão de Máquina",
+    achievementPythonConsoleDescription: "Conclua as missões 01–05, sobre print e textos.",
+    achievementPythonVariablesDescription: "Conclua as missões 06–10, sobre variáveis e valores.",
+    achievementPythonBranchesDescription: "Conclua as missões 11–15, sobre if, comparações e else.",
+    achievementPythonLoopsDescription: "Conclua as missões 16–20, sobre repetição com for.",
+    achievementPythonListsDescription: "Conclua as missões 21–25, sobre listas.",
+    achievementPythonFunctionsDescription: "Conclua as missões 26–30, sobre funções, parâmetros e retorno.",
+    achievementPythonDictionariesDescription: "Conclua as missões 31–35, sobre chaves e valores.",
+    achievementPythonWhileDescription: "Conclua as missões 36–40, sobre repetição com while.",
+    achievementPythonDebugDescription: "Corrija e conclua cinco missões depois de pelo menos uma tentativa incorreta.",
+    achievementPythonPrecisionDescription: "Obtenha três estrelas em dez missões, sempre na primeira tentativa e sem usar dica.",
+    achievementFirstMissionDescription: "Conclua sua primeira missão e envie a primeira transmissão do Mompy.",
     achievementMissionFiveDescription: "Conclua cinco missões.",
     achievementMissionTenDescription: "Conclua dez missões.",
     achievementMissionThirtyDescription: "Conclua trinta missões.",
@@ -495,6 +548,7 @@ const UI_TEXT = {
     achievementFirstBlockDescription: "Conclua todas as missões do primeiro bloco.",
     achievementThreeBlocksDescription: "Conclua os blocos um a três.",
     achievementSixBlocksDescription: "Conclua os blocos um a seis.",
+    achievementPerfectBlockDescription: "Conclua as cinco missões de qualquer bloco com três estrelas em todas.",
     achievementCleanStreak3Description: "Conclua três missões sem uma tentativa incorreta.",
     achievementCleanStreak5Description: "Alcance uma sequência limpa de cinco missões.",
     achievementCleanStreak10Description: "Alcance uma sequência limpa de dez missões.",
@@ -538,7 +592,13 @@ const UI_TEXT = {
     achievementProgressStreak: "{current} / {target} dias seguidos",
     achievementProgressMonths: "{current} / {target} meses",
     achievementProgressMissions: "{current} / {target} missões",
+    achievementProgressRecoveries: "{current} / {target} missões corrigidas",
+    achievementProgressPerfectMissions: "{current} / {target} missões perfeitas",
+    achievementProgressStars: "{current} / {target} estrelas",
+    achievementProgressPerfectBlocks: "{current} / {target} bloco perfeito",
     achievementEncouragement: "Mantenha a constância e o código fluindo. Continue assim, o Mompy está orgulhoso do seu progresso!",
+    achievementPythonEncouragement: "Continue explorando os conceitos de Python. Cada desafio concluído deixa seu código mais forte!",
+    achievementMissionEncouragement: "Continue avançando pela jornada, reunindo estrelas e concluindo cada missão!",
     rarityCommon: "Comum",
     rarityUncommon: "Incomum",
     rarityRare: "Rara",
@@ -619,16 +679,27 @@ const ACHIEVEMENT_DEFINITIONS = Object.freeze([
   { id: "quarterly_signal", category: "consistency", metric: "active_months", target: 3, family: "dedication", titleKey: "achievementQuarterlySignal", descriptionKey: "achievementQuarterlySignalDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "3M", glyph: "Ⅲ", image: "./assets/achievements/achievement-sinal-trimestral-purple.png?v=1" },
   { id: "programming_semester", category: "consistency", metric: "active_months", target: 6, family: "dedication", titleKey: "achievementProgrammingSemester", descriptionKey: "achievementProgrammingSemesterDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "6M", glyph: "Ⅵ", image: "./assets/achievements/achievement-semestre-programacao-gold.png?v=1" },
   { id: "mompy_companion", category: "consistency", metric: "active_months", target: 12, family: "dedication", titleKey: "achievementMompyCompanion", descriptionKey: "achievementMompyCompanionDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "12M", glyph: "★", image: "./assets/achievements/achievement-companheiro-do-mompy-gold.png?v=1" },
-  { id: "first_mission", category: "python", metric: "completed_missions", target: 1, family: "progress", titleKey: "achievementFirstMission", descriptionKey: "achievementFirstMissionDescription", rarityKey: "rarityCommon", rarity: "common", mark: "01", glyph: "★", frames: PYTHON_CONSOLE_ACHIEVEMENT_FRAMES },
-  { id: "mission_five", family: "progress", titleKey: "achievementMissionFive", descriptionKey: "achievementMissionFiveDescription", rarityKey: "rarityCommon", rarity: "common", mark: "05", glyph: "✦" },
-  { id: "mission_ten", family: "progress", titleKey: "achievementMissionTen", descriptionKey: "achievementMissionTenDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "10", glyph: "◆" },
-  { id: "halfway_hero", family: "progress", titleKey: "achievementHalfwayHero", descriptionKey: "achievementHalfwayHeroDescription", rarityKey: "rarityRare", rarity: "rare", mark: "1/2", glyph: "◐" },
-  { id: "mission_thirty", family: "progress", titleKey: "achievementMissionThirty", descriptionKey: "achievementMissionThirtyDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "30", glyph: "⚑" },
-  { id: "path_complete", family: "progress", titleKey: "achievementPathComplete", descriptionKey: "achievementPathCompleteDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "ALL", glyph: "♛" },
+  { id: "python_console", category: "python", metric: "mission_range", missionStart: 1, missionEnd: 5, target: 5, family: "progress", titleKey: "achievementPythonConsole", descriptionKey: "achievementPythonConsoleDescription", rarityKey: "rarityCommon", rarity: "common", mark: "01–05", glyph: ">_", frames: PYTHON_CONSOLE_ACHIEVEMENT_FRAMES },
+  { id: "python_variables", category: "python", metric: "mission_range", missionStart: 6, missionEnd: 10, target: 5, family: "progress", titleKey: "achievementPythonVariables", descriptionKey: "achievementPythonVariablesDescription", rarityKey: "rarityCommon", rarity: "common", mark: "06–10", glyph: "x", image: "./assets/achievements/python/achievement-python-variables.png?v=1" },
+  { id: "python_branches", category: "python", metric: "mission_range", missionStart: 11, missionEnd: 15, target: 5, family: "progress", titleKey: "achievementPythonBranches", descriptionKey: "achievementPythonBranchesDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "11–15", glyph: "?", image: "./assets/achievements/python/achievement-python-branches.png?v=1" },
+  { id: "python_loops", category: "python", metric: "mission_range", missionStart: 16, missionEnd: 20, target: 5, family: "progress", titleKey: "achievementPythonLoops", descriptionKey: "achievementPythonLoopsDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "16–20", glyph: "↻", image: "./assets/achievements/python/achievement-python-loops.png?v=1" },
+  { id: "python_lists", category: "python", metric: "mission_range", missionStart: 21, missionEnd: 25, target: 5, family: "progress", titleKey: "achievementPythonLists", descriptionKey: "achievementPythonListsDescription", rarityKey: "rarityRare", rarity: "rare", mark: "21–25", glyph: "[]", image: "./assets/achievements/python/achievement-python-lists.png?v=1" },
+  { id: "python_functions", category: "python", metric: "mission_range", missionStart: 26, missionEnd: 30, target: 5, family: "progress", titleKey: "achievementPythonFunctions", descriptionKey: "achievementPythonFunctionsDescription", rarityKey: "rarityRare", rarity: "rare", mark: "26–30", glyph: "f()", image: "./assets/achievements/python/achievement-python-functions.png?v=1" },
+  { id: "python_dictionaries", category: "python", metric: "mission_range", missionStart: 31, missionEnd: 35, target: 5, family: "progress", titleKey: "achievementPythonDictionaries", descriptionKey: "achievementPythonDictionariesDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "31–35", glyph: "{}", image: "./assets/achievements/python/achievement-python-math.png?v=1" },
+  { id: "python_while", category: "python", metric: "mission_range", missionStart: 36, missionEnd: 40, target: 5, family: "progress", titleKey: "achievementPythonWhile", descriptionKey: "achievementPythonWhileDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "36–40", glyph: "∞", image: "./assets/achievements/python/achievement-python-while.png?v=1" },
+  { id: "python_debug", category: "python", metric: "recovered_missions", target: 5, family: "mastery", titleKey: "achievementPythonDebug", descriptionKey: "achievementPythonDebugDescription", rarityKey: "rarityRare", rarity: "rare", mark: "5 FIX", glyph: "⌁", image: "./assets/achievements/python/achievement-python-debug.png?v=1" },
+  { id: "python_precision", category: "python", metric: "perfect_first_try_missions", target: 10, family: "mastery", titleKey: "achievementPythonPrecision", descriptionKey: "achievementPythonPrecisionDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "10×3", glyph: "★", image: "./assets/achievements/python/achievement-python-master.png?v=1" },
+  { id: "first_mission", category: "missions", metric: "completed_missions", target: 1, family: "progress", titleKey: "achievementFirstMission", descriptionKey: "achievementFirstMissionDescription", rarityKey: "rarityCommon", rarity: "common", mark: "01", glyph: "★", image: "./assets/achievements/missions/achievement-mission-first-transmission.png?v=1" },
+  { id: "mission_five", category: "missions", metric: "completed_missions", target: 5, family: "progress", titleKey: "achievementMissionFive", descriptionKey: "achievementMissionFiveDescription", rarityKey: "rarityCommon", rarity: "common", mark: "05", glyph: "✦", image: "./assets/achievements/missions/achievement-mission-console-warmup.png?v=1" },
+  { id: "mission_ten", category: "missions", metric: "completed_missions", target: 10, family: "progress", titleKey: "achievementMissionTen", descriptionKey: "achievementMissionTenDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "10", glyph: "◆", image: "./assets/achievements/missions/achievement-mission-double-digits.png?v=1" },
+  { id: "halfway_hero", category: "missions", metric: "completed_missions", target: 20, family: "progress", titleKey: "achievementHalfwayHero", descriptionKey: "achievementHalfwayHeroDescription", rarityKey: "rarityRare", rarity: "rare", mark: "1/2", glyph: "◐", image: "./assets/achievements/missions/achievement-mission-halfway.png?v=1" },
+  { id: "mission_thirty", category: "missions", metric: "completed_missions", target: 30, family: "progress", titleKey: "achievementMissionThirty", descriptionKey: "achievementMissionThirtyDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "30", glyph: "⚑", image: "./assets/achievements/missions/achievement-mission-deep-circuit.png?v=1" },
+  { id: "path_complete", category: "missions", metric: "completed_missions", target: 40, family: "progress", titleKey: "achievementPathComplete", descriptionKey: "achievementPathCompleteDescription", rarityKey: "rarityLegendary", rarity: "legendary", mark: "ALL", glyph: "♛", image: "./assets/achievements/missions/achievement-mission-path-complete.png?v=1" },
   { id: "perfect_mission", family: "mastery", titleKey: "achievementPerfectMission", descriptionKey: "achievementPerfectMissionDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "3X", glyph: "✓" },
-  { id: "star_collector_25", family: "stars", titleKey: "achievementStarCollector25", descriptionKey: "achievementStarCollector25Description", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "25*", glyph: "✧" },
-  { id: "star_collector_60", family: "stars", titleKey: "achievementStarCollector60", descriptionKey: "achievementStarCollector60Description", rarityKey: "rarityRare", rarity: "rare", mark: "60*", glyph: "✪" },
-  { id: "star_master_100", family: "stars", titleKey: "achievementStarMaster100", descriptionKey: "achievementStarMaster100Description", rarityKey: "rarityLegendary", rarity: "legendary", mark: "100", glyph: "☄" },
+  { id: "star_collector_25", category: "missions", metric: "total_stars", target: 25, family: "stars", titleKey: "achievementStarCollector25", descriptionKey: "achievementStarCollector25Description", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "25*", glyph: "✧", image: "./assets/achievements/missions/achievement-mission-code-constellation.png?v=1" },
+  { id: "star_collector_60", category: "missions", metric: "total_stars", target: 60, family: "stars", titleKey: "achievementStarCollector60", descriptionKey: "achievementStarCollector60Description", rarityKey: "rarityRare", rarity: "rare", mark: "60*", glyph: "✪", image: "./assets/achievements/missions/achievement-mission-bright-archive.png?v=1" },
+  { id: "star_master_100", category: "missions", metric: "total_stars", target: 100, family: "stars", titleKey: "achievementStarMaster100", descriptionKey: "achievementStarMaster100Description", rarityKey: "rarityLegendary", rarity: "legendary", mark: "100", glyph: "☄", image: "./assets/achievements/missions/achievement-mission-centurion-signal.png?v=1" },
+  { id: "perfect_block", category: "missions", metric: "perfect_blocks", target: 1, family: "blocks", titleKey: "achievementPerfectBlock", descriptionKey: "achievementPerfectBlockDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "15★", glyph: "★", image: "./assets/achievements/missions/achievement-mission-perfect-block.png?v=1" },
   { id: "first_block", family: "blocks", titleKey: "achievementFirstBlock", descriptionKey: "achievementFirstBlockDescription", rarityKey: "rarityUncommon", rarity: "uncommon", mark: "B1", glyph: "I" },
   { id: "three_blocks", family: "blocks", titleKey: "achievementThreeBlocks", descriptionKey: "achievementThreeBlocksDescription", rarityKey: "rarityRare", rarity: "rare", mark: "B3", glyph: "III" },
   { id: "six_blocks", family: "blocks", titleKey: "achievementSixBlocks", descriptionKey: "achievementSixBlocksDescription", rarityKey: "rarityEpic", rarity: "epic", mark: "B6", glyph: "VI" },
@@ -649,10 +720,13 @@ const CONSISTENCY_ACHIEVEMENTS = Object.freeze(
 const PYTHON_ACHIEVEMENTS = Object.freeze(
   ACHIEVEMENT_DEFINITIONS.filter(({ category }) => category === "python"),
 );
+const MISSION_ACHIEVEMENTS = Object.freeze(
+  ACHIEVEMENT_DEFINITIONS.filter(({ category }) => category === "missions"),
+);
 const ACHIEVEMENTS_BY_CATEGORY = Object.freeze({
   consistency: CONSISTENCY_ACHIEVEMENTS,
   python: PYTHON_ACHIEVEMENTS,
-  missions: Object.freeze([]),
+  missions: MISSION_ACHIEVEMENTS,
   secrets: Object.freeze([]),
 });
 
@@ -1701,6 +1775,7 @@ let activeBriefingId = null;
 let activeBriefingStepIndex = 0;
 let activeBriefingRetry = false;
 let briefingFinalTimer = null;
+let classroomStageTimers = [];
 const briefingOptionOrder = new Map();
 let previousCorrectBriefingOptionIndex = -1;
 
@@ -1884,6 +1959,14 @@ const audioManager = {
       }
     }
 
+    ensureClassroomRecordedTracks().forEach(({ audio }) => {
+      try {
+        audio.load();
+      } catch (error) {
+        console.warn(error);
+      }
+    });
+
     if (!trainingStarted && loadingScreen?.hidden) {
       this.startAmbientMusic();
     }
@@ -2018,6 +2101,7 @@ const audioManager = {
   setSfxEnabled(value) {
     this.sfxEnabled = Boolean(value);
     settingsState.soundEffects = this.sfxEnabled;
+    syncClassroomSparkAudio();
     this.saveSettings();
   },
 
@@ -2026,7 +2110,9 @@ const audioManager = {
     settingsState.ambientMusic = this.musicEnabled;
     this.saveSettings();
 
-    if (this.musicEnabled) {
+    if (classroomEnvironmentAudio.active) {
+      syncClassroomMachineAmbience();
+    } else if (this.musicEnabled) {
       this.startAmbientMusic();
     } else {
       this.stopAmbientMusic();
@@ -2036,6 +2122,7 @@ const audioManager = {
   setSfxVolume(value) {
     this.sfxVolume = clampAudioVolume(value, this.sfxVolume);
     settingsState.effectsVolume = Math.round(this.sfxVolume * 100);
+    syncClassroomSparkAudio();
     this.saveSettings();
   },
 
@@ -2047,6 +2134,7 @@ const audioManager = {
       this.music.volume = Math.min(this.music.volume, this.musicVolume);
     }
 
+    syncClassroomMachineAmbience();
     this.saveSettings();
   },
 
@@ -2082,6 +2170,617 @@ const audioManager = {
     settingsState.effectsVolume = Math.round(this.sfxVolume * 100);
   },
 };
+
+let classroomMechanismAudioContext = null;
+
+function prepareClassroomAudioContext() {
+  if (!audioManager.unlocked) {
+    return null;
+  }
+
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) {
+    return null;
+  }
+
+  if (!classroomMechanismAudioContext) {
+    classroomMechanismAudioContext = new AudioContextClass();
+  }
+
+  if (classroomMechanismAudioContext.state === "suspended") {
+    classroomMechanismAudioContext.resume().catch(() => {});
+  }
+
+  return classroomMechanismAudioContext;
+}
+
+function prepareClassroomMechanismAudio() {
+  if (!audioManager.sfxEnabled) {
+    return null;
+  }
+
+  return prepareClassroomAudioContext();
+}
+
+function playClassroomMechanismCue(phase) {
+  const context = prepareClassroomMechanismAudio();
+  if (!context) {
+    return;
+  }
+
+  const now = context.currentTime + 0.015;
+  const volume = Math.max(0.0001, audioManager.sfxVolume * 0.42);
+  const master = context.createGain();
+  master.gain.setValueAtTime(volume, now);
+  master.connect(context.destination);
+
+  const strike = ({ offset = 0, frequency, endFrequency = frequency, duration, gain = 0.2, type = "triangle" }) => {
+    const startsAt = now + offset;
+    const endsAt = startsAt + duration;
+    const oscillator = context.createOscillator();
+    const envelope = context.createGain();
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(frequency, startsAt);
+    oscillator.frequency.exponentialRampToValueAtTime(Math.max(20, endFrequency), endsAt);
+    envelope.gain.setValueAtTime(0.0001, startsAt);
+    envelope.gain.exponentialRampToValueAtTime(Math.max(0.0002, gain), startsAt + 0.018);
+    envelope.gain.exponentialRampToValueAtTime(0.0001, endsAt);
+    oscillator.connect(envelope);
+    envelope.connect(master);
+    oscillator.start(startsAt);
+    oscillator.stop(endsAt + 0.025);
+  };
+
+  const grind = ({ offset = 0, duration = 0.9, gain = 0.14, frequency = 220 }) => {
+    const startsAt = now + offset;
+    const endsAt = startsAt + duration;
+    const frameCount = Math.max(1, Math.floor(context.sampleRate * duration));
+    const buffer = context.createBuffer(1, frameCount, context.sampleRate);
+    const samples = buffer.getChannelData(0);
+    let previous = 0;
+
+    for (let index = 0; index < frameCount; index += 1) {
+      const noise = (Math.random() * 2) - 1;
+      previous = (previous * 0.72) + (noise * 0.28);
+      samples[index] = previous;
+    }
+
+    const source = context.createBufferSource();
+    const filter = context.createBiquadFilter();
+    const envelope = context.createGain();
+    source.buffer = buffer;
+    filter.type = "bandpass";
+    filter.frequency.setValueAtTime(frequency, startsAt);
+    filter.frequency.exponentialRampToValueAtTime(Math.max(70, frequency * 0.62), endsAt);
+    filter.Q.setValueAtTime(1.15, startsAt);
+    envelope.gain.setValueAtTime(0.0001, startsAt);
+    envelope.gain.exponentialRampToValueAtTime(Math.max(0.0002, gain), startsAt + 0.05);
+    envelope.gain.setValueAtTime(Math.max(0.0002, gain * 0.82), endsAt - 0.08);
+    envelope.gain.exponentialRampToValueAtTime(0.0001, endsAt);
+    source.connect(filter);
+    filter.connect(envelope);
+    envelope.connect(master);
+    source.start(startsAt);
+    source.stop(endsAt + 0.02);
+  };
+
+  const gearTicks = ({ count, interval, gain, startFrequency, offset = 0 }) => {
+    for (let index = 0; index < count; index += 1) {
+      const tickOffset = offset + (index * interval);
+      strike({
+        offset: tickOffset,
+        frequency: startFrequency + ((index % 3) * 42),
+        endFrequency: 118 + ((index % 2) * 24),
+        duration: 0.065,
+        gain,
+        type: "square",
+      });
+    }
+  };
+
+  if (phase === "exit") {
+    strike({ frequency: 78, endFrequency: 46, duration: 0.92, gain: 0.38 });
+    grind({ duration: 0.92, gain: 0.18, frequency: 245 });
+    gearTicks({ count: 8, interval: 0.11, gain: 0.2, startFrequency: 176, offset: 0.03 });
+    strike({ offset: 0.08, frequency: 196, endFrequency: 188, duration: 1.05, gain: 0.15 });
+    strike({ offset: 0.12, frequency: 293.66, endFrequency: 282, duration: 0.9, gain: 0.09, type: "sine" });
+    return;
+  }
+
+  strike({ frequency: 116, endFrequency: 58, duration: 0.96, gain: 0.25 });
+  grind({ duration: 1.08, gain: 0.17, frequency: 285 });
+  gearTicks({ count: 9, interval: 0.105, gain: 0.18, startFrequency: 194, offset: 0.02 });
+  strike({ offset: 0.02, frequency: 261.63, endFrequency: 248, duration: 1.12, gain: 0.16 });
+  strike({ offset: 0.24, frequency: 196, endFrequency: 184, duration: 0.92, gain: 0.17 });
+  strike({ offset: 0.78, frequency: 52, endFrequency: 36, duration: 0.5, gain: 0.48 });
+  strike({ offset: 0.8, frequency: 104, endFrequency: 62, duration: 0.34, gain: 0.22, type: "square" });
+}
+
+const classroomEnvironmentAudio = {
+  active: false,
+  generation: 0,
+  machineMaster: null,
+  machineSources: [],
+  sparkTimer: null,
+  machineTimer: null,
+  recordedTracks: null,
+  recordedFadeTimer: null,
+};
+
+function ensureClassroomRecordedTracks() {
+  if (classroomEnvironmentAudio.recordedTracks) {
+    return classroomEnvironmentAudio.recordedTracks;
+  }
+
+  const createTrack = (source, channel, mix) => {
+    const audio = new Audio(source);
+    audio.loop = true;
+    audio.preload = "auto";
+    audio.volume = 0;
+    return {
+      audio,
+      channel,
+      mix,
+      starting: false,
+      resetWhenSilent: false,
+    };
+  };
+
+  classroomEnvironmentAudio.recordedTracks = [
+    createTrack(ASSETS.classroomIndustrialLoop, "music", 0.58),
+    createTrack(ASSETS.classroomComputersLoop, "music", 0.25),
+    createTrack(ASSETS.classroomElectricalLoop, "sfx", 0.28),
+    createTrack(ASSETS.classroomRelaysLoop, "sfx", 0.16),
+  ];
+
+  return classroomEnvironmentAudio.recordedTracks;
+}
+
+function classroomRecordedTarget(track) {
+  if (!classroomEnvironmentAudio.active || document.hidden || !audioManager.unlocked) {
+    return 0;
+  }
+
+  if (track.channel === "music") {
+    return audioManager.musicEnabled
+      ? Math.min(1, audioManager.musicVolume * track.mix)
+      : 0;
+  }
+
+  return audioManager.sfxEnabled
+    ? Math.min(1, audioManager.sfxVolume * track.mix)
+    : 0;
+}
+
+function syncClassroomRecordedAudio({ immediate = false, resetWhenSilent = false } = {}) {
+  const tracks = ensureClassroomRecordedTracks();
+  window.clearInterval(classroomEnvironmentAudio.recordedFadeTimer);
+  classroomEnvironmentAudio.recordedFadeTimer = null;
+
+  tracks.forEach((track) => {
+    track.resetWhenSilent = track.resetWhenSilent || resetWhenSilent;
+  });
+
+  const update = () => {
+    let settled = true;
+
+    tracks.forEach((track) => {
+      const target = classroomRecordedTarget(track);
+      const current = track.audio.volume;
+      const difference = target - current;
+      const next = immediate || Math.abs(difference) <= 0.008
+        ? target
+        : current + (Math.sign(difference) * 0.008);
+
+      track.audio.volume = Math.max(0, Math.min(1, next));
+
+      if (target > 0 && track.audio.paused && !track.starting) {
+        track.starting = true;
+        track.audio.play()
+          .catch(() => {})
+          .finally(() => {
+            track.starting = false;
+          });
+      }
+
+      if (target === 0 && track.audio.volume <= 0.001) {
+        track.audio.pause();
+        track.audio.volume = 0;
+        if (track.resetWhenSilent) {
+          try {
+            track.audio.currentTime = 0;
+          } catch (error) {
+            console.warn(error);
+          }
+          track.resetWhenSilent = false;
+        }
+      }
+
+      if (Math.abs(track.audio.volume - target) > 0.001) {
+        settled = false;
+      }
+    });
+
+    if (settled && classroomEnvironmentAudio.recordedFadeTimer) {
+      window.clearInterval(classroomEnvironmentAudio.recordedFadeTimer);
+      classroomEnvironmentAudio.recordedFadeTimer = null;
+    }
+
+    return settled;
+  };
+
+  if (!update()) {
+    classroomEnvironmentAudio.recordedFadeTimer = window.setInterval(update, 48);
+  }
+}
+
+function pauseClassroomRecordedAudio({ reset = false } = {}) {
+  window.clearInterval(classroomEnvironmentAudio.recordedFadeTimer);
+  classroomEnvironmentAudio.recordedFadeTimer = null;
+
+  ensureClassroomRecordedTracks().forEach((track) => {
+    track.audio.pause();
+    track.audio.volume = 0;
+    track.starting = false;
+    track.resetWhenSilent = false;
+    if (reset) {
+      try {
+        track.audio.currentTime = 0;
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+  });
+}
+
+function createClassroomNoiseBuffer(context, duration, { brown = false } = {}) {
+  const frameCount = Math.max(1, Math.floor(context.sampleRate * duration));
+  const buffer = context.createBuffer(1, frameCount, context.sampleRate);
+  const samples = buffer.getChannelData(0);
+  let previous = 0;
+
+  for (let index = 0; index < frameCount; index += 1) {
+    const white = (Math.random() * 2) - 1;
+    if (brown) {
+      previous = (previous * 0.985) + (white * 0.015);
+      samples[index] = Math.max(-1, Math.min(1, previous * 5.2));
+    } else {
+      samples[index] = white;
+    }
+  }
+
+  return buffer;
+}
+
+function stopClassroomMachineSources({ immediate = false } = {}) {
+  const context = classroomMechanismAudioContext;
+  const master = classroomEnvironmentAudio.machineMaster;
+  const sources = classroomEnvironmentAudio.machineSources;
+
+  classroomEnvironmentAudio.machineMaster = null;
+  classroomEnvironmentAudio.machineSources = [];
+  window.clearTimeout(classroomEnvironmentAudio.machineTimer);
+  classroomEnvironmentAudio.machineTimer = null;
+
+  if (!context || !master) {
+    return;
+  }
+
+  const now = context.currentTime;
+  const release = immediate ? 0.015 : 0.48;
+  master.gain.cancelScheduledValues(now);
+  master.gain.setValueAtTime(Math.max(0.0001, master.gain.value), now);
+  master.gain.exponentialRampToValueAtTime(0.0001, now + release);
+
+  window.setTimeout(() => {
+    sources.forEach((source) => {
+      try {
+        source.stop();
+      } catch (error) {
+        // The source may already have reached its scheduled ending.
+      }
+      try {
+        source.disconnect();
+      } catch (error) {
+        // A disconnected Web Audio node needs no further cleanup.
+      }
+    });
+    try {
+      master.disconnect();
+    } catch (error) {
+      // The master may already be disconnected during page shutdown.
+    }
+  }, Math.ceil((release + 0.08) * 1000));
+}
+
+function playClassroomMachineRattle() {
+  if (
+    !classroomEnvironmentAudio.active
+    || !audioManager.musicEnabled
+    || audioManager.musicVolume <= 0
+    || document.hidden
+  ) {
+    return;
+  }
+
+  const context = prepareClassroomAudioContext();
+  if (!context) {
+    return;
+  }
+
+  const now = context.currentTime + 0.012;
+  const master = context.createGain();
+  const panner = typeof context.createStereoPanner === "function" ? context.createStereoPanner() : null;
+  master.gain.setValueAtTime(Math.max(0.0001, audioManager.musicVolume * 0.17), now);
+  if (panner) {
+    panner.pan.setValueAtTime((Math.random() * 0.5) - 0.25, now);
+    master.connect(panner);
+    panner.connect(context.destination);
+  } else {
+    master.connect(context.destination);
+  }
+
+  const hitCount = 2 + Math.floor(Math.random() * 3);
+  for (let index = 0; index < hitCount; index += 1) {
+    const startsAt = now + (index * (0.055 + (Math.random() * 0.045)));
+    const endsAt = startsAt + 0.11 + (Math.random() * 0.08);
+    const oscillator = context.createOscillator();
+    const envelope = context.createGain();
+    oscillator.type = index % 2 ? "triangle" : "square";
+    oscillator.frequency.setValueAtTime(105 + (Math.random() * 95), startsAt);
+    oscillator.frequency.exponentialRampToValueAtTime(48 + (Math.random() * 32), endsAt);
+    envelope.gain.setValueAtTime(0.0001, startsAt);
+    envelope.gain.exponentialRampToValueAtTime(0.17 - (index * 0.018), startsAt + 0.008);
+    envelope.gain.exponentialRampToValueAtTime(0.0001, endsAt);
+    oscillator.connect(envelope);
+    envelope.connect(master);
+    oscillator.start(startsAt);
+    oscillator.stop(endsAt + 0.02);
+  }
+}
+
+function scheduleClassroomMachineRattle(initialDelay = null) {
+  window.clearTimeout(classroomEnvironmentAudio.machineTimer);
+  classroomEnvironmentAudio.machineTimer = null;
+
+  if (
+    !classroomEnvironmentAudio.active
+    || !audioManager.musicEnabled
+    || audioManager.musicVolume <= 0
+    || document.hidden
+  ) {
+    return;
+  }
+
+  const generation = classroomEnvironmentAudio.generation;
+  const delay = initialDelay ?? (3600 + (Math.random() * 4700));
+  classroomEnvironmentAudio.machineTimer = window.setTimeout(() => {
+    if (!classroomEnvironmentAudio.active || generation !== classroomEnvironmentAudio.generation) {
+      return;
+    }
+    playClassroomMachineRattle();
+    scheduleClassroomMachineRattle();
+  }, delay);
+}
+
+function startClassroomMachineAmbience() {
+  if (
+    classroomEnvironmentAudio.machineMaster
+    || !classroomEnvironmentAudio.active
+    || !audioManager.musicEnabled
+    || audioManager.musicVolume <= 0
+    || document.hidden
+  ) {
+    return;
+  }
+
+  const context = prepareClassroomAudioContext();
+  if (!context) {
+    return;
+  }
+
+  const now = context.currentTime + 0.015;
+  const master = context.createGain();
+  const motorBus = context.createGain();
+  const lowpass = context.createBiquadFilter();
+  const motor = context.createOscillator();
+  const harmonic = context.createOscillator();
+  const motorGain = context.createGain();
+  const harmonicGain = context.createGain();
+  const ventilation = context.createBufferSource();
+  const ventilationFilter = context.createBiquadFilter();
+  const ventilationGain = context.createGain();
+  const lfo = context.createOscillator();
+  const lfoDepth = context.createGain();
+
+  master.gain.setValueAtTime(0.0001, now);
+  master.gain.exponentialRampToValueAtTime(
+    Math.max(0.0002, audioManager.musicVolume * 0.55),
+    now + 1.25,
+  );
+  master.connect(context.destination);
+
+  lowpass.type = "lowpass";
+  lowpass.frequency.setValueAtTime(510, now);
+  lowpass.Q.setValueAtTime(0.74, now);
+  motorBus.gain.setValueAtTime(0.72, now);
+  motorBus.connect(lowpass);
+  lowpass.connect(master);
+
+  motor.type = "sawtooth";
+  motor.frequency.setValueAtTime(43.5, now);
+  motorGain.gain.setValueAtTime(0.12, now);
+  motor.connect(motorGain);
+  motorGain.connect(motorBus);
+
+  harmonic.type = "sine";
+  harmonic.frequency.setValueAtTime(87.2, now);
+  harmonic.detune.setValueAtTime(-7, now);
+  harmonicGain.gain.setValueAtTime(0.075, now);
+  harmonic.connect(harmonicGain);
+  harmonicGain.connect(motorBus);
+
+  ventilation.buffer = createClassroomNoiseBuffer(context, 3.4, { brown: true });
+  ventilation.loop = true;
+  ventilationFilter.type = "bandpass";
+  ventilationFilter.frequency.setValueAtTime(215, now);
+  ventilationFilter.Q.setValueAtTime(0.68, now);
+  ventilationGain.gain.setValueAtTime(0.2, now);
+  ventilation.connect(ventilationFilter);
+  ventilationFilter.connect(ventilationGain);
+  ventilationGain.connect(motorBus);
+
+  lfo.type = "sine";
+  lfo.frequency.setValueAtTime(0.31, now);
+  lfoDepth.gain.setValueAtTime(0.085, now);
+  lfo.connect(lfoDepth);
+  lfoDepth.connect(motorBus.gain);
+
+  [motor, harmonic, ventilation, lfo].forEach((source) => source.start(now));
+  classroomEnvironmentAudio.machineMaster = master;
+  classroomEnvironmentAudio.machineSources = [motor, harmonic, ventilation, lfo];
+  scheduleClassroomMachineRattle(2300 + (Math.random() * 1600));
+}
+
+function syncClassroomMachineAmbience() {
+  syncClassroomRecordedAudio();
+}
+
+function playClassroomSparkBurst() {
+  if (
+    !classroomEnvironmentAudio.active
+    || !audioManager.sfxEnabled
+    || audioManager.sfxVolume <= 0
+    || document.hidden
+  ) {
+    return;
+  }
+
+  const context = prepareClassroomAudioContext();
+  if (!context) {
+    return;
+  }
+
+  const now = context.currentTime + 0.008;
+  const rightSide = Math.random() > 0.5;
+  const master = context.createGain();
+  const panner = typeof context.createStereoPanner === "function" ? context.createStereoPanner() : null;
+  master.gain.setValueAtTime(Math.max(0.0001, audioManager.sfxVolume * 0.3), now);
+  if (panner) {
+    panner.pan.setValueAtTime(rightSide ? 0.76 : -0.76, now);
+    master.connect(panner);
+    panner.connect(context.destination);
+  } else {
+    master.connect(context.destination);
+  }
+
+  const snapCount = 2 + Math.floor(Math.random() * 3);
+  for (let index = 0; index < snapCount; index += 1) {
+    const offset = index * (0.024 + (Math.random() * 0.035));
+    const startsAt = now + offset;
+    const duration = 0.035 + (Math.random() * 0.075);
+    const endsAt = startsAt + duration;
+    const noise = context.createBufferSource();
+    const filter = context.createBiquadFilter();
+    const envelope = context.createGain();
+    noise.buffer = createClassroomNoiseBuffer(context, duration);
+    filter.type = "bandpass";
+    filter.frequency.setValueAtTime(2600 + (Math.random() * 3700), startsAt);
+    filter.Q.setValueAtTime(1.1 + (Math.random() * 2.2), startsAt);
+    envelope.gain.setValueAtTime(0.0001, startsAt);
+    envelope.gain.exponentialRampToValueAtTime(0.48 - (index * 0.055), startsAt + 0.004);
+    envelope.gain.exponentialRampToValueAtTime(0.0001, endsAt);
+    noise.connect(filter);
+    filter.connect(envelope);
+    envelope.connect(master);
+    noise.start(startsAt);
+    noise.stop(endsAt + 0.01);
+  }
+
+  const arc = context.createOscillator();
+  const arcEnvelope = context.createGain();
+  arc.type = "sawtooth";
+  arc.frequency.setValueAtTime(1250 + (Math.random() * 780), now);
+  arc.frequency.exponentialRampToValueAtTime(185 + (Math.random() * 120), now + 0.12);
+  arcEnvelope.gain.setValueAtTime(0.0001, now);
+  arcEnvelope.gain.exponentialRampToValueAtTime(0.08, now + 0.006);
+  arcEnvelope.gain.exponentialRampToValueAtTime(0.0001, now + 0.13);
+  arc.connect(arcEnvelope);
+  arcEnvelope.connect(master);
+  arc.start(now);
+  arc.stop(now + 0.145);
+}
+
+function scheduleClassroomSpark(initialDelay = null) {
+  window.clearTimeout(classroomEnvironmentAudio.sparkTimer);
+  classroomEnvironmentAudio.sparkTimer = null;
+
+  if (
+    !classroomEnvironmentAudio.active
+    || !audioManager.sfxEnabled
+    || audioManager.sfxVolume <= 0
+    || document.hidden
+  ) {
+    return;
+  }
+
+  const generation = classroomEnvironmentAudio.generation;
+  const delay = initialDelay ?? (620 + (Math.random() * 1380));
+  classroomEnvironmentAudio.sparkTimer = window.setTimeout(() => {
+    if (!classroomEnvironmentAudio.active || generation !== classroomEnvironmentAudio.generation) {
+      return;
+    }
+    playClassroomSparkBurst();
+    scheduleClassroomSpark();
+  }, delay);
+}
+
+function syncClassroomSparkAudio() {
+  window.clearTimeout(classroomEnvironmentAudio.sparkTimer);
+  classroomEnvironmentAudio.sparkTimer = null;
+  syncClassroomRecordedAudio();
+}
+
+function startClassroomEnvironmentAudio() {
+  classroomEnvironmentAudio.active = true;
+  classroomEnvironmentAudio.generation += 1;
+  machine.dataset.classroomAudio = "active";
+  pauseClassroomRecordedAudio({ reset: true });
+  syncClassroomRecordedAudio();
+}
+
+function stopClassroomEnvironmentAudio({ immediate = false } = {}) {
+  classroomEnvironmentAudio.active = false;
+  classroomEnvironmentAudio.generation += 1;
+  delete machine.dataset.classroomAudio;
+  window.clearTimeout(classroomEnvironmentAudio.sparkTimer);
+  classroomEnvironmentAudio.sparkTimer = null;
+  stopClassroomMachineSources({ immediate });
+  if (immediate) {
+    pauseClassroomRecordedAudio({ reset: true });
+  } else {
+    syncClassroomRecordedAudio({ resetWhenSilent: true });
+  }
+}
+
+function suspendClassroomEnvironmentAudio() {
+  if (!classroomEnvironmentAudio.active) {
+    return;
+  }
+  machine.dataset.classroomAudio = "suspended";
+  window.clearTimeout(classroomEnvironmentAudio.sparkTimer);
+  classroomEnvironmentAudio.sparkTimer = null;
+  stopClassroomMachineSources({ immediate: true });
+  pauseClassroomRecordedAudio();
+}
+
+function resumeClassroomEnvironmentAudio() {
+  if (!classroomEnvironmentAudio.active) {
+    return;
+  }
+  machine.dataset.classroomAudio = "active";
+  syncClassroomRecordedAudio();
+}
 
 const LOADING_RUNNER_FRAMES = [
   "./assets/loading/mompy-run-01.png?v=2",
@@ -2435,6 +3134,7 @@ function saveBriefingProgress() {
 }
 
 function resetBriefingProgress() {
+  resetClassroomStage();
   completedBriefingIds = [];
   skippedBriefingIds = [];
   activeBriefingId = null;
@@ -2838,6 +3538,10 @@ class MompyRewardCapsule {
     const card = document.createElement("article");
     card.className = `reward-capsule-card rarity-${rarity}`;
     card.setAttribute("role", "listitem");
+    card.setAttribute(
+      "aria-label",
+      `${t(definition?.titleKey || achievementId)}. ${t("achievementUnlockedStatus")}.`,
+    );
 
     const art = document.createElement("span");
     art.className = "reward-capsule-card-art";
@@ -2866,19 +3570,7 @@ class MompyRewardCapsule {
       art.append(glyph);
     }
 
-    const name = document.createElement("h3");
-    name.textContent = t(definition?.titleKey || achievementId);
-
-    const rarityLabel = document.createElement("span");
-    rarityLabel.className = "reward-capsule-card-rarity";
-    rarityLabel.textContent = t(definition?.rarityKey || "rarityCommon");
-
-    const description = document.createElement("p");
-    description.textContent = definition?.descriptionKey
-      ? t(definition.descriptionKey)
-      : t("achievementUnlockedStatus");
-
-    card.append(art, name, rarityLabel, description);
+    card.append(art);
     return card;
   }
 
@@ -3102,7 +3794,8 @@ function runLocalRewardCapsuleTestFromQuery() {
   }
 
   const aliases = {
-    python: "first_mission",
+    python: "python_console",
+    missions: "first_mission",
     standard: "first_mission",
     legendary: "programming_semester",
   };
@@ -3318,6 +4011,7 @@ function showLearningBriefing(briefingId) {
   activeBriefingId = briefing.id;
   activeBriefingStepIndex = 0;
   activeBriefingRetry = false;
+  resetClassroomStage();
   clearTimeout(briefingFinalTimer);
   stopMissionTyping();
   clearMompyScreenMessage();
@@ -3329,21 +4023,115 @@ function showLearningBriefing(briefingId) {
   renderBriefingIntro(briefing);
 }
 
+function clearClassroomStageTimers() {
+  classroomStageTimers.forEach((timer) => window.clearTimeout(timer));
+  classroomStageTimers = [];
+}
+
+function resetClassroomStage() {
+  stopClassroomEnvironmentAudio({ immediate: true });
+  clearClassroomStageTimers();
+  machine.classList.remove(
+    "classroom-stage-activating",
+    "classroom-stage-dimming",
+    "classroom-stage-opening",
+    "classroom-background-exiting",
+    "classroom-background-dropping",
+    "classroom-stage-active",
+  );
+  mompyScreenMessage
+    ?.querySelectorAll(".is-classroom-launching")
+    .forEach((button) => {
+      button.classList.remove("is-classroom-launching");
+      button.removeAttribute("aria-busy");
+      button.disabled = false;
+    });
+}
+
+function scheduleClassroomStageStep(callback, delay) {
+  const timer = window.setTimeout(() => {
+    classroomStageTimers = classroomStageTimers.filter((candidate) => candidate !== timer);
+    callback();
+  }, delay);
+  classroomStageTimers.push(timer);
+}
+
+function beginClassroomStage(briefing, triggerButton) {
+  if (
+    !briefing
+    || machine.classList.contains("classroom-stage-activating")
+    || machine.classList.contains("classroom-stage-active")
+  ) {
+    return;
+  }
+
+  clearClassroomStageTimers();
+  const reduceMotion = prefersReducedMotion() || !settingsState.mompyAnimations;
+  const query = new URLSearchParams(location.search);
+  const holdClassroomLab = ["localhost", "127.0.0.1"].includes(location.hostname)
+    && query.get("classroomHold") === "1";
+  const timings = reduceMotion
+    ? { dim: 30, grow: 60, exit: 90, drop: 260, finish: 390 }
+    : { dim: 260, grow: 560, exit: 1320, drop: 12200, finish: 15600 };
+
+  prepareClassroomAudioContext();
+  triggerButton?.classList.add("is-classroom-launching");
+  triggerButton?.setAttribute("aria-busy", "true");
+  mompyScreenMessage.querySelectorAll("button").forEach((button) => {
+    button.disabled = true;
+  });
+  machine.classList.add("classroom-stage-activating");
+
+  scheduleClassroomStageStep(() => {
+    machine.classList.add("classroom-stage-dimming");
+  }, timings.dim);
+
+  scheduleClassroomStageStep(() => {
+    machine.classList.add("classroom-stage-opening");
+  }, timings.grow);
+
+  scheduleClassroomStageStep(() => {
+    machine.classList.add("classroom-background-exiting");
+    playClassroomMechanismCue("exit");
+    startClassroomEnvironmentAudio();
+  }, timings.exit);
+
+  if (!holdClassroomLab) {
+    scheduleClassroomStageStep(() => {
+      machine.classList.remove("classroom-background-exiting");
+      machine.classList.add("classroom-background-dropping");
+      stopClassroomEnvironmentAudio();
+      playClassroomMechanismCue("drop");
+    }, timings.drop);
+
+    scheduleClassroomStageStep(() => {
+      machine.classList.remove(
+        "classroom-stage-activating",
+        "classroom-stage-dimming",
+        "classroom-stage-opening",
+        "classroom-background-exiting",
+        "classroom-background-dropping",
+      );
+      machine.classList.add("classroom-stage-active");
+      activeBriefingStepIndex = 0;
+      activeBriefingRetry = false;
+      renderBriefingStep(briefing, 0);
+    }, timings.finish);
+  }
+}
+
 function renderBriefingIntro(briefing) {
   renderMompyScreenPanel({
     title: "Mompy",
     lines: [
       briefing.subtitle,
     ],
+    variant: "intro",
     actions: [
       {
         label: t("learn"),
         primary: true,
-        onClick: () => {
-          activeBriefingStepIndex = 0;
-          activeBriefingRetry = false;
-          renderBriefingStep(briefing, 0);
-        },
+        onClick: (event) => beginClassroomStage(briefing, event.currentTarget),
       },
       {
         label: t("skip"),
@@ -3562,12 +4350,14 @@ function completeBriefing(briefingId) {
   });
 
   briefingFinalTimer = setTimeout(() => {
+    resetClassroomStage();
     clearMompyScreenMessage();
     renderCurrentMission({ intro: true });
   }, 1200);
 }
 
 function skipBriefing(briefingId) {
+  resetClassroomStage();
   if (!skippedBriefingIds.includes(briefingId)) {
     skippedBriefingIds.push(briefingId);
   }
@@ -4305,6 +5095,7 @@ function stopStartScreenMompyAnimation(options = {}) {
 }
 
 async function showStartScreen() {
+  stopClassroomEnvironmentAudio({ immediate: true });
   const backendSynced = await ensurePythonBackendState();
   const profile = loadUserProfile();
 
@@ -4344,6 +5135,7 @@ async function showStartScreen() {
 }
 
 function enterTraining() {
+  stopClassroomEnvironmentAudio({ immediate: true });
   closeOnboarding();
   stopStartScreenMompyAnimation();
   stopMompyShutdownAnimation();
@@ -5687,7 +6479,7 @@ function renderSettingsSection(sectionId) {
             <div class="settings-row"><span>${t("stars")}</span><span class="settings-control">${totalStars} / ${PLANNED_TOTAL_MISSIONS * 3}</span></div>
           </div>
           <div class="settings-slot" data-settings-slot="c">
-            <div class="settings-row"><span>${t("achievements")}</span><span class="settings-control">${earnedAchievements.length}</span></div>
+            <div class="settings-row"><span>${t("achievements")}</span><span class="settings-control">${countUnlockedAchievements()}</span></div>
           </div>
           <div class="settings-slot settings-slot--halves" data-settings-slot="d">
             <div class="settings-row"><span>${t("streak")}</span><span class="settings-control">${currentStreak}</span></div>
@@ -5989,12 +6781,40 @@ const ACHIEVEMENT_CATEGORIES = Object.freeze([
   { id: "secrets", titleKey: "achievementCategorySecrets" },
 ]);
 
+function missionNumberFromId(missionId) {
+  const match = String(missionId || "").match(/\d+/);
+  return match ? Number(match[0]) : 0;
+}
+
+function completedMissionsInRange(start, end) {
+  return completedMissionIds.filter((missionId) => {
+    const missionNumber = missionNumberFromId(missionId);
+    return missionNumber >= start && missionNumber <= end;
+  }).length;
+}
+
+function completedPerfectBlocks() {
+  return blockProgress.filter((block) => {
+    const stars = Number(block?.stars ?? block?.total_stars ?? block?.totalStars) || 0;
+    const maxStars = Number(block?.max_stars ?? block?.maxStars) || 15;
+    return maxStars > 0 && stars >= maxStars;
+  }).length;
+}
+
 function getAchievementProgress(achievement) {
   const stored = achievementProgress[achievement.id];
   const live = buildConsistencyProgress(activeDates)[achievement.id];
   const target = Number(stored?.target ?? achievement.target ?? 1);
   const metric = stored?.metric || achievement.metric || "active_days";
-  const localCurrent = metric === "completed_missions" ? completedMissionIds.length : 0;
+  const localCurrent = metric === "completed_missions"
+    ? completedMissionIds.length
+    : metric === "mission_range"
+      ? completedMissionsInRange(achievement.missionStart, achievement.missionEnd)
+      : metric === "total_stars"
+        ? totalStars
+        : metric === "perfect_blocks"
+          ? completedPerfectBlocks()
+          : 0;
   const current = Math.min(
     Math.max(Number(stored?.current) || 0, Number(live?.current) || 0, localCurrent),
     target,
@@ -6008,14 +6828,35 @@ function getAchievementProgress(achievement) {
 }
 
 function achievementProgressText(progress) {
-  const key = progress.metric === "completed_missions"
+  const key = progress.metric === "completed_missions" || progress.metric === "mission_range"
     ? "achievementProgressMissions"
+    : progress.metric === "total_stars"
+      ? "achievementProgressStars"
+      : progress.metric === "perfect_blocks"
+        ? "achievementProgressPerfectBlocks"
+    : progress.metric === "recovered_missions"
+      ? "achievementProgressRecoveries"
+      : progress.metric === "perfect_first_try_missions"
+        ? "achievementProgressPerfectMissions"
     : progress.metric === "active_months"
     ? "achievementProgressMonths"
     : progress.metric === "activity_streak"
       ? "achievementProgressStreak"
       : "achievementProgressDays";
   return t(key, progress);
+}
+
+function isAchievementUnlocked(achievement) {
+  if (!achievement) {
+    return false;
+  }
+  const progress = getAchievementProgress(achievement);
+  return earnedAchievements.includes(achievement.id)
+    || (progress.target > 0 && progress.current >= progress.target);
+}
+
+function countUnlockedAchievements() {
+  return ACHIEVEMENT_DEFINITIONS.filter((achievement) => isAchievementUnlocked(achievement)).length;
 }
 
 function achievementVisual(achievement, className = "") {
@@ -6030,7 +6871,7 @@ function achievementVisual(achievement, className = "") {
 }
 
 function renderAchievementCard(achievement, selectedId) {
-  const isUnlocked = earnedAchievements.includes(achievement.id);
+  const isUnlocked = isAchievementUnlocked(achievement);
   const progress = getAchievementProgress(achievement);
   return `
     <button type="button" class="${["achievement-badge", "has-art", achievement.id === selectedId ? "is-selected" : "", isUnlocked ? "is-unlocked" : "is-locked", `rarity-${achievement.rarity}`].filter(Boolean).join(" ")}" data-achievement-id="${achievement.id}" aria-pressed="${achievement.id === selectedId}" aria-label="${t(achievement.titleKey)}. ${t(isUnlocked ? "achievementUnlockedStatus" : "achievementLockedStatus")}. ${t(achievement.rarityKey)}.">
@@ -6052,7 +6893,7 @@ function renderAchievementDetailsPanel(achievement) {
     return `<p class="achievement-category-empty">${t("achievementPlannedCategory")}</p>`;
   }
 
-  const isUnlocked = earnedAchievements.includes(achievement.id);
+  const isUnlocked = isAchievementUnlocked(achievement);
   const progress = getAchievementProgress(achievement);
   const isTracked = localStorage.getItem(ACHIEVEMENT_TRACKING_KEY) === achievement.id;
   return `
@@ -6074,7 +6915,11 @@ function renderAchievementDetailsPanel(achievement) {
       </section>
       <section>
         <strong>${t("achievementDescriptionLabel")}</strong>
-        <p>${t("achievementEncouragement")}</p>
+        <p>${t(achievement.category === "python"
+          ? "achievementPythonEncouragement"
+          : achievement.category === "missions"
+            ? "achievementMissionEncouragement"
+            : "achievementEncouragement")}</p>
       </section>
       <button class="achievement-track-button mompy-button mompy-button--secondary ${isTracked ? "is-tracked" : ""}" type="button" data-track-achievement="${achievement.id}">
         ${t(isTracked ? "achievementTracking" : "achievementTrack")} <span aria-hidden="true">›</span>
@@ -6092,7 +6937,7 @@ function renderAchievementCategory(categoryId, selectedId) {
 }
 
 function renderAchievementsBody() {
-  const unlockedAchievements = ACHIEVEMENT_DEFINITIONS.filter(({ id }) => earnedAchievements.includes(id));
+  const unlockedAchievements = ACHIEVEMENT_DEFINITIONS.filter((achievement) => isAchievementUnlocked(achievement));
   const trackedId = localStorage.getItem(ACHIEVEMENT_TRACKING_KEY);
   const selected = CONSISTENCY_ACHIEVEMENTS.find(({ id }) => id === trackedId)
     || CONSISTENCY_ACHIEVEMENTS[0];
@@ -6379,6 +7224,7 @@ function logoutUser() {
 
 function exitApp() {
   resetRewardCapsulePresentation();
+  stopClassroomEnvironmentAudio({ immediate: true });
   audioManager.playShutdown();
   audioManager.stopAmbientMusic();
   clearMompyScreenMessage();
@@ -6441,6 +7287,18 @@ function unlockAudioOnFirstInteraction() {
 
 document.addEventListener("pointerdown", unlockAudioOnFirstInteraction, { once: true, capture: true });
 document.addEventListener("keydown", unlockAudioOnFirstInteraction, { once: true, capture: true });
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    suspendClassroomEnvironmentAudio();
+  } else {
+    resumeClassroomEnvironmentAudio();
+  }
+});
+
+window.addEventListener("pagehide", () => {
+  stopClassroomEnvironmentAudio({ immediate: true });
+});
 
 document.addEventListener("click", (event) => {
   const button = event.target.closest("button");
