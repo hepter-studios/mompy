@@ -22,6 +22,8 @@ class ProgressTests(unittest.TestCase):
             self.assertEqual(progress["completed_mission_ids"], [])
             self.assertEqual(progress["total_xp"], 0)
             self.assertEqual(progress["mission_stats"], {})
+            self.assertEqual(progress["completed_classroom_lesson_ids"], [])
+            self.assertEqual(progress["classroom_step_stats"], {})
             self.assertEqual(progress["total_stars"], 0)
             self.assertEqual(progress["current_streak"], 0)
 

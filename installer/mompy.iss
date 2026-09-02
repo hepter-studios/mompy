@@ -1,5 +1,5 @@
 #ifndef AppVersion
-  #define AppVersion "0.1.5"
+  #define AppVersion "0.1.6"
 #endif
 
 #ifndef AppVersionNumeric
@@ -30,6 +30,8 @@ LicenseFile=..\LICENSE
 OutputDir=..\dist
 OutputBaseFilename=MompySetup-v{#AppVersion}
 SetupIconFile=..\frontend\assets\mompy_idle.ico
+WizardImageFile=assets\mompy-hepter-wizard.bmp
+WizardSmallImageFile=assets\hepter-wizard-small.bmp
 UninstallDisplayIcon={app}\{#AppExeName}
 UninstallDisplayName={#AppName}
 VersionInfoVersion={#AppVersionNumeric}
@@ -37,6 +39,7 @@ VersionInfoCompany={#AppPublisher}
 VersionInfoDescription=Mompy Windows installer
 VersionInfoProductName={#AppName}
 VersionInfoProductVersion={#AppVersion}
+VersionInfoCopyright=Copyright (C) 2026 Hepter Studios
 PrivilegesRequired=lowest
 ArchitecturesAllowed=x64compatible
 CloseApplications=yes

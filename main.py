@@ -8,7 +8,7 @@ import json
 import multiprocessing
 import sys
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 
 from backend.api import MompyAPI
 
@@ -24,11 +24,12 @@ FRONTEND_DIR = ROOT_DIR / "frontend"
 FRONTEND_INDEX = FRONTEND_DIR / "index.html"
 
 
-def serve_frontend(port: int = 8770) -> None:
+def serve_frontend(port: int = 8770, api: MompyAPI | None = None) -> None:
     handler = http.server.SimpleHTTPRequestHandler
+    backend_api = api or MompyAPI()
 
     class FrontendHandler(handler):
-        api = MompyAPI()
+        api = backend_api
 
         def __init__(self, *args, **kwargs):
             super().__init__(*args, directory=str(FRONTEND_DIR), **kwargs)
@@ -59,7 +60,10 @@ def serve_frontend(port: int = 8770) -> None:
             return payload if isinstance(payload, dict) else {}
 
         def do_GET(self) -> None:
-            route = urlparse(self.path).path
+            parsed_request = urlparse(self.path)
+            route = parsed_request.path.rstrip("/") or "/"
+            query = parse_qs(parsed_request.query)
+            locale = query.get("locale", [None])[0]
             if route == "/api/bootstrap":
                 self.send_json(self.api.get_bootstrap_state())
                 return
@@ -69,6 +73,31 @@ def serve_frontend(port: int = 8770) -> None:
             if route == "/api/update-status":
                 self.send_json(self.api.get_update_status())
                 return
+            if route == "/api/classroom-lessons":
+                self.send_json(
+                    {
+                        **self.api.get_classroom_schema(),
+                        "locale": locale,
+                        "lessons": self.api.get_classroom_lessons(locale),
+                    }
+                )
+                return
+            if route.startswith("/api/classroom-lessons/"):
+                parts = [unquote(part) for part in route.split("/") if part]
+                if len(parts) == 3:
+                    lesson = self.api.get_classroom_lesson(parts[2], locale)
+                    if lesson is None:
+                        self.send_json({"error": "Unknown classroom lesson."}, status=404)
+                    else:
+                        self.send_json(lesson)
+                    return
+                if len(parts) == 5 and parts[3] == "steps":
+                    step = self.api.get_classroom_step(parts[2], parts[4], locale)
+                    if step is None:
+                        self.send_json({"error": "Unknown classroom step."}, status=404)
+                    else:
+                        self.send_json(step)
+                    return
 
             if route.startswith("/frontend/"):
                 parsed = urlparse(self.path)
@@ -89,10 +118,85 @@ def serve_frontend(port: int = 8770) -> None:
             super().do_HEAD()
 
         def do_POST(self) -> None:
-            route = urlparse(self.path).path
+            route = urlparse(self.path).path.rstrip("/") or "/"
             payload = self.read_json_body()
 
             try:
+                if route.startswith("/api/classroom/") and any(
+                    key in payload for key in ("code", "user_code", "source")
+                ):
+                    raise ValueError(
+                        "Classroom endpoints do not accept arbitrary Python source."
+                    )
+                if route == "/api/classroom/example/run":
+                    self.send_json(
+                        self.api.run_lesson_example(
+                            str(payload.get("lesson_id", "")),
+                            str(payload.get("step_id", "")),
+                            str(payload.get("locale", "pt-BR")),
+                        )
+                    )
+                    return
+                if route == "/api/classroom/choice/check":
+                    self.send_json(
+                        self.api.check_lesson_choice(
+                            str(payload.get("lesson_id", "")),
+                            str(payload.get("step_id", "")),
+                            str(payload.get("choice_id", "")),
+                            str(payload.get("locale", "pt-BR")),
+                        )
+                    )
+                    return
+                if route == "/api/classroom/sequence/check":
+                    item_ids = payload.get("item_ids", [])
+                    if not isinstance(item_ids, list) or not all(
+                        isinstance(item, str) for item in item_ids
+                    ):
+                        raise ValueError("item_ids must be a list of IDs.")
+                    self.send_json(
+                        self.api.check_lesson_sequence(
+                            str(payload.get("lesson_id", "")),
+                            str(payload.get("step_id", "")),
+                            item_ids,
+                            str(payload.get("locale", "pt-BR")),
+                        )
+                    )
+                    return
+                if route == "/api/classroom/complete":
+                    self.send_json(
+                        self.api.complete_classroom_lesson(
+                            str(payload.get("lesson_id", ""))
+                        )
+                    )
+                    return
+                if route.startswith("/api/classroom-lessons/"):
+                    parts = [unquote(part) for part in route.split("/") if part]
+                    if any(key in payload for key in ("code", "user_code", "source")):
+                        raise ValueError(
+                            "Classroom endpoints do not accept arbitrary Python source."
+                        )
+                    if len(parts) == 6 and parts[3] == "steps" and parts[5] == "run":
+                        self.send_json(
+                            self.api.run_lesson_example(
+                                parts[2],
+                                parts[4],
+                                str(payload.get("locale")) if payload.get("locale") else None,
+                            )
+                        )
+                        return
+                    if len(parts) == 6 and parts[3] == "steps" and parts[5] == "attempt":
+                        self.send_json(
+                            self.api.check_lesson_choice(
+                                parts[2],
+                                parts[4],
+                                str(payload.get("choice_id", "")),
+                                str(payload.get("locale")) if payload.get("locale") else None,
+                            )
+                        )
+                        return
+                    if len(parts) == 4 and parts[3] == "complete":
+                        self.send_json(self.api.complete_classroom_lesson(parts[2]))
+                        return
                 if route == "/api/validate":
                     self.send_json(
                         self.api.validate_mission(

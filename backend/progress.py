@@ -10,7 +10,7 @@ from .storage import PROGRESS_PATH, read_json, write_json
 from .xp import calculate_level
 
 
-PROGRESS_SCHEMA_VERSION = 4
+PROGRESS_SCHEMA_VERSION = 5
 
 CONSISTENCY_ACHIEVEMENT_GOALS = {
     "steady_start": ("active_days", 2),
@@ -44,6 +44,8 @@ def default_progress() -> dict:
         "completed_mission_ids": [],
         "completed_briefing_ids": [],
         "skipped_briefing_ids": [],
+        "completed_classroom_lesson_ids": [],
+        "classroom_step_stats": {},
         "mission_stats": {},
         "current_streak": 0,
         "best_streak": 0,
@@ -281,10 +283,34 @@ def _sanitize_progress(progress: dict | None) -> dict:
         elif clean["mission_stats"][mission_id]["stars"] < 1:
             clean["mission_stats"][mission_id]["stars"] = 1
 
-    for key in ("completed_briefing_ids", "skipped_briefing_ids"):
+    for key in (
+        "completed_briefing_ids",
+        "skipped_briefing_ids",
+        "completed_classroom_lesson_ids",
+    ):
         values = progress.get(key, [])
         if isinstance(values, list):
             clean[key] = [str(value) for value in dict.fromkeys(values)]
+
+    classroom_step_stats = progress.get("classroom_step_stats", {})
+    if isinstance(classroom_step_stats, dict):
+        clean["classroom_step_stats"] = {}
+        for key, value in classroom_step_stats.items():
+            if not isinstance(key, str) or not isinstance(value, dict):
+                continue
+            attempts = _safe_non_negative_int(value.get("attempts"))
+            incorrect_attempts = min(
+                attempts,
+                _safe_non_negative_int(value.get("incorrect_attempts")),
+            )
+            clean["classroom_step_stats"][key] = {
+                "attempts": attempts,
+                "incorrect_attempts": incorrect_attempts,
+                "passed": bool(value.get("passed", False)),
+                "passed_at": value.get("passed_at")
+                if isinstance(value.get("passed_at"), str)
+                else None,
+            }
 
     active_dates = progress.get("active_dates", [])
     if isinstance(active_dates, list):
@@ -469,6 +495,78 @@ def mark_briefing_completed(briefing_id: str, path: Path = PROGRESS_PATH) -> dic
     completed = progress["completed_briefing_ids"]
     if briefing_id not in completed:
         completed.append(briefing_id)
+    progress["last_updated_at"] = _timestamp()
+    save_progress(progress, path)
+    return load_progress(path)
+
+
+def record_classroom_choice_result(
+    lesson_id: str,
+    step_id: str,
+    *,
+    correct: bool,
+    path: Path = PROGRESS_PATH,
+) -> dict:
+    """Persist one backend-validated classroom choice attempt."""
+
+    progress = load_progress(path)
+    key = f"{lesson_id}:{step_id}"
+    stats = progress["classroom_step_stats"].setdefault(
+        key,
+        {
+            "attempts": 0,
+            "incorrect_attempts": 0,
+            "passed": False,
+            "passed_at": None,
+        },
+    )
+    stats["attempts"] += 1
+    if correct:
+        stats["passed"] = True
+        if not stats["passed_at"]:
+            stats["passed_at"] = _timestamp()
+    else:
+        stats["incorrect_attempts"] += 1
+    _record_active_day(progress)
+    progress["last_updated_at"] = _timestamp()
+    save_progress(progress, path)
+    return load_progress(path)
+
+
+def mark_classroom_lesson_completed(
+    lesson_id: str,
+    *,
+    required_step_ids: tuple[str, ...] | list[str] = (),
+    legacy_briefing_id: str | None = None,
+    path: Path = PROGRESS_PATH,
+) -> dict:
+    """Complete a lesson only after all declared assessment steps pass."""
+
+    progress = load_progress(path)
+    missing = [
+        step_id
+        for step_id in required_step_ids
+        if not progress["classroom_step_stats"].get(
+            f"{lesson_id}:{step_id}", {}
+        ).get("passed", False)
+    ]
+    if missing:
+        raise ValueError(
+            "Classroom lesson still has unanswered assessment steps: "
+            + ", ".join(missing)
+        )
+
+    completed = progress["completed_classroom_lesson_ids"]
+    if lesson_id not in completed:
+        completed.append(lesson_id)
+
+    briefing_id = legacy_briefing_id or (
+        lesson_id if lesson_id.startswith("briefing_") else None
+    )
+    if briefing_id and briefing_id not in progress["completed_briefing_ids"]:
+        progress["completed_briefing_ids"].append(briefing_id)
+
+    _record_active_day(progress)
     progress["last_updated_at"] = _timestamp()
     save_progress(progress, path)
     return load_progress(path)

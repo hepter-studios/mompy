@@ -1,3 +1,4 @@
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -34,6 +35,13 @@ class ApiTests(unittest.TestCase):
             self.assertEqual(state["current_mission"]["id"], "mission_001")
             self.assertEqual(len(state["missions"]), 40)
             self.assertGreaterEqual(len(state["lessons"]), 8)
+            self.assertEqual(state["classroom_lessons"]["schema_version"], 1)
+            self.assertIn("curriculum", state["classroom_lessons"])
+            self.assertGreaterEqual(len(state["classroom_lessons"]["lessons"]), 1)
+            public_classroom = json.dumps(state["classroom_lessons"])
+            self.assertNotIn("correct_choice_id", public_classroom)
+            self.assertNotIn("correct_order", public_classroom)
+            self.assertNotIn("correctOrder", public_classroom)
 
     def test_api_can_store_current_mission_in_python_progress(self):
         with tempfile.TemporaryDirectory() as tmp:

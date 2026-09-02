@@ -1,13 +1,19 @@
 const ASSETS = {
   idle: "./assets/mompy_idle.png?v=2",
-  side: "./assets/mompy_look_side.png",
+  side: "./assets/mompy_look_side.png?v=1",
   front: "./assets/mompy_front.png?v=5",
   gazeTransition: "./assets/mompy_gaze_transition.png?v=1",
   frontBlink: "./assets/mompy_front_blink.png?v=1",
   achievements: "./assets/mompy_achievements.png?v=1",
   settings: "./assets/mompy_settings.png?v=1",
-  talk1: "./assets/mompy_talk_1.png",
-  talk2: "./assets/mompy_talk_2.png",
+  talk1: "./assets/mompy_talk_1.png?v=1",
+  talk2: "./assets/mompy_talk_2.png?v=1",
+  talkArticulation1: "./assets/mompy_talk_articulation_locked_1.png?v=1",
+  talkArticulation2: "./assets/mompy_talk_articulation_locked_2.png?v=1",
+  talkArticulation3: "./assets/mompy_talk_articulation_locked_3.png?v=1",
+  talkArticulation4: "./assets/mompy_talk_articulation_locked_4.png?v=1",
+  talkArticulation5: "./assets/mompy_talk_articulation_locked_5.png?v=1",
+  talkArticulation6: "./assets/mompy_talk_articulation_locked_6.png?v=1",
   success: "./assets/mompy_happy.png",
   error: "./assets/mompy_sad.png",
   celebrate: "./assets/mompy_celebrate.png",
@@ -43,9 +49,141 @@ const ASSETS = {
   ambientLoop: "./assets/audio/mompy_crt_ambient_loop_minimal.wav",
   classroomIndustrialLoop: "./assets/audio/classroom/02_industrial_motors_ventilation_loop.mp3?v=1",
   classroomElectricalLoop: "./assets/audio/classroom/03_energy_wires_electrical_loop.mp3?v=1",
-  classroomComputersLoop: "./assets/audio/classroom/04_old_computers_crt_terminal_loop.mp3?v=1",
+  classroomComputersLoop: "./assets/audio/classroom/04_old_computers_crt_terminal_loop-soft-v2.mp3?v=1",
   classroomRelaysLoop: "./assets/audio/classroom/05_robotics_relays_metal_details_loop.mp3?v=1",
+  classroomWeldContact: "./assets/audio/classroom/welding-contact-real-v1.wav?v=2",
+  classroomAuxMonitor: "./assets/classroom/classroom-aux-monitor-sheet-v2.png?v=1",
+  classroomGuidoPortrait: "./assets/classroom/guido-van-rossum-crt-v2.png?v=1",
+  classroomTalkClosed: "./assets/classroom/mompy-lesson-talk-closed-v1.png?v=4",
+  classroomTalkOpen: "./assets/classroom/mompy-lesson-talk-open-v2.png?v=1",
+  classroomTalkMask: "./assets/classroom/mompy-lesson-talk-mask-v1.png?v=1",
+  classroomAutomationArm1: "./assets/classroom/automation-arm-frame-01-v1.png?v=1",
+  classroomAutomationArm2: "./assets/classroom/automation-arm-frame-02-v1.png?v=1",
+  classroomAutomationArm3: "./assets/classroom/automation-arm-frame-03-v1.png?v=1",
+  classroomAutomationArm4: "./assets/classroom/automation-arm-frame-04-v1.png?v=1",
+  classroomSitesServer: "./assets/classroom/sites-server-v2.png?v=1",
+  classroomSitesDocument: "./assets/classroom/sites-document-v2.png?v=1",
+  classroomSitesBrowser: "./assets/classroom/sites-browser-v2.png?v=1",
+  classroomDataAiSequence: "./assets/classroom/data-ai-sequence-v1.png?v=1",
+  classroomScienceEducation1: "./assets/classroom/science-education-frame-01-v1.png?v=1",
+  classroomScienceEducation2: "./assets/classroom/science-education-frame-02-v1.png?v=1",
+  classroomScienceEducation3: "./assets/classroom/science-education-frame-03-v1.png?v=1",
+  classroomScienceEducation4: "./assets/classroom/science-education-frame-04-v1.png?v=1",
+  classroomInterpreter1: "./assets/classroom/interpreter-frame-01-v1.png?v=1",
+  classroomInterpreter2: "./assets/classroom/interpreter-frame-02-v1.png?v=1",
+  classroomInterpreter3: "./assets/classroom/interpreter-frame-03-v1.png?v=1",
+  classroomInterpreter4: "./assets/classroom/interpreter-frame-04-v1.png?v=1",
 };
+
+const MOMPY_VOICE_MANIFEST = Object.freeze({
+  "en-US:briefing_001:opening:mompy": Object.freeze({
+    source: "./assets/audio/mompy/en/mompy_001_en.ogg",
+    durationMs: 4155,
+    mouthWindowMs: 50,
+    mouthLevels: Object.freeze([
+      0.24, 0.39, 0.48, 0.26, 0.23, 0.08, 0, 0.24, 0.15, 0.16, 0.18, 0.27,
+      0.38, 0.19, 0.05, 0.26, 0.45, 0.43, 0.11, 0.03, 0.18, 0.28, 0.45, 0.42,
+      0.29, 0.16, 0.14, 0.05, 0, 0, 0, 0.41, 0.61, 0.51, 0.14, 1, 0.97, 0.89,
+      0.29, 0.1, 0.08, 0.67, 1, 0.92, 0.64, 0.22, 0.14, 0.27, 0.29, 0.27, 0.09,
+      0.01, 0.23, 0.19, 0.23, 0.09, 0.35, 0.22, 0.2, 0.28, 0.38, 0.38, 0.44,
+      0.27, 0, 0.01, 0, 0.49, 0.65, 0.5, 0.42, 0.29, 0.17, 0.11, 0.01, 0, 0,
+      0, 0, 0, 0, 0, 0, 0,
+    ]),
+  }),
+  "en-US:briefing_001:what-is-python:mompy": Object.freeze({
+    source: "./assets/audio/mompy/en/mompy_002_en.ogg",
+    durationMs: 4602,
+    mouthWindowMs: 50,
+    mouthLevels: Object.freeze([
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.03, 0.49, 0.22, 0.39, 0.14,
+      0.13, 0.33, 0.17, 0.17, 0.28, 0.25, 0.26, 0.3, 0.35, 0.33, 0.34, 0.29,
+      0.33, 0.12, 0.12, 0.01, 0, 0.03, 0.01, 0.18, 0.4, 0.42, 0.57, 0.69, 0.64,
+      0.87, 0.3, 0.02, 0.46, 0.19, 0, 0, 0.29, 0.16, 0.74, 0.1, 0, 0.06, 0.47,
+      0.72, 0.4, 0.34, 0.16, 0.01, 0.22, 0.35, 0.36, 0.11, 0, 0.29, 0.5, 0.48,
+      0.61, 0.37, 0.02, 0.34, 0.24, 0.08, 0.7, 1, 0.72, 0.55, 0.42, 0.13, 0.03,
+      0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ]),
+  }),
+  "en-US:briefing_001:guido:mompy": Object.freeze({
+    source: "./assets/audio/mompy/en/mompy_003_en.ogg",
+    durationMs: 8334,
+    mouthWindowMs: 50,
+    mouthLevels: Object.freeze([
+      0, 0, 0, 0.64, 0.83, 0.58, 0.16, 0.2, 0.21, 0, 0.01, 0.24, 0.13, 0.23,
+      0.67, 0.75, 0.33, 0.23, 0.21, 0.15, 0.22, 0.21, 0.09, 0.15, 0.41, 0.55,
+      1, 0.61, 0.51, 0.55, 0.26, 0.26, 0.07, 0.1, 0.19, 0.2, 0.36, 0.01, 0.5,
+      0.49, 0.43, 0.19, 0.03, 0, 0, 0.57, 0.41, 0.35, 0.17, 0.13, 0.41, 0.47,
+      0.41, 0.32, 0.18, 0.14, 0.25, 0.3, 0.28, 0.27, 0.4, 0.38, 0.43, 0.45,
+      0.29, 0.32, 0.37, 0.67, 0.36, 0.32, 0.21, 0.12, 0.04, 0.03, 0.01, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0.38, 0.42, 0.74, 0.75, 0.11, 0.58, 0.24,
+      0.32, 0.02, 0.18, 0.32, 0.25, 0.01, 0.03, 0.22, 0.17, 0.26, 0.5, 0.1,
+      0.35, 0.08, 0.01, 0.25, 0.16, 0.13, 0.22, 0.08, 0.36, 0.25, 0.1, 0.04,
+      0, 0, 0, 0, 0, 0.06, 0.38, 0.74, 0.44, 0.35, 0.09, 0.03, 0.28, 0.12,
+      0.24, 0.28, 0.03, 0.02, 0.45, 0.46, 0.49, 0.51, 0.94, 0.81, 0.44, 0.46,
+      0.54, 0.34, 0.15, 0.23, 0.16, 0.03, 0.01, 0.51, 0.26, 0, 0.31, 0.43,
+      0.21, 0.21, 0.19, 0.14, 0.03, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ]),
+  }),
+  "en-US:briefing_001:timeline:mompy": Object.freeze({
+    enabled: false,
+    source: "./assets/audio/mompy/en/mompy_004_en.ogg",
+    durationMs: 6558,
+    mouthWindowMs: 50,
+    mouthLevels: Object.freeze([
+      0, 0, 0, 0.27, 0.92, 0.18, 1, 0.79, 0.78, 0.03, 0, 0, 0.46, 0.48,
+      0.38, 0.57, 0.49, 0.06, 0.01, 0.53, 0.39, 0.44, 0.22, 0, 0.01, 0.59,
+      0.63, 0.65, 0.51, 0.66, 0.28, 0, 0.16, 0.07, 0.04, 0.01, 0, 0, 0, 0.01,
+      0.42, 0.54, 0.65, 0.26, 0, 0.19, 0.45, 0.32, 0.02, 0.42, 0.47, 0.43,
+      0.21, 0.02, 0.45, 0.34, 0.18, 0.26, 0.1, 0.36, 0.24, 0.1, 0, 0.02,
+      0.44, 0.31, 0.42, 0.41, 0.35, 0.42, 0.43, 0.57, 0.65, 0.42, 0.41, 0.33,
+      0.09, 0.15, 0.47, 0.43, 0.36, 0.52, 0.48, 0.04, 0.36, 0.48, 0.4, 0.5,
+      0.68, 0.25, 0.13, 0.32, 0.17, 0.29, 0.26, 0.34, 0.24, 0.25, 0.42, 0.4,
+      0.33, 0.4, 0.28, 0.22, 0.36, 0.16, 0.21, 0.31, 0.1, 0.01, 0.51, 0.65,
+      0.66, 0.64, 0.52, 0.51, 0.54, 0.39, 0.32, 0.15, 0.04, 0.01, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
+    ]),
+  }),
+  "en-US:briefing_001:python-name-story:mompy": Object.freeze({
+    enabled: false,
+    source: "./assets/audio/mompy/en/mompy_005_en.ogg",
+    durationMs: 9196,
+    mouthWindowMs: 50,
+    mouthLevels: Object.freeze([
+      0, 0, 0.01, 0.16, 0.18, 0.03, 0.01, 0.49, 1, 0.77, 0.59, 0.49, 0.62,
+      0.54, 0.48, 0.02, 0, 0.54, 0.13, 0.15, 0.22, 0.24, 0.35, 0.06, 0, 0,
+      0.1, 0.09, 0.1, 0.12, 0.16, 0.2, 0.08, 0.19, 0.27, 0.23, 0.23, 0.27,
+      0.25, 0.23, 0.22, 0.09, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.24,
+      0.14, 0.2, 0.21, 0, 0.23, 0.12, 0.13, 0.12, 0.17, 0.17, 0.24, 0.07, 0, 0,
+      0.57, 0.42, 0.36, 0.33, 0.15, 0.49, 0.29, 0.15, 0.15, 0.26, 0.3, 0.27,
+      0.22, 0.18, 0.01, 0, 0.15, 0.15, 0.13, 0.07, 0.09, 0.21, 0.18, 0.18,
+      0.28, 0.32, 0.22, 0.01, 0, 0.22, 0.17, 0.09, 0.01, 0, 0.19, 0.14, 0.07,
+      0.05, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.18, 0.26, 0.42, 0.22,
+      0.17, 0.1, 0.45, 0.48, 0.32, 0.3, 0.13, 0.01, 0.37, 0.26, 0.08, 0,
+      0.26, 0.21, 0.13, 0.26, 0.2, 0.03, 0.05, 0.28, 0.24, 0.14, 0.08, 0.01,
+      0, 0.18, 0.3, 0.27, 0.13, 0.18, 0.32, 0.06, 0, 0.04, 0.35, 0.17, 0.31,
+      0.07, 0.01, 0, 0.18, 0.2, 0.13, 0.01, 0.22, 0.23, 0.17, 0.18, 0.19,
+      0.14, 0.17, 0.09, 0.03, 0, 0, 0, 0, 0, 0, 0, 0,
+    ]),
+  }),
+  "en-US:briefing_001:uses:mompy": Object.freeze({
+    enabled: false,
+    source: "./assets/audio/mompy/en/mompy_006_en.ogg",
+    durationMs: 9667,
+    mouthWindowMs: 50,
+    mouthLevels: Object.freeze([
+      0, 0, 0, 0, 0.11, 1, 0.52, 0.26, 0.02, 0.69, 0.42, 0.23, 0.01, 0.12, 0.27, 0.23, 0.19, 0.18, 0.16, 0.21, 0.16, 0.07, 0.05, 0.03, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0.35, 0.29, 0.37, 0.33, 0.01, 0, 0.45, 0.29, 0.36, 0.62, 0.1, 0, 0.39, 0.33, 0.24, 0.55, 0.03, 0.04, 0.36, 0.2, 0.25, 0.41, 0.2, 0.16, 0.31, 0.32, 0.31, 0.37, 0.23, 0.24, 0.11, 0.02, 0.45, 0.63, 0.43, 0.05, 0, 0.09, 0.12, 0.35, 0.27, 0.18, 0.37, 0.31, 0.25, 0.18, 0.15, 0.14, 0.01, 0, 0.28, 0.06, 0, 0.88, 0.78, 0.91, 0.09, 0, 0.45, 0.26, 0.14, 0.08, 0, 0, 0, 0.01, 0.18, 0.19, 0.45, 0.65, 0.35, 0.24, 0.38, 0.33, 0.11, 0.02, 0, 0.39, 0.32, 0.2, 0.15, 0, 0.34, 0.19, 0.16, 0.01, 0.01, 0, 0.49, 0.66, 0.13, 0.98, 0.72, 0.56, 0.22, 0.04, 0, 0.01, 0, 0, 0, 0, 0, 0, 0, 0.15, 0.54, 0.88, 0.2, 0.74, 0.62, 0.78, 0.47, 0.38, 0.22, 0.02, 0.37, 0.71, 0.89, 0.83, 0.78, 0.16, 0.03, 0.65, 0.72, 0.88, 0.61, 0.49, 0.78, 0.5, 0.26, 0.14, 0.14, 0.15, 0.31, 0.07, 0, 0.23, 0.17, 0.03, 0.33, 0.29, 0.26, 0.64, 0.19, 0.08, 0.56, 0.18, 0.08, 0.02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ]),
+  }),
+  "en-US:briefing_001:instruction:mompy": Object.freeze({
+    enabled: false,
+    source: "./assets/audio/mompy/en/mompy_007_en.ogg",
+    durationMs: 7107,
+    mouthWindowMs: 50,
+    mouthLevels: Object.freeze([
+      0, 0, 0, 0.23, 0.87, 0.73, 0.2, 0, 0.01, 0.3, 0.45, 0.49, 0.63, 0.57, 0.18, 0.18, 0.39, 0.44, 0.39, 0.07, 0.17, 0.14, 0.26, 0.46, 0.23, 0.21, 0.18, 0.04, 0, 0, 0.59, 0.57, 0.83, 0.49, 0.46, 0.37, 0.17, 0.07, 0.06, 0.01, 0, 0, 0, 0, 0, 0, 0, 0.15, 0.15, 0.22, 0.34, 0.01, 0, 0.17, 0.2, 0.28, 0.34, 0.05, 0, 0.04, 0.37, 0.18, 0.17, 0.25, 0.42, 0.43, 0.19, 0.02, 0, 0, 0.11, 0.2, 0.21, 0.38, 0.58, 0.52, 0.26, 0.2, 0.23, 0.12, 0.21, 0.11, 0.03, 0, 0.21, 0.18, 0.01, 0.26, 0.97, 1, 0.27, 0, 0.29, 0.16, 0.09, 0.04, 0, 0, 0, 0, 0.12, 0.38, 0.65, 0.84, 0.54, 0.7, 0.21, 0.47, 0.35, 0.31, 0.21, 0.26, 0.26, 0.02, 0.36, 0.21, 0.45, 0.37, 0.2, 0.18, 0.18, 0.41, 0.3, 0.19, 0.22, 0.28, 0.23, 0.21, 0.27, 0.14, 0.09, 0.05, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ]),
+  }),
+});
 
 const REWARD_CAPSULE_FRAMES = Object.freeze({
   closed: ASSETS.rewardCapsuleClosed,
@@ -57,6 +195,34 @@ const PYTHON_CONSOLE_ACHIEVEMENT_FRAMES = Object.freeze([
   ASSETS.achievementPythonConsole1,
   ASSETS.achievementPythonConsole2,
   ASSETS.achievementPythonConsole3,
+]);
+const CLASSROOM_AUTOMATION_ARM_FRAMES = Object.freeze([
+  ASSETS.classroomAutomationArm1,
+  ASSETS.classroomAutomationArm2,
+  ASSETS.classroomAutomationArm3,
+  ASSETS.classroomAutomationArm4,
+]);
+const CLASSROOM_SCIENCE_EDUCATION_FRAMES = Object.freeze([
+  ASSETS.classroomScienceEducation1,
+  ASSETS.classroomScienceEducation2,
+  ASSETS.classroomScienceEducation3,
+  ASSETS.classroomScienceEducation4,
+]);
+const CLASSROOM_INTERPRETER_FRAMES = Object.freeze([
+  ASSETS.classroomInterpreter1,
+  ASSETS.classroomInterpreter2,
+  ASSETS.classroomInterpreter3,
+  ASSETS.classroomInterpreter4,
+]);
+// Set to false to restore the safe two-frame talk animation.
+const USE_EXTENDED_TALK_FRAMES = true;
+const MOMPY_TALK_ARTICULATION_FRAMES = Object.freeze([
+  ASSETS.talkArticulation1,
+  ASSETS.talkArticulation2,
+  ASSETS.talkArticulation3,
+  ASSETS.talkArticulation4,
+  ASSETS.talkArticulation5,
+  ASSETS.talkArticulation6,
 ]);
 let rewardCapsulePreloadPromise = null;
 
@@ -95,6 +261,18 @@ const mompyAmbientPreloads = [ASSETS.side, ASSETS.front, ASSETS.gazeTransition, 
   image.src = source;
   return image;
 });
+const classroomVisualPreloads = [
+  ASSETS.classroomAuxMonitor,
+  ASSETS.classroomGuidoPortrait,
+  ASSETS.classroomTalkClosed,
+  ASSETS.classroomTalkOpen,
+  ASSETS.classroomTalkMask,
+  ...MOMPY_TALK_ARTICULATION_FRAMES,
+].map((source) => {
+  const image = new Image();
+  image.src = source;
+  return image;
+});
 
 const USER_PROFILE_KEY = "mompy_user_profile_v1";
 const PROGRESS_KEY = "mompy_progress_v1";
@@ -104,7 +282,7 @@ const CRT_BRIGHTNESS_KEY = "mompy_crt_brightness_v1";
 const MOMPY_ANIMATIONS_KEY = "mompy_animations_v1";
 const DEFAULT_USER_NAME = "Guest";
 const PLANNED_TOTAL_MISSIONS = 40;
-const FALLBACK_APP_VERSION = "0.1.5";
+const FALLBACK_APP_VERSION = "0.1.6";
 const SUPPORTED_LANGUAGES = ["en-US", "pt-BR"];
 
 const UI_TEXT = {
@@ -770,6 +948,7 @@ function applyStaticTranslations() {
 }
 
 function applyLanguage(language, { persist = true } = {}) {
+  stopMompyVoice();
   currentLanguage = normalizeLanguage(language);
   settingsState.language = currentLanguage;
   if (persist) {
@@ -910,12 +1089,17 @@ let activeSettingsSection = "shortcuts";
 
 let pythonBackendConnected = false;
 let pythonBackendSyncPromise = null;
+let pythonClassroomLessonPayload = null;
 let appVersion = FALLBACK_APP_VERSION;
 let updateStatusCache = null;
 
 const PYTHON_HTTP_ROUTES = {
   get_bootstrap_state: { method: "GET", path: "/api/bootstrap" },
   get_progress: { method: "GET", path: "/api/progress" },
+  run_lesson_example: { method: "POST", path: "/api/classroom/example/run", body: ([lessonId, stepId, locale]) => ({ lesson_id: lessonId, step_id: stepId, locale }) },
+  check_lesson_choice: { method: "POST", path: "/api/classroom/choice/check", body: ([lessonId, stepId, choiceId, locale]) => ({ lesson_id: lessonId, step_id: stepId, choice_id: choiceId, locale }) },
+  check_lesson_sequence: { method: "POST", path: "/api/classroom/sequence/check", body: ([lessonId, stepId, itemIds, locale]) => ({ lesson_id: lessonId, step_id: stepId, item_ids: itemIds, locale }) },
+  complete_classroom_lesson: { method: "POST", path: "/api/classroom/complete", body: ([lessonId]) => ({ lesson_id: lessonId }) },
   validate_mission: { method: "POST", path: "/api/validate", body: ([missionId, userCode]) => ({ mission_id: missionId, user_code: userCode }) },
   submit_mission: { method: "POST", path: "/api/mission/submit", body: ([missionId, userCode, hintUsed]) => ({ mission_id: missionId, user_code: userCode, hint_used: hintUsed }) },
   complete_mission: { method: "POST", path: "/api/complete", body: ([missionId]) => ({ mission_id: missionId }) },
@@ -1012,6 +1196,8 @@ function applyPythonProgress(progress) {
   const best = progress.best_streak ?? progress.bestStreak;
   const backendActiveDates = progress.active_dates || progress.activeDates;
   const backendAchievementProgress = progress.achievement_progress || progress.achievementProgress;
+  const backendCompletedBriefings = progress.completed_briefing_ids || progress.completedBriefingIds;
+  const backendSkippedBriefings = progress.skipped_briefing_ids || progress.skippedBriefingIds;
 
   if (Number.isInteger(missionIndex)) {
     currentMissionIndex = clampMissionIndex(missionIndex);
@@ -1040,6 +1226,13 @@ function applyPythonProgress(progress) {
   achievementProgress = backendAchievementProgress && typeof backendAchievementProgress === "object"
     ? backendAchievementProgress
     : buildConsistencyProgress(activeDates);
+
+  if (Array.isArray(backendCompletedBriefings)) {
+    completedBriefingIds = sanitizeBriefingIds(backendCompletedBriefings);
+  }
+  if (Array.isArray(backendSkippedBriefings)) {
+    skippedBriefingIds = sanitizeBriefingIds(backendSkippedBriefings);
+  }
 
   updateProgressUI();
   saveLocalProgress({
@@ -1104,6 +1297,19 @@ function applyPythonMissions(pythonMissions) {
   currentMissionIndex = clampMissionIndex(currentMissionIndex);
 }
 
+function applyPythonClassroomLessons(payload) {
+  if (!payload || typeof payload !== "object") {
+    return;
+  }
+
+  const lessons = payload.lessons;
+  if (!lessons || (typeof lessons !== "object" && !Array.isArray(lessons))) {
+    return;
+  }
+
+  pythonClassroomLessonPayload = payload;
+}
+
 async function syncPythonBackendState() {
   const state = await callPythonBackend("get_bootstrap_state");
 
@@ -1112,6 +1318,7 @@ async function syncPythonBackendState() {
   }
 
   applyPythonMissions(state.missions);
+  applyPythonClassroomLessons(state.classroom_lessons || state.classroomLessons);
   if (state.backend?.version) {
     appVersion = state.backend.version;
   }
@@ -1451,6 +1658,41 @@ const learningBriefings = [
   },
 ];
 
+const CLASSROOM_BRIEFING_EXAMPLES = Object.freeze({
+  briefing_001: Object.freeze({
+    "en-US": Object.freeze({ code: 'print("Hello, Mompy!")', output: "Hello, Mompy!" }),
+    "pt-BR": Object.freeze({ code: 'print("Olá, Mompy!")', output: "Olá, Mompy!" }),
+  }),
+  briefing_002: Object.freeze({
+    "en-US": Object.freeze({ code: 'name = "Mompy"\nprint(name)', output: "Mompy" }),
+    "pt-BR": Object.freeze({ code: 'nome = "Mompy"\nprint(nome)', output: "Mompy" }),
+  }),
+  briefing_003: Object.freeze({
+    "en-US": Object.freeze({ code: 'energy = 3\nif energy > 0:\n    print("ON")', output: "ON" }),
+    "pt-BR": Object.freeze({ code: 'energia = 3\nif energia > 0:\n    print("LIGADO")', output: "LIGADO" }),
+  }),
+  briefing_004: Object.freeze({
+    "en-US": Object.freeze({ code: "for number in range(3):\n    print(number)", output: "0\n1\n2" }),
+    "pt-BR": Object.freeze({ code: "for numero in range(3):\n    print(numero)", output: "0\n1\n2" }),
+  }),
+  briefing_005: Object.freeze({
+    "en-US": Object.freeze({ code: 'items = ["cable", "screen"]\nprint(items[0])', output: "cable" }),
+    "pt-BR": Object.freeze({ code: 'itens = ["cabo", "tela"]\nprint(itens[0])', output: "cabo" }),
+  }),
+  briefing_006: Object.freeze({
+    "en-US": Object.freeze({ code: 'def greet(name):\n    return "Hello, " + name\n\nprint(greet("Mompy"))', output: "Hello, Mompy" }),
+    "pt-BR": Object.freeze({ code: 'def saudar(nome):\n    return "Olá, " + nome\n\nprint(saudar("Mompy"))', output: "Olá, Mompy" }),
+  }),
+  briefing_007: Object.freeze({
+    "en-US": Object.freeze({ code: 'profile = {"name": "Mompy"}\nprint(profile["name"])', output: "Mompy" }),
+    "pt-BR": Object.freeze({ code: 'perfil = {"nome": "Mompy"}\nprint(perfil["nome"])', output: "Mompy" }),
+  }),
+  briefing_008: Object.freeze({
+    "en-US": Object.freeze({ code: "count = 3\nwhile count > 0:\n    print(count)\n    count -= 1", output: "3\n2\n1" }),
+    "pt-BR": Object.freeze({ code: "contador = 3\nwhile contador > 0:\n    print(contador)\n    contador -= 1", output: "3\n2\n1" }),
+  }),
+});
+
 const missions = [
   {
     id: "mission_001",
@@ -1719,6 +1961,15 @@ const modalBody = document.querySelector("#modalBody");
 const modalActions = document.querySelector("#modalActions");
 const modalCloseButton = document.querySelector("#modalCloseButton");
 const mompyScreenMessage = document.querySelector("#mompyScreenMessage");
+const classroomSceneTransition = document.querySelector(".classroom-scene-transition");
+const classroomLessonContent = document.querySelector("#classroomLessonContent");
+const classroomLessonPanel = document.querySelector(".classroom-lesson-panel");
+const classroomMompyGuide = document.querySelector("#classroomMompyGuide");
+const classroomMompyScreenAction = document.querySelector("#classroomMompyScreenAction");
+const classroomAuxRail = document.querySelector("#classroomAuxRail");
+const classroomAuxMonitor = document.querySelector("#classroomAuxMonitor");
+const classroomAuxMonitorContent = document.querySelector("#classroomAuxMonitorContent");
+const classroomAuxCrt = document.querySelector("#classroomAuxCrt");
 const repeatMissionButton = document.querySelector("#repeatMissionButton");
 const nextMissionButton = document.querySelector("#nextMissionButton");
 
@@ -1776,6 +2027,32 @@ let activeBriefingStepIndex = 0;
 let activeBriefingRetry = false;
 let briefingFinalTimer = null;
 let classroomStageTimers = [];
+let classroomInteractionTimer = null;
+let classroomMompyTimer = null;
+let classroomTypewriterTimer = null;
+let classroomTypewriterToken = 0;
+let classroomTypewriterFinisher = null;
+let classroomMompyScreenActionHandler = null;
+let classroomMompyVisible = false;
+let activeMompyVoice = null;
+let activeMompyVoiceEndedHandler = null;
+let activeMompyVoiceAnimationFrame = null;
+let classroomAuxMonitorMode = "closed";
+let classroomAuxTransitionToken = 0;
+let activeRichLessonState = null;
+const CLASSROOM_REVIEW_STEP_BY_QUESTION = Object.freeze({
+  "history-check": "guido",
+  "name-origin": "python-name-story",
+  "python-purpose-check": "what-is-python",
+  "predict-output": "print-purpose",
+  "two-lines": "two-lines-demo",
+  "fill-text": "syntax-pairs",
+  "mastery-python": "what-is-python",
+  "mastery-print": "print-purpose",
+  "mastery-text": "text-intro",
+  "mastery-order": "two-lines-demo",
+  "mastery-syntax": "syntax-pairs",
+});
 const briefingOptionOrder = new Map();
 let previousCorrectBriefingOptionIndex = -1;
 
@@ -2287,6 +2564,22 @@ function playClassroomMechanismCue(phase) {
     return;
   }
 
+  if (phase === "monitor") {
+    strike({ frequency: 172, endFrequency: 96, duration: 0.22, gain: 0.25, type: "square" });
+    grind({ offset: 0.08, duration: 0.92, gain: 0.13, frequency: 340 });
+    gearTicks({ count: 8, interval: 0.12, gain: 0.16, startFrequency: 228, offset: 0.08 });
+    strike({ offset: 0.94, frequency: 74, endFrequency: 42, duration: 0.34, gain: 0.44 });
+    strike({ offset: 1.02, frequency: 392, endFrequency: 352, duration: 0.28, gain: 0.1, type: "sine" });
+    return;
+  }
+
+  if (phase === "mompy") {
+    strike({ frequency: 146.83, endFrequency: 293.66, duration: 0.3, gain: 0.14, type: "sine" });
+    strike({ offset: 0.12, frequency: 220, endFrequency: 440, duration: 0.32, gain: 0.11, type: "triangle" });
+    strike({ offset: 0.28, frequency: 329.63, endFrequency: 659.25, duration: 0.24, gain: 0.08, type: "sine" });
+    return;
+  }
+
   strike({ frequency: 116, endFrequency: 58, duration: 0.96, gain: 0.25 });
   grind({ duration: 1.08, gain: 0.17, frequency: 285 });
   gearTicks({ count: 9, interval: 0.105, gain: 0.18, startFrequency: 194, offset: 0.02 });
@@ -2302,10 +2595,15 @@ const classroomEnvironmentAudio = {
   machineMaster: null,
   machineSources: [],
   sparkTimer: null,
+  weldAudio: null,
+  weldCycleStartedAt: 0,
   machineTimer: null,
   recordedTracks: null,
   recordedFadeTimer: null,
 };
+
+const CLASSROOM_WELD_INITIAL_DELAY = 402;
+const CLASSROOM_WELD_CYCLE_DELAY = 1800;
 
 function ensureClassroomRecordedTracks() {
   if (classroomEnvironmentAudio.recordedTracks) {
@@ -2327,9 +2625,9 @@ function ensureClassroomRecordedTracks() {
   };
 
   classroomEnvironmentAudio.recordedTracks = [
-    createTrack(ASSETS.classroomIndustrialLoop, "music", 0.58),
-    createTrack(ASSETS.classroomComputersLoop, "music", 0.25),
-    createTrack(ASSETS.classroomElectricalLoop, "sfx", 0.28),
+    createTrack(ASSETS.classroomIndustrialLoop, "music", 0.5),
+    createTrack(ASSETS.classroomComputersLoop, "music", 0.26),
+    createTrack(ASSETS.classroomElectricalLoop, "sfx", 0.1),
     createTrack(ASSETS.classroomRelaysLoop, "sfx", 0.16),
   ];
 
@@ -2646,7 +2944,32 @@ function syncClassroomMachineAmbience() {
   syncClassroomRecordedAudio();
 }
 
-function playClassroomSparkBurst() {
+function ensureClassroomWeldAudio() {
+  if (!classroomEnvironmentAudio.weldAudio) {
+    const audio = new Audio(ASSETS.classroomWeldContact);
+    audio.preload = "auto";
+    audio.loop = false;
+    classroomEnvironmentAudio.weldAudio = audio;
+  }
+  return classroomEnvironmentAudio.weldAudio;
+}
+
+function stopClassroomWeldAudio({ reset = true } = {}) {
+  const audio = classroomEnvironmentAudio.weldAudio;
+  if (!audio) {
+    return;
+  }
+  audio.pause();
+  if (reset) {
+    try {
+      audio.currentTime = 0;
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+}
+
+function playClassroomWeldContact() {
   if (
     !classroomEnvironmentAudio.active
     || !audioManager.sfxEnabled
@@ -2656,62 +2979,18 @@ function playClassroomSparkBurst() {
     return;
   }
 
-  const context = prepareClassroomAudioContext();
-  if (!context) {
-    return;
+  const audio = ensureClassroomWeldAudio();
+  audio.pause();
+  audio.volume = Math.max(0, Math.min(0.42, audioManager.sfxVolume * 0.36));
+  try {
+    audio.currentTime = 0;
+  } catch (error) {
+    console.warn(error);
   }
-
-  const now = context.currentTime + 0.008;
-  const rightSide = Math.random() > 0.5;
-  const master = context.createGain();
-  const panner = typeof context.createStereoPanner === "function" ? context.createStereoPanner() : null;
-  master.gain.setValueAtTime(Math.max(0.0001, audioManager.sfxVolume * 0.3), now);
-  if (panner) {
-    panner.pan.setValueAtTime(rightSide ? 0.76 : -0.76, now);
-    master.connect(panner);
-    panner.connect(context.destination);
-  } else {
-    master.connect(context.destination);
-  }
-
-  const snapCount = 2 + Math.floor(Math.random() * 3);
-  for (let index = 0; index < snapCount; index += 1) {
-    const offset = index * (0.024 + (Math.random() * 0.035));
-    const startsAt = now + offset;
-    const duration = 0.035 + (Math.random() * 0.075);
-    const endsAt = startsAt + duration;
-    const noise = context.createBufferSource();
-    const filter = context.createBiquadFilter();
-    const envelope = context.createGain();
-    noise.buffer = createClassroomNoiseBuffer(context, duration);
-    filter.type = "bandpass";
-    filter.frequency.setValueAtTime(2600 + (Math.random() * 3700), startsAt);
-    filter.Q.setValueAtTime(1.1 + (Math.random() * 2.2), startsAt);
-    envelope.gain.setValueAtTime(0.0001, startsAt);
-    envelope.gain.exponentialRampToValueAtTime(0.48 - (index * 0.055), startsAt + 0.004);
-    envelope.gain.exponentialRampToValueAtTime(0.0001, endsAt);
-    noise.connect(filter);
-    filter.connect(envelope);
-    envelope.connect(master);
-    noise.start(startsAt);
-    noise.stop(endsAt + 0.01);
-  }
-
-  const arc = context.createOscillator();
-  const arcEnvelope = context.createGain();
-  arc.type = "sawtooth";
-  arc.frequency.setValueAtTime(1250 + (Math.random() * 780), now);
-  arc.frequency.exponentialRampToValueAtTime(185 + (Math.random() * 120), now + 0.12);
-  arcEnvelope.gain.setValueAtTime(0.0001, now);
-  arcEnvelope.gain.exponentialRampToValueAtTime(0.08, now + 0.006);
-  arcEnvelope.gain.exponentialRampToValueAtTime(0.0001, now + 0.13);
-  arc.connect(arcEnvelope);
-  arcEnvelope.connect(master);
-  arc.start(now);
-  arc.stop(now + 0.145);
+  audio.play().catch(() => {});
 }
 
-function scheduleClassroomSpark(initialDelay = null) {
+function scheduleClassroomSpark(delay = null) {
   window.clearTimeout(classroomEnvironmentAudio.sparkTimer);
   classroomEnvironmentAudio.sparkTimer = null;
 
@@ -2719,34 +2998,61 @@ function scheduleClassroomSpark(initialDelay = null) {
     !classroomEnvironmentAudio.active
     || !audioManager.sfxEnabled
     || audioManager.sfxVolume <= 0
+    || !settingsState.mompyAnimations
+    || prefersReducedMotion()
     || document.hidden
   ) {
     return;
   }
 
   const generation = classroomEnvironmentAudio.generation;
-  const delay = initialDelay ?? (620 + (Math.random() * 1380));
+  const elapsed = classroomEnvironmentAudio.weldCycleStartedAt
+    ? (performance.now() - classroomEnvironmentAudio.weldCycleStartedAt) % CLASSROOM_WELD_CYCLE_DELAY
+    : 0;
+  const nextContactDelay = elapsed < CLASSROOM_WELD_INITIAL_DELAY
+    ? CLASSROOM_WELD_INITIAL_DELAY - elapsed
+    : CLASSROOM_WELD_CYCLE_DELAY - elapsed + CLASSROOM_WELD_INITIAL_DELAY;
+  const resolvedDelay = delay ?? Math.max(0, nextContactDelay);
   classroomEnvironmentAudio.sparkTimer = window.setTimeout(() => {
     if (!classroomEnvironmentAudio.active || generation !== classroomEnvironmentAudio.generation) {
       return;
     }
-    playClassroomSparkBurst();
-    scheduleClassroomSpark();
-  }, delay);
+    playClassroomWeldContact();
+    scheduleClassroomSpark(CLASSROOM_WELD_CYCLE_DELAY);
+  }, resolvedDelay);
 }
 
 function syncClassroomSparkAudio() {
-  window.clearTimeout(classroomEnvironmentAudio.sparkTimer);
-  classroomEnvironmentAudio.sparkTimer = null;
   syncClassroomRecordedAudio();
+  const audio = ensureClassroomWeldAudio();
+  audio.volume = Math.max(0, Math.min(0.42, audioManager.sfxVolume * 0.36));
+  const canPlay = (
+    classroomEnvironmentAudio.active
+    && audioManager.sfxEnabled
+    && audioManager.sfxVolume > 0
+    && settingsState.mompyAnimations
+    && !prefersReducedMotion()
+    && !document.hidden
+  );
+  if (!canPlay) {
+    window.clearTimeout(classroomEnvironmentAudio.sparkTimer);
+    classroomEnvironmentAudio.sparkTimer = null;
+    stopClassroomWeldAudio();
+  } else if (!classroomEnvironmentAudio.sparkTimer) {
+    scheduleClassroomSpark();
+  }
 }
 
 function startClassroomEnvironmentAudio() {
   classroomEnvironmentAudio.active = true;
   classroomEnvironmentAudio.generation += 1;
+  classroomEnvironmentAudio.weldCycleStartedAt = performance.now();
   machine.dataset.classroomAudio = "active";
   pauseClassroomRecordedAudio({ reset: true });
+  stopClassroomWeldAudio();
+  ensureClassroomWeldAudio().load();
   syncClassroomRecordedAudio();
+  scheduleClassroomSpark();
 }
 
 function stopClassroomEnvironmentAudio({ immediate = false } = {}) {
@@ -2755,6 +3061,7 @@ function stopClassroomEnvironmentAudio({ immediate = false } = {}) {
   delete machine.dataset.classroomAudio;
   window.clearTimeout(classroomEnvironmentAudio.sparkTimer);
   classroomEnvironmentAudio.sparkTimer = null;
+  stopClassroomWeldAudio();
   stopClassroomMachineSources({ immediate });
   if (immediate) {
     pauseClassroomRecordedAudio({ reset: true });
@@ -2770,6 +3077,7 @@ function suspendClassroomEnvironmentAudio() {
   machine.dataset.classroomAudio = "suspended";
   window.clearTimeout(classroomEnvironmentAudio.sparkTimer);
   classroomEnvironmentAudio.sparkTimer = null;
+  stopClassroomWeldAudio();
   stopClassroomMachineSources({ immediate: true });
   pauseClassroomRecordedAudio();
 }
@@ -2779,7 +3087,9 @@ function resumeClassroomEnvironmentAudio() {
     return;
   }
   machine.dataset.classroomAudio = "active";
+  classroomEnvironmentAudio.weldCycleStartedAt = performance.now();
   syncClassroomRecordedAudio();
+  scheduleClassroomSpark();
 }
 
 const LOADING_RUNNER_FRAMES = [
@@ -3872,25 +4182,4015 @@ function findBriefingById(briefingId) {
   return localizeBriefing(briefing);
 }
 
+function getClassroomBriefingExample() {
+  const examples = CLASSROOM_BRIEFING_EXAMPLES[activeBriefingId];
+  return examples?.[currentLanguage] || examples?.["en-US"] || null;
+}
+
+function normalizePythonClassroomLesson(lesson) {
+  if (!lesson || typeof lesson !== "object" || !Array.isArray(lesson.steps)) {
+    return null;
+  }
+
+  const defaultPresentationTypes = {
+    question: "choice",
+    recap: "summary",
+    demo: "run",
+  };
+  return {
+    ...lesson,
+    steps: lesson.steps.map((step) => {
+      const presentationType = step.presentationType
+        || defaultPresentationTypes[step.type]
+        || step.type;
+      const choices = step.choices || step.assessment?.choices?.map((choice) => ({
+        id: choice.id,
+        text: choice.text,
+        code: choice.code,
+      }));
+      const sequenceItems = step.sequenceItems || step.assessment?.items?.map((item) => ({
+        id: item.id,
+        label: item.text,
+        detail: Array.isArray(item.body) ? item.body.join(" ") : "",
+      }));
+      return {
+        ...step,
+        type: presentationType,
+        ...(Array.isArray(choices) ? { choices } : {}),
+        ...(Array.isArray(sequenceItems)
+          ? { sequenceItems, sequenceLength: sequenceItems.length }
+          : {}),
+      };
+    }),
+  };
+}
+
+function getRichClassroomLesson(briefingId = activeBriefingId) {
+  const localLesson = window.MOMPY_CLASSROOM_LESSONS?.[briefingId];
+  const currentLocalLesson = localLesson?.[currentLanguage] || localLesson?.["en-US"] || null;
+  if (currentLocalLesson) {
+    return currentLocalLesson;
+  }
+
+  const backendLessons = pythonClassroomLessonPayload?.lessons;
+  const backendRecord = Array.isArray(backendLessons)
+    ? backendLessons.find((item) => item?.id === briefingId)
+    : backendLessons?.[briefingId];
+  if (backendRecord?.steps && (!backendRecord.locale || backendRecord.locale === currentLanguage)) {
+    const normalized = normalizePythonClassroomLesson(backendRecord);
+    if (normalized) {
+      return normalized;
+    }
+  }
+  const backendLocales = backendRecord?.locales || backendRecord;
+  const backendLesson = backendLocales?.[currentLanguage] || backendLocales?.["en-US"] || null;
+  if (backendLesson) {
+    return normalizePythonClassroomLesson(backendLesson) || backendLesson;
+  }
+  return null;
+}
+
+function createClassroomNode(tagName, className = "", text = "") {
+  const element = document.createElement(tagName);
+  if (className) {
+    element.className = className;
+  }
+  if (text !== "") {
+    element.textContent = text;
+  }
+  return element;
+}
+
+function startClassroomSyntaxAnimation(scene, payload = {}) {
+  if (!scene || !activeRichLessonState) {
+    return;
+  }
+
+  const code = String(payload.code || 'print("Olá, Mompy!")');
+  const functionChunk = "print(";
+  const stringChunk = code.startsWith(functionChunk) && code.endsWith(")")
+    ? code.slice(functionChunk.length, -1)
+    : '"Olá, Mompy!"';
+  const timings = {
+    idle: 500,
+    typingFunction: 600,
+    typingString: 900,
+    closingSyntax: 250,
+    validating: 500,
+    valid: 1200,
+    reset: 300,
+    ...(payload.timings || {}),
+  };
+  const controller = {
+    cancelled: false,
+    timer: null,
+    lessonId: activeRichLessonState.lessonId,
+    stepId: activeRichLessonState.stepId,
+  };
+  activeRichLessonState.syntaxDemo = controller;
+
+  const codeBox = scene.querySelector(".mompy-syntax-code-box");
+  const functionToken = scene.querySelector(".mompy-syntax-token--function");
+  const openParenthesis = scene.querySelector(".mompy-syntax-parenthesis-open");
+  const stringToken = scene.querySelector(".mompy-syntax-token--string");
+  const closeParenthesis = scene.querySelector(".mompy-syntax-parenthesis-close");
+  const cursor = scene.querySelector(".mompy-syntax-cursor");
+  const scan = scene.querySelector(".mompy-syntax-scan");
+  const badge = scene.querySelector(".mompy-syntax-valid-badge");
+  const functionAnnotation = scene.querySelector(".mompy-syntax-annotation--function");
+  const stringAnnotation = scene.querySelector(".mompy-syntax-annotation--string");
+  const parenthesesAnnotation = scene.querySelector(".mompy-syntax-annotation--parentheses");
+  const accessibleCode = scene.querySelector(".mompy-syntax-sr-only");
+  let visibleCode = "";
+  let stage = "idle";
+
+  const isCurrent = () => (
+    !controller.cancelled
+    && scene.isConnected
+    && activeRichLessonState?.syntaxDemo === controller
+    && activeRichLessonState?.lessonId === controller.lessonId
+    && activeRichLessonState?.stepId === controller.stepId
+  );
+
+  const schedule = (callback, delay) => {
+    window.clearTimeout(controller.timer);
+    controller.timer = window.setTimeout(() => {
+      controller.timer = null;
+      if (isCurrent()) {
+        callback();
+      }
+    }, Math.max(0, Number(delay) || 0));
+  };
+
+  const renderState = (nextStage = stage) => {
+    stage = nextStage;
+    const functionText = visibleCode.slice(0, 5);
+    const hasOpenParenthesis = visibleCode.length >= functionChunk.length;
+    const hasClosingParenthesis = visibleCode === code;
+    const stringText = visibleCode.slice(
+      functionChunk.length,
+      hasClosingParenthesis ? -1 : undefined,
+    );
+    const functionIdentified = functionText === "print";
+    const stringIdentified = stringText.startsWith('"');
+    const showCursor = ["idle", "typing-function", "typing-string", "closing-syntax"].includes(stage);
+    const showValidResult = stage === "valid" || stage === "reset";
+
+    scene.dataset.stage = stage;
+    scene.classList.toggle("mompy-syntax-demo--resetting", stage === "reset");
+    codeBox?.classList.toggle("mompy-syntax-code-box--valid", showValidResult);
+    if (functionToken) functionToken.textContent = functionText;
+    if (openParenthesis) openParenthesis.textContent = hasOpenParenthesis ? "(" : "";
+    if (stringToken) stringToken.textContent = stringText;
+    if (closeParenthesis) closeParenthesis.textContent = hasClosingParenthesis ? ")" : "";
+    functionToken?.classList.toggle("mompy-syntax-token--identified", functionIdentified);
+    functionToken?.classList.toggle("mompy-syntax-token--active", stage === "typing-function");
+    stringToken?.classList.toggle("mompy-syntax-token--identified", stringIdentified);
+    stringToken?.classList.toggle("mompy-syntax-token--active", stage === "typing-string");
+    [openParenthesis, closeParenthesis].forEach((token) => {
+      token?.classList.toggle("mompy-syntax-token--identified", hasClosingParenthesis);
+      token?.classList.toggle("mompy-syntax-token--parenthesis-active", stage === "closing-syntax");
+    });
+    if (cursor) cursor.hidden = !showCursor;
+    if (scan) scan.hidden = stage !== "validating";
+    badge?.classList.toggle("mompy-syntax-valid-badge--visible", showValidResult);
+    badge?.setAttribute("aria-hidden", String(!showValidResult));
+    functionAnnotation?.classList.toggle("mompy-syntax-annotation--visible", functionIdentified);
+    stringAnnotation?.classList.toggle("mompy-syntax-annotation--visible", stringIdentified);
+    parenthesesAnnotation?.classList.toggle("mompy-syntax-annotation--visible", hasClosingParenthesis);
+    if (accessibleCode) {
+      accessibleCode.textContent = visibleCode || (payload.waitingLabel || "Cursor aguardando");
+    }
+  };
+
+  const typeChunk = (chunk, totalDuration, onComplete) => {
+    const characters = Array.from(chunk);
+    const delay = Math.max(1, totalDuration / Math.max(1, characters.length));
+    let index = 0;
+    const typeNext = () => {
+      if (!isCurrent()) return;
+      if (index >= characters.length) {
+        onComplete();
+        return;
+      }
+      visibleCode += characters[index];
+      index += 1;
+      renderState();
+      schedule(typeNext, delay);
+    };
+    typeNext();
+  };
+
+  const runTimeline = () => {
+    visibleCode = "";
+    renderState("idle");
+    schedule(() => {
+      renderState("typing-function");
+      typeChunk(functionChunk, timings.typingFunction, () => {
+        renderState("typing-string");
+        typeChunk(stringChunk, timings.typingString, () => {
+          visibleCode = code;
+          renderState("closing-syntax");
+          schedule(() => {
+            renderState("validating");
+            schedule(() => {
+              renderState("valid");
+              schedule(() => {
+                renderState("reset");
+                schedule(runTimeline, timings.reset);
+              }, timings.valid);
+            }, timings.validating);
+          }, timings.closingSyntax);
+        });
+      });
+    }, timings.idle);
+  };
+
+  if (prefersReducedMotion() || !settingsState.mompyAnimations) {
+    visibleCode = code;
+    renderState("valid");
+    return;
+  }
+
+  runTimeline();
+}
+
+function startClassroomStringValueAnimation(scene, payload = {}) {
+  if (!scene || !activeRichLessonState) {
+    return;
+  }
+
+  const text = String(payload.text || "Olá, Mompy!");
+  const controller = {
+    cancelled: false,
+    timer: null,
+    lessonId: activeRichLessonState.lessonId,
+    stepId: activeRichLessonState.stepId,
+  };
+  activeRichLessonState.stringValueDemo = controller;
+
+  const openingQuote = scene.querySelector(".mompy-string-opening-quote");
+  const closingQuote = scene.querySelector(".mompy-string-closing-quote");
+  const stringText = scene.querySelector(".mompy-string-text");
+  const cursor = scene.querySelector(".mompy-string-cursor");
+  const delimiter = scene.querySelector(".mompy-string-delimiter");
+  const explanation = scene.querySelector(".mompy-string-explanation");
+  const accessibleText = scene.querySelector(".mompy-string-sr-only");
+  let phase = "idle";
+  let typed = "";
+
+  const isCurrent = () => (
+    !controller.cancelled
+    && scene.isConnected
+    && activeRichLessonState?.stringValueDemo === controller
+    && activeRichLessonState?.lessonId === controller.lessonId
+    && activeRichLessonState?.stepId === controller.stepId
+  );
+
+  const schedule = (callback, delay) => {
+    window.clearTimeout(controller.timer);
+    controller.timer = window.setTimeout(() => {
+      controller.timer = null;
+      if (isCurrent()) {
+        callback();
+      }
+    }, Math.max(0, Number(delay) || 0));
+  };
+
+  const renderState = (nextPhase = phase) => {
+    phase = nextPhase;
+    const showOpening = phase !== "idle";
+    const showClosing = ["closed", "highlight", "delimited", "explained"].includes(phase);
+    const highlight = ["highlight", "delimited", "explained"].includes(phase);
+    scene.dataset.phase = phase;
+    if (openingQuote) openingQuote.textContent = showOpening ? '"' : "";
+    if (closingQuote) closingQuote.textContent = showClosing ? '"' : "";
+    if (stringText) stringText.textContent = typed;
+    openingQuote?.classList.toggle("mompy-string-quote-active", highlight);
+    closingQuote?.classList.toggle("mompy-string-quote-active", highlight);
+    if (cursor) cursor.hidden = ["closed", "highlight", "delimited", "explained"].includes(phase);
+    delimiter?.classList.toggle(
+      "mompy-string-delimiter-visible",
+      phase === "delimited" || phase === "explained",
+    );
+    explanation?.classList.toggle("mompy-string-explanation-visible", phase === "explained");
+    if (accessibleText) {
+      accessibleText.textContent = showOpening ? `"${typed}${showClosing ? '"' : ""}` : "";
+    }
+  };
+
+  const start = () => {
+    typed = "";
+    renderState("idle");
+    schedule(() => {
+      renderState("opening");
+      schedule(() => {
+        renderState("typing");
+        const characters = Array.from(text);
+        let index = 0;
+        const typeNext = () => {
+          if (!isCurrent()) return;
+          if (index < characters.length) {
+            typed += characters[index];
+            index += 1;
+            renderState("typing");
+            schedule(typeNext, 90);
+            return;
+          }
+          schedule(() => {
+            renderState("closed");
+            schedule(() => {
+              renderState("highlight");
+              schedule(() => {
+                renderState("delimited");
+                schedule(() => {
+                  renderState("explained");
+                  schedule(start, 1500);
+                }, 350);
+              }, 420);
+            }, 260);
+          }, 220);
+        };
+        typeNext();
+      }, 220);
+    }, 450);
+  };
+
+  if (prefersReducedMotion() || !settingsState.mompyAnimations) {
+    typed = text;
+    renderState("explained");
+    return;
+  }
+
+  start();
+}
+
+function startClassroomPrintFunctionAnimation(scene, payload = {}) {
+  if (!scene || !activeRichLessonState) {
+    return;
+  }
+
+  const codeValue = String(payload.code || 'print("Olá, Mompy!")');
+  const outputValue = String(payload.output || "Olá, Mompy!");
+  const controller = {
+    cancelled: false,
+    timer: null,
+    lessonId: activeRichLessonState.lessonId,
+    stepId: activeRichLessonState.stepId,
+  };
+  activeRichLessonState.printFunctionDemo = controller;
+
+  const code = scene.querySelector(".mompy-print-code");
+  const cursor = scene.querySelector(".mompy-print-cursor");
+  const scanbar = scene.querySelector(".mompy-print-scanbar");
+  const output = scene.querySelector(".mompy-print-output");
+  const resultLabel = scene.querySelector(".mompy-print-label");
+  const accessibleText = scene.querySelector(".mompy-print-sr-only");
+  let phase = "idle";
+  let typed = "";
+
+  const isCurrent = () => (
+    !controller.cancelled
+    && scene.isConnected
+    && activeRichLessonState?.printFunctionDemo === controller
+    && activeRichLessonState?.lessonId === controller.lessonId
+    && activeRichLessonState?.stepId === controller.stepId
+  );
+
+  const schedule = (callback, delay) => {
+    window.clearTimeout(controller.timer);
+    controller.timer = window.setTimeout(() => {
+      controller.timer = null;
+      if (isCurrent()) {
+        callback();
+      }
+    }, Math.max(0, Number(delay) || 0));
+  };
+
+  const renderState = (nextPhase = phase) => {
+    phase = nextPhase;
+    const executing = phase === "executing";
+    const showOutput = phase === "output" || phase === "labeled";
+    const showLabel = phase === "labeled";
+    scene.dataset.phase = phase;
+    if (code) code.textContent = typed;
+    if (cursor) cursor.hidden = executing || showOutput;
+    code?.classList.toggle("mompy-print-execute", executing);
+    scanbar?.classList.toggle("mompy-print-scanbar-go", executing);
+    output?.classList.toggle("mompy-print-output-show", showOutput);
+    resultLabel?.classList.toggle("mompy-print-label-show", showLabel);
+    if (accessibleText) {
+      accessibleText.textContent = showOutput ? `${codeValue} → ${outputValue}` : typed;
+    }
+  };
+
+  const start = () => {
+    typed = "";
+    renderState("idle");
+    schedule(() => {
+      renderState("typing");
+      const characters = Array.from(codeValue);
+      let index = 0;
+      const typeNext = () => {
+        if (!isCurrent()) return;
+        if (index < characters.length) {
+          typed += characters[index];
+          index += 1;
+          renderState("typing");
+          schedule(typeNext, 72);
+          return;
+        }
+        schedule(() => {
+          renderState("executing");
+          schedule(() => {
+            renderState("output");
+            schedule(() => {
+              renderState("labeled");
+              schedule(start, 1500);
+            }, 300);
+          }, 520);
+        }, 320);
+      };
+      typeNext();
+    }, 500);
+  };
+
+  if (prefersReducedMotion() || !settingsState.mompyAnimations) {
+    typed = codeValue;
+    renderState("labeled");
+    return;
+  }
+
+  start();
+}
+
+function startClassroomReadingAnimation(scene, payload = {}) {
+  if (!scene || !activeRichLessonState) {
+    return;
+  }
+
+  const actionValue = String(payload.action || "print");
+  const textValue = String(payload.text || '("Olá, Mompy!")');
+  const fullCode = actionValue + textValue;
+  const controller = {
+    cancelled: false,
+    timer: null,
+    lessonId: activeRichLessonState.lessonId,
+    stepId: activeRichLessonState.stepId,
+  };
+  activeRichLessonState.readingDemo = controller;
+
+  const actionToken = scene.querySelector(".mompy-reading-action-token");
+  const textToken = scene.querySelector(".mompy-reading-text-token");
+  const cursor = scene.querySelector(".mompy-reading-cursor");
+  const actionBox = scene.querySelector(".mompy-reading-action-box");
+  const textBox = scene.querySelector(".mompy-reading-text-box");
+  const arrow = scene.querySelector(".mompy-reading-arrow");
+  const execute = scene.querySelector(".mompy-reading-execute");
+  const accessibleText = scene.querySelector(".mompy-reading-sr-only");
+  let phase = "idle";
+  let typed = "";
+
+  const isCurrent = () => (
+    !controller.cancelled
+    && scene.isConnected
+    && activeRichLessonState?.readingDemo === controller
+    && activeRichLessonState?.lessonId === controller.lessonId
+    && activeRichLessonState?.stepId === controller.stepId
+  );
+
+  const schedule = (callback, delay) => {
+    window.clearTimeout(controller.timer);
+    controller.timer = window.setTimeout(() => {
+      controller.timer = null;
+      if (isCurrent()) {
+        callback();
+      }
+    }, Math.max(0, Number(delay) || 0));
+  };
+
+  const renderState = (nextPhase = phase) => {
+    phase = nextPhase;
+    const actionLength = Math.min(actionValue.length, typed.length);
+    scene.dataset.phase = phase;
+    if (actionToken) actionToken.textContent = typed.slice(0, actionLength);
+    if (textToken) textToken.textContent = typed.length > actionValue.length
+      ? typed.slice(actionValue.length)
+      : "";
+    if (cursor) cursor.hidden = phase !== "idle" && phase !== "typing";
+    actionToken?.classList.toggle("mompy-reading-token-hot", phase === "action");
+    textToken?.classList.toggle("mompy-reading-token-hot", phase === "text");
+    actionBox?.classList.toggle("mompy-reading-box-on", ["action", "text", "arrow", "execute"].includes(phase));
+    textBox?.classList.toggle("mompy-reading-box-on", ["text", "arrow", "execute"].includes(phase));
+    arrow?.classList.toggle("mompy-reading-arrow-on", phase === "arrow" || phase === "execute");
+    execute?.classList.toggle("mompy-reading-execute-on", phase === "execute");
+    if (accessibleText) {
+      accessibleText.textContent = typed;
+    }
+  };
+
+  const start = () => {
+    typed = "";
+    renderState("idle");
+    schedule(() => {
+      renderState("typing");
+      const characters = Array.from(fullCode);
+      let index = 0;
+      const typeNext = () => {
+        if (!isCurrent()) return;
+        if (index < characters.length) {
+          typed += characters[index];
+          index += 1;
+          renderState("typing");
+          schedule(typeNext, 72);
+          return;
+        }
+        schedule(() => {
+          renderState("action");
+          schedule(() => {
+            renderState("text");
+            schedule(() => {
+              renderState("arrow");
+              schedule(() => {
+                renderState("execute");
+                schedule(start, 1500);
+              }, 450);
+            }, 500);
+          }, 650);
+        }, 300);
+      };
+      typeNext();
+    }, 450);
+  };
+
+  if (prefersReducedMotion() || !settingsState.mompyAnimations) {
+    typed = fullCode;
+    renderState("execute");
+    return;
+  }
+
+  start();
+}
+
+function startClassroomLineOrderAnimation(scene) {
+  if (!scene || !activeRichLessonState) return;
+  const controller = {
+    cancelled: false,
+    timer: null,
+    lessonId: activeRichLessonState.lessonId,
+    stepId: activeRichLessonState.stepId,
+  };
+  activeRichLessonState.lineOrderDemo = controller;
+  const rows = [...scene.querySelectorAll(".mompy-order-row")];
+  const footer = scene.querySelector(".mompy-order-footer");
+
+  const isCurrent = () => (
+    !controller.cancelled
+    && scene.isConnected
+    && activeRichLessonState?.lineOrderDemo === controller
+    && activeRichLessonState?.lessonId === controller.lessonId
+    && activeRichLessonState?.stepId === controller.stepId
+  );
+  const schedule = (callback, delay) => {
+    window.clearTimeout(controller.timer);
+    controller.timer = window.setTimeout(() => {
+      controller.timer = null;
+      if (isCurrent()) callback();
+    }, Math.max(0, Number(delay) || 0));
+  };
+  const renderState = (phase) => {
+    scene.dataset.phase = phase;
+    rows.forEach((row, index) => {
+      const reached = phase === "complete" || phase === `line-${index + 1}` || (phase === "line-2" && index === 0);
+      row.classList.toggle("mompy-order-row-reached", reached);
+      row.classList.toggle("mompy-order-row-active", phase === `line-${index + 1}`);
+    });
+    footer?.classList.toggle("mompy-order-footer-visible", phase === "complete");
+  };
+  const start = () => {
+    renderState("idle");
+    schedule(() => {
+      renderState("line-1");
+      schedule(() => {
+        renderState("line-2");
+        schedule(() => {
+          renderState("complete");
+          schedule(() => {
+            renderState("reset");
+            schedule(start, 250);
+          }, 1200);
+        }, 900);
+      }, 900);
+    }, 500);
+  };
+  if (prefersReducedMotion() || !settingsState.mompyAnimations) {
+    renderState("complete");
+    return;
+  }
+  start();
+}
+
+function startClassroomPairAnimation(scene, payload = {}) {
+  if (!scene || !activeRichLessonState) return;
+  const fullCode = String(payload.code || 'print("Eu consegui!")');
+  const controller = {
+    cancelled: false,
+    timer: null,
+    lessonId: activeRichLessonState.lessonId,
+    stepId: activeRichLessonState.stepId,
+  };
+  activeRichLessonState.pairDemo = controller;
+  const functionToken = scene.querySelector(".mompy-pair-function");
+  const openParenthesis = scene.querySelector(".mompy-pair-open-parenthesis");
+  const openQuote = scene.querySelector(".mompy-pair-open-quote");
+  const textToken = scene.querySelector(".mompy-pair-text");
+  const closeQuote = scene.querySelector(".mompy-pair-close-quote");
+  const closeParenthesis = scene.querySelector(".mompy-pair-close-parenthesis");
+  const cursor = scene.querySelector(".mompy-pair-cursor");
+  const parenthesisTrack = scene.querySelector(".mompy-pair-track-parentheses");
+  const quoteTrack = scene.querySelector(".mompy-pair-track-quotes");
+  const badge = scene.querySelector(".mompy-pair-valid");
+  let visibleCode = "";
+  let phase = "idle";
+
+  const isCurrent = () => (
+    !controller.cancelled
+    && scene.isConnected
+    && activeRichLessonState?.pairDemo === controller
+    && activeRichLessonState?.lessonId === controller.lessonId
+    && activeRichLessonState?.stepId === controller.stepId
+  );
+  const schedule = (callback, delay) => {
+    window.clearTimeout(controller.timer);
+    controller.timer = window.setTimeout(() => {
+      controller.timer = null;
+      if (isCurrent()) callback();
+    }, Math.max(0, Number(delay) || 0));
+  };
+  const renderState = (nextPhase = phase) => {
+    phase = nextPhase;
+    const length = visibleCode.length;
+    const closeQuoteIndex = fullCode.length - 2;
+    scene.dataset.phase = phase;
+    if (functionToken) functionToken.textContent = visibleCode.slice(0, Math.min(5, length));
+    if (openParenthesis) openParenthesis.textContent = length > 5 ? "(" : "";
+    if (openQuote) openQuote.textContent = length > 6 ? '"' : "";
+    if (textToken) textToken.textContent = length > 7
+      ? visibleCode.slice(7, Math.min(length, closeQuoteIndex))
+      : "";
+    if (closeQuote) closeQuote.textContent = length > closeQuoteIndex ? '"' : "";
+    if (closeParenthesis) closeParenthesis.textContent = length === fullCode.length ? ")" : "";
+    if (cursor) cursor.hidden = phase !== "idle" && phase !== "typing";
+    [openParenthesis, closeParenthesis].forEach((token) => {
+      token?.classList.toggle("mompy-pair-token-hot", phase === "parentheses" || phase === "valid");
+    });
+    [openQuote, closeQuote].forEach((token) => {
+      token?.classList.toggle("mompy-pair-token-hot", phase === "quotes" || phase === "valid");
+    });
+    parenthesisTrack?.classList.toggle("mompy-pair-track-visible", phase === "parentheses" || phase === "quotes" || phase === "valid");
+    quoteTrack?.classList.toggle("mompy-pair-track-visible", phase === "quotes" || phase === "valid");
+    badge?.classList.toggle("mompy-pair-valid-visible", phase === "valid");
+  };
+  const start = () => {
+    visibleCode = "";
+    renderState("idle");
+    schedule(() => {
+      renderState("typing");
+      const characters = Array.from(fullCode);
+      let index = 0;
+      const typeNext = () => {
+        if (!isCurrent()) return;
+        if (index < characters.length) {
+          visibleCode += characters[index];
+          index += 1;
+          renderState("typing");
+          schedule(typeNext, 68);
+          return;
+        }
+        schedule(() => {
+          renderState("parentheses");
+          schedule(() => {
+            renderState("quotes");
+            schedule(() => {
+              renderState("valid");
+              schedule(() => {
+                renderState("reset");
+                schedule(start, 300);
+              }, 1200);
+            }, 550);
+          }, 550);
+        }, 300);
+      };
+      typeNext();
+    }, 450);
+  };
+  if (prefersReducedMotion() || !settingsState.mompyAnimations) {
+    visibleCode = fullCode;
+    renderState("valid");
+    return;
+  }
+  start();
+}
+
+function renderClassroomAuxPayload(payload) {
+  if (!classroomAuxMonitorContent || !payload) {
+    return;
+  }
+
+  const supportedKinds = new Set([
+    "question",
+    "identity",
+    "timeline",
+    "fact",
+    "video",
+    "idea-code",
+    "output",
+    "execution",
+    "automation-arm",
+    "sites-delivery",
+    "data-ai-sequence",
+    "science-education-sequence",
+    "interpreter-sequence",
+    "syntax-animation",
+    "string-value-animation",
+    "print-function-animation",
+    "reading-animation",
+    "line-order-animation",
+    "pair-animation",
+  ]);
+  const kind = supportedKinds.has(payload.kind) ? payload.kind : "output";
+  classroomAuxMonitorContent.className = `classroom-aux-monitor-content is-${kind}`;
+  const label = createClassroomNode("p", "classroom-aux-monitor-label", payload.label || "STATUS");
+
+  if (kind === "question") {
+    const scene = createClassroomNode("div", "classroom-aux-question");
+    scene.setAttribute("role", "img");
+    scene.setAttribute(
+      "aria-label",
+      payload.alt || (currentLanguage === "pt-BR" ? "Pergunta aguardando resposta" : "Question awaiting an answer"),
+    );
+    const symbol = String(payload.symbol || "?");
+    const symbolNode = createClassroomNode("span", "classroom-aux-question-mark", symbol);
+    symbolNode.classList.toggle("is-success", symbol === "✓");
+    scene.append(symbolNode);
+    classroomAuxMonitorContent.replaceChildren(scene);
+    return;
+  }
+
+  if (kind === "pair-animation") {
+    const scene = createClassroomNode("section", "mompy-pair-demo");
+    scene.dataset.phase = "idle";
+    scene.setAttribute("aria-label", payload.alt || "Pares de aspas e parênteses completando uma instrução print");
+    const kicker = createClassroomNode("div", "mompy-pair-kicker", payload.kicker || "PARES DA SINTAXE");
+    const panel = createClassroomNode("div", "mompy-pair-panel");
+    const code = createClassroomNode("div", "mompy-pair-code");
+    const functionToken = createClassroomNode("span", "mompy-pair-function");
+    const openParenthesis = createClassroomNode("span", "mompy-pair-symbol mompy-pair-open-parenthesis");
+    const openQuote = createClassroomNode("span", "mompy-pair-symbol mompy-pair-open-quote");
+    const text = createClassroomNode("span", "mompy-pair-text");
+    const closeQuote = createClassroomNode("span", "mompy-pair-symbol mompy-pair-close-quote");
+    const closeParenthesis = createClassroomNode("span", "mompy-pair-symbol mompy-pair-close-parenthesis");
+    const cursor = createClassroomNode("span", "mompy-pair-cursor", "▌");
+    cursor.setAttribute("aria-hidden", "true");
+    code.append(functionToken, openParenthesis, openQuote, text, closeQuote, closeParenthesis, cursor);
+    const tracks = createClassroomNode("div", "mompy-pair-tracks");
+    const parenthesisTrack = createClassroomNode("div", "mompy-pair-track mompy-pair-track-parentheses");
+    parenthesisTrack.append(createClassroomNode("span", "", payload.parenthesesLabel || "PARÊNTESES: CHAMADA COMPLETA"));
+    const quoteTrack = createClassroomNode("div", "mompy-pair-track mompy-pair-track-quotes");
+    quoteTrack.append(createClassroomNode("span", "", payload.quotesLabel || "ASPAS: TEXTO COMPLETO"));
+    tracks.append(parenthesisTrack, quoteTrack);
+    const valid = createClassroomNode("div", "mompy-pair-valid", payload.validLabel || "✓ FORMA COMPLETA");
+    panel.append(code, tracks, valid);
+    const scan = createClassroomNode("div", "mompy-pair-scan");
+    scan.setAttribute("aria-hidden", "true");
+    scene.append(kicker, panel, scan);
+    classroomAuxMonitorContent.replaceChildren(scene);
+    startClassroomPairAnimation(scene, payload);
+    return;
+  }
+
+  if (kind === "line-order-animation") {
+    const scene = createClassroomNode("section", "mompy-order-demo");
+    scene.dataset.phase = "idle";
+    scene.setAttribute("aria-label", payload.alt || "Duas linhas de código sendo executadas de cima para baixo");
+    const kicker = createClassroomNode("div", "mompy-order-kicker", payload.kicker || "ORDEM DE EXECUÇÃO");
+    const panel = createClassroomNode("div", "mompy-order-panel");
+    const headers = createClassroomNode("div", "mompy-order-headers");
+    headers.append(
+      createClassroomNode("span", "", payload.codeLabel || "CÓDIGO"),
+      createClassroomNode("span", "", ""),
+      createClassroomNode("span", "", payload.outputLabel || "RESULTADO"),
+    );
+    panel.append(headers);
+    const codeLines = payload.codeLines || ['print("Linha 1")', 'print("Linha 2")'];
+    const outputLines = payload.outputLines || ["Linha 1", "Linha 2"];
+    codeLines.slice(0, 2).forEach((line, index) => {
+      const row = createClassroomNode("div", "mompy-order-row");
+      const codeCell = createClassroomNode("code", "mompy-order-code", line);
+      const trace = createClassroomNode("span", "mompy-order-trace", "→");
+      const outputCell = createClassroomNode("output", "mompy-order-output", outputLines[index] || "");
+      row.append(codeCell, trace, outputCell);
+      panel.append(row);
+    });
+    const footer = createClassroomNode(
+      "div",
+      "mompy-order-footer",
+      payload.footer || "↓ PYTHON LÊ DE CIMA PARA BAIXO",
+    );
+    panel.append(footer);
+    const scan = createClassroomNode("div", "mompy-order-scan");
+    scan.setAttribute("aria-hidden", "true");
+    scene.append(kicker, panel, scan);
+    classroomAuxMonitorContent.replaceChildren(scene);
+    startClassroomLineOrderAnimation(scene);
+    return;
+  }
+
+  if (kind === "reading-animation") {
+    const scene = createClassroomNode("section", "mompy-reading-demo");
+    scene.dataset.phase = "idle";
+    scene.setAttribute(
+      "aria-label",
+      payload.alt || (currentLanguage === "pt-BR"
+        ? "Leitura da ação print e do texto antes da execução"
+        : "Reading the print action and the text before execution"),
+    );
+    const wrap = createClassroomNode("div", "mompy-reading-wrap");
+    const kicker = createClassroomNode(
+      "div",
+      "mompy-reading-kicker",
+      payload.kicker || (currentLanguage === "pt-BR" ? "LEITURA" : "READING"),
+    );
+    const stage = createClassroomNode("div", "mompy-reading-stage");
+    const panel = createClassroomNode("div", "mompy-reading-panel");
+    const codeLine = createClassroomNode("div", "mompy-reading-code");
+    const actionToken = createClassroomNode("span", "mompy-reading-token mompy-reading-action-token");
+    const textToken = createClassroomNode("span", "mompy-reading-token mompy-reading-text-token");
+    const cursor = createClassroomNode("span", "mompy-reading-cursor", "▌");
+    cursor.setAttribute("aria-hidden", "true");
+    codeLine.append(actionToken, textToken, cursor);
+
+    const meaning = createClassroomNode("div", "mompy-reading-meaning");
+    const actionBox = createClassroomNode("div", "mompy-reading-box mompy-reading-action-box");
+    const actionCopy = createClassroomNode("div");
+    actionCopy.append(
+      createClassroomNode("strong", "", payload.actionLabel || (currentLanguage === "pt-BR" ? "AÇÃO" : "ACTION")),
+      createClassroomNode("span", "", payload.action || "print"),
+    );
+    actionBox.append(actionCopy);
+    const arrow = createClassroomNode("div", "mompy-reading-arrow", "→");
+    const textBox = createClassroomNode("div", "mompy-reading-box mompy-reading-text-box");
+    const textCopy = createClassroomNode("div");
+    textCopy.append(
+      createClassroomNode("strong", "", payload.textLabel || (currentLanguage === "pt-BR" ? "TEXTO" : "TEXT")),
+      createClassroomNode("span", "", payload.displayText || '"Olá, Mompy!"'),
+    );
+    textBox.append(textCopy);
+    meaning.append(actionBox, arrow, textBox);
+    const execute = createClassroomNode(
+      "div",
+      "mompy-reading-execute",
+      payload.executeLabel || (currentLanguage === "pt-BR"
+        ? "⚡ PRIMEIRO ENTENDE • DEPOIS EXECUTA"
+        : "⚡ UNDERSTAND FIRST • EXECUTE NEXT"),
+    );
+    panel.append(codeLine, meaning, execute);
+    stage.append(panel);
+    wrap.append(kicker, stage);
+    const scanlines = createClassroomNode("div", "mompy-reading-scanlines");
+    scanlines.setAttribute("aria-hidden", "true");
+    const accessibleText = createClassroomNode("span", "mompy-reading-sr-only");
+    accessibleText.setAttribute("aria-live", "off");
+    scene.append(wrap, scanlines, accessibleText);
+    classroomAuxMonitorContent.replaceChildren(scene);
+    startClassroomReadingAnimation(scene, payload);
+    return;
+  }
+
+  if (kind === "print-function-animation") {
+    const scene = createClassroomNode("section", "mompy-print-demo");
+    scene.dataset.phase = "idle";
+    scene.setAttribute(
+      "aria-label",
+      payload.alt || (currentLanguage === "pt-BR"
+        ? "A função print sendo digitada, executada e produzindo uma saída"
+        : "The print function being typed, executed, and producing output"),
+    );
+    const content = createClassroomNode("div", "mompy-print-content");
+    const kicker = createClassroomNode(
+      "div",
+      "mompy-print-kicker",
+      payload.kicker || (currentLanguage === "pt-BR" ? "FUNÇÃO — PRINT" : "FUNCTION — PRINT"),
+    );
+    const stage = createClassroomNode("div", "mompy-print-stage");
+    const panel = createClassroomNode("div", "mompy-print-panel");
+    const codeRow = createClassroomNode("div", "mompy-print-code-row");
+    const code = createClassroomNode("span", "mompy-print-code");
+    const cursor = createClassroomNode("span", "mompy-print-cursor", "▌");
+    cursor.setAttribute("aria-hidden", "true");
+    codeRow.append(createClassroomNode("span", "mompy-print-prompt", ">"), code, cursor);
+
+    const divider = createClassroomNode("div", "mompy-print-divider");
+    divider.append(createClassroomNode("div", "mompy-print-scanbar"));
+    const outputRow = createClassroomNode("div", "mompy-print-output-row");
+    const output = createClassroomNode("span", "mompy-print-output", payload.output || "Olá, Mompy!");
+    outputRow.append(createClassroomNode("span", "mompy-print-prompt", "›"), output);
+    const resultLabel = createClassroomNode(
+      "div",
+      "mompy-print-label",
+      payload.resultLabel || (currentLanguage === "pt-BR"
+        ? "A INFORMAÇÃO FICOU VISÍVEL"
+        : "THE INFORMATION BECAME VISIBLE"),
+    );
+    panel.append(codeRow, divider, outputRow, resultLabel);
+    stage.append(panel);
+    content.append(kicker, stage);
+    const scan = createClassroomNode("div", "mompy-print-scan");
+    scan.setAttribute("aria-hidden", "true");
+    const accessibleText = createClassroomNode("span", "mompy-print-sr-only");
+    accessibleText.setAttribute("aria-live", "off");
+    scene.append(content, scan, accessibleText);
+    classroomAuxMonitorContent.replaceChildren(scene);
+    startClassroomPrintFunctionAnimation(scene, payload);
+    return;
+  }
+
+  if (kind === "string-value-animation") {
+    const scene = createClassroomNode("section", "mompy-string-demo");
+    scene.dataset.phase = "idle";
+    scene.setAttribute(
+      "aria-label",
+      payload.alt || (currentLanguage === "pt-BR"
+        ? "Uma string sendo digitada e delimitada por aspas"
+        : "A string being typed and delimited by quotation marks"),
+    );
+    const content = createClassroomNode("div", "mompy-string-content");
+    const kicker = createClassroomNode(
+      "div",
+      "mompy-string-kicker",
+      payload.kicker || (currentLanguage === "pt-BR" ? "VALOR DE TEXTO" : "TEXT VALUE"),
+    );
+    const stage = createClassroomNode("div", "mompy-string-stage");
+    const box = createClassroomNode("div", "mompy-string-box");
+    const codeLine = createClassroomNode("div", "mompy-string-code");
+    const openingQuote = createClassroomNode("span", "mompy-string-quote mompy-string-opening-quote");
+    const text = createClassroomNode("span", "mompy-string-text");
+    const cursor = createClassroomNode("span", "mompy-string-cursor", "▌");
+    cursor.hidden = true;
+    cursor.setAttribute("aria-hidden", "true");
+    const closingQuote = createClassroomNode("span", "mompy-string-quote mompy-string-closing-quote");
+    codeLine.append(openingQuote, text, cursor, closingQuote);
+
+    const delimiter = createClassroomNode("div", "mompy-string-delimiter");
+    delimiter.setAttribute("aria-hidden", "true");
+    delimiter.append(
+      createClassroomNode("span", "mompy-string-delimiter-left"),
+      createClassroomNode("span", "mompy-string-delimiter-line"),
+      createClassroomNode("span", "mompy-string-delimiter-right"),
+    );
+    const explanation = createClassroomNode(
+      "div",
+      "mompy-string-explanation",
+      payload.explanation || (currentLanguage === "pt-BR"
+        ? "AS ASPAS DELIMITAM A STRING"
+        : "QUOTES DELIMIT THE STRING"),
+    );
+    const accessibleText = createClassroomNode("span", "mompy-string-sr-only");
+    accessibleText.setAttribute("aria-live", "off");
+    box.append(codeLine, delimiter, explanation);
+    stage.append(box);
+    content.append(kicker, stage);
+    scene.append(
+      content,
+      createClassroomNode("div", "mompy-string-scan"),
+      accessibleText,
+    );
+    classroomAuxMonitorContent.replaceChildren(scene);
+    startClassroomStringValueAnimation(scene, payload);
+    return;
+  }
+
+  if (kind === "syntax-animation") {
+    const scene = createClassroomNode("section", "mompy-syntax-demo");
+    scene.dataset.stage = "idle";
+    scene.setAttribute(
+      "aria-label",
+      payload.alt || (currentLanguage === "pt-BR"
+        ? "Demonstração de sintaxe Python sendo construída e validada"
+        : "Python syntax demonstration being built and validated"),
+    );
+
+    const codeBox = createClassroomNode("div", "mompy-syntax-code-box");
+    const codeFade = createClassroomNode("div", "mompy-syntax-fade-layer");
+    const codeLine = createClassroomNode("div", "mompy-syntax-code-line");
+    const code = createClassroomNode("code");
+    const functionToken = createClassroomNode("span", "mompy-syntax-token mompy-syntax-token--function");
+    const openParenthesis = createClassroomNode(
+      "span",
+      "mompy-syntax-token mompy-syntax-token--parenthesis mompy-syntax-parenthesis-open",
+    );
+    const stringToken = createClassroomNode("span", "mompy-syntax-token mompy-syntax-token--string");
+    const closeParenthesis = createClassroomNode(
+      "span",
+      "mompy-syntax-token mompy-syntax-token--parenthesis mompy-syntax-parenthesis-close",
+    );
+    const cursor = createClassroomNode("span", "mompy-syntax-cursor");
+    cursor.setAttribute("aria-hidden", "true");
+    code.append(functionToken, openParenthesis, stringToken, closeParenthesis, cursor);
+    codeLine.append(code);
+
+    const scan = createClassroomNode("span", "mompy-syntax-scan");
+    scan.hidden = true;
+    scan.setAttribute("aria-hidden", "true");
+    const badge = createClassroomNode("div", "mompy-syntax-valid-badge");
+    badge.setAttribute("aria-hidden", "true");
+    badge.append(
+      createClassroomNode("span", "mompy-syntax-check", "✓"),
+      createClassroomNode("span", "", payload.validLabel || (currentLanguage === "pt-BR" ? "SINTAXE VÁLIDA" : "VALID SYNTAX")),
+    );
+    codeFade.append(codeLine, scan, badge);
+    codeBox.append(codeFade);
+
+    const annotations = createClassroomNode("div", "mompy-syntax-annotations mompy-syntax-fade-layer");
+    const annotationData = [
+      ["function", payload.functionLabel || (currentLanguage === "pt-BR" ? "FUNÇÃO" : "FUNCTION")],
+      ["string", payload.stringLabel || (currentLanguage === "pt-BR" ? "TEXTO (STRING)" : "TEXT (STRING)")],
+      ["parentheses", payload.parenthesesLabel || (currentLanguage === "pt-BR" ? "PARÊNTESES" : "PARENTHESES")],
+    ];
+    annotationData.forEach(([name, text]) => {
+      const annotation = createClassroomNode(
+        "div",
+        `mompy-syntax-annotation mompy-syntax-annotation--${name}`,
+      );
+      annotation.append(createClassroomNode("span", "", text));
+      annotations.append(annotation);
+    });
+    const accessibleCode = createClassroomNode("span", "mompy-syntax-sr-only", payload.waitingLabel || "Cursor aguardando");
+    accessibleCode.setAttribute("aria-live", "off");
+    scene.append(codeBox, annotations, accessibleCode);
+    classroomAuxMonitorContent.replaceChildren(scene);
+    startClassroomSyntaxAnimation(scene, payload);
+    return;
+  }
+
+  if (kind === "interpreter-sequence") {
+    const scene = createClassroomNode("div", "classroom-aux-interpreter-scene");
+    scene.setAttribute("role", "img");
+    scene.setAttribute(
+      "aria-label",
+      payload.alt || (currentLanguage === "pt-BR"
+        ? "O intérprete Python recebe instruções, processa o código e comanda a máquina"
+        : "The Python interpreter receives instructions, processes code, and controls the machine"),
+    );
+    (payload.frames || CLASSROOM_INTERPRETER_FRAMES).forEach((source, index) => {
+      const frame = createClassroomNode(
+        "img",
+        `classroom-aux-interpreter-frame is-frame-${index + 1}`,
+      );
+      frame.src = source;
+      frame.alt = "";
+      frame.loading = "eager";
+      frame.decoding = "async";
+      frame.draggable = false;
+      scene.append(frame);
+    });
+    classroomAuxMonitorContent.replaceChildren(scene);
+    return;
+  }
+
+  if (kind === "identity") {
+    const card = createClassroomNode("div", "classroom-aux-identity");
+    if (payload.image) {
+      const portrait = createClassroomNode("img", "classroom-aux-identity-portrait");
+      portrait.src = payload.image;
+      portrait.alt = payload.alt || "";
+      portrait.loading = "eager";
+      portrait.decoding = "async";
+      card.append(portrait);
+    }
+
+    const details = createClassroomNode("div", "classroom-aux-identity-details");
+    details.append(
+      createClassroomNode("strong", "classroom-aux-identity-name", payload.title || payload.value || ""),
+    );
+    if (payload.subtitle) {
+      details.append(createClassroomNode("span", "classroom-aux-identity-role", payload.subtitle));
+    }
+    if (payload.country || payload.flagCode) {
+      const country = createClassroomNode("span", "classroom-aux-country");
+      if (payload.flagCode) {
+        const flag = createClassroomNode(
+          "span",
+          `classroom-aux-flag is-${String(payload.flagCode).toLowerCase()}`,
+        );
+        flag.setAttribute("role", "img");
+        flag.setAttribute("aria-label", payload.country || payload.flagCode);
+        country.append(flag);
+      }
+      if (payload.country) {
+        country.append(createClassroomNode("span", "", payload.country));
+      }
+      details.append(country);
+    }
+    if (payload.facts?.length) {
+      const facts = createClassroomNode("div", "classroom-aux-tags");
+      payload.facts.forEach((fact) => facts.append(createClassroomNode("span", "", fact)));
+      details.append(facts);
+    }
+    card.append(details);
+    classroomAuxMonitorContent.replaceChildren(label, card);
+    return;
+  }
+
+  if (kind === "timeline") {
+    const timeline = createClassroomNode("ol", "classroom-aux-timeline");
+    const defaultTimelineIcons = ["spark", "code", "community"];
+    (payload.items || []).forEach((item, index) => {
+      const point = createClassroomNode("li", "");
+      point.style.setProperty("--timeline-index", String(index));
+      const iconName = item.icon || defaultTimelineIcons[index] || "code";
+      const icon = createClassroomNode(
+        "span",
+        `classroom-aux-timeline-icon is-${iconName}`,
+      );
+      icon.setAttribute("aria-hidden", "true");
+      point.append(
+        createClassroomNode("strong", "classroom-aux-timeline-year", item.year),
+        createClassroomNode("span", "classroom-aux-timeline-caption", item.caption),
+        icon,
+      );
+      timeline.append(point);
+    });
+    classroomAuxMonitorContent.replaceChildren(label, timeline);
+    return;
+  }
+
+  if (kind === "video") {
+    const videoShell = createClassroomNode("figure", "classroom-aux-video");
+    const video = createClassroomNode("video", "classroom-aux-video-player");
+    video.src = payload.src || "";
+    video.autoplay = true;
+    video.loop = payload.loop !== false;
+    const videoAudioEnabled = payload.muted !== true && audioManager.sfxEnabled;
+    const configuredVideoVolume = Number(audioManager.sfxVolume);
+    const safeVideoVolume = Number.isFinite(configuredVideoVolume) ? configuredVideoVolume : 0.45;
+    video.muted = !videoAudioEnabled;
+    video.volume = videoAudioEnabled
+      ? Math.max(0.18, Math.min(0.55, safeVideoVolume * 0.78))
+      : 0;
+    video.playsInline = true;
+    video.preload = "auto";
+    video.setAttribute("aria-label", payload.alt || payload.title || label.textContent);
+    if (payload.poster) {
+      video.poster = payload.poster;
+    }
+    videoShell.append(video);
+    classroomAuxMonitorContent.replaceChildren(videoShell);
+    video.play().catch(() => {});
+    return;
+  }
+
+  if (kind === "automation-arm") {
+    const scene = createClassroomNode("div", "classroom-aux-automation-scene");
+    scene.dataset.state = payload.state || "idle";
+    scene.dataset.cycle = String(payload.cycle || 1);
+    scene.setAttribute("role", "img");
+    scene.setAttribute(
+      "aria-label",
+      payload.alt || (currentLanguage === "pt-BR"
+        ? "Braço robótico aguardando instruções"
+        : "Robotic arm waiting for instructions"),
+    );
+    (payload.frames || CLASSROOM_AUTOMATION_ARM_FRAMES).forEach((source, index) => {
+      const frame = createClassroomNode("img", "classroom-aux-automation-frame");
+      frame.src = source;
+      frame.alt = "";
+      frame.loading = "eager";
+      frame.decoding = "async";
+      frame.draggable = false;
+      frame.dataset.frame = String(index + 1);
+      scene.append(frame);
+    });
+    classroomAuxMonitorContent.replaceChildren(scene);
+    return;
+  }
+
+  if (kind === "sites-delivery") {
+    const scene = createClassroomNode("div", "classroom-aux-sites-scene");
+    scene.dataset.phase = payload.phase || "idle";
+    scene.setAttribute("role", "img");
+    scene.setAttribute(
+      "aria-label",
+      payload.alt || (currentLanguage === "pt-BR"
+        ? "Servidor Python preparando uma página para o navegador"
+        : "Python server preparing a page for the browser"),
+    );
+
+    const server = createClassroomNode("img", "classroom-aux-sites-server");
+    server.src = payload.server || ASSETS.classroomSitesServer;
+    server.alt = "";
+    server.loading = "eager";
+    server.decoding = "async";
+    server.draggable = false;
+
+    const documentImage = createClassroomNode("img", "classroom-aux-sites-document");
+    documentImage.src = payload.document || ASSETS.classroomSitesDocument;
+    documentImage.alt = "";
+    documentImage.loading = "eager";
+    documentImage.decoding = "async";
+    documentImage.draggable = false;
+
+    const browser = createClassroomNode("div", "classroom-aux-sites-browser");
+    const browserBase = createClassroomNode("img", "classroom-aux-sites-browser-base");
+    browserBase.src = payload.browser || ASSETS.classroomSitesBrowser;
+    browserBase.alt = "";
+    browserBase.loading = "eager";
+    browserBase.decoding = "async";
+    browserBase.draggable = false;
+    const buildClasses = ["hero", "text", "side", "rest"];
+    const buildLayers = buildClasses.map((name) => {
+      const layer = createClassroomNode("img", `classroom-aux-sites-build-layer is-${name}`);
+      layer.src = browserBase.src;
+      layer.alt = "";
+      layer.loading = "eager";
+      layer.decoding = "async";
+      layer.draggable = false;
+      return layer;
+    });
+    browser.append(browserBase, ...buildLayers);
+
+    const trail = createClassroomNode("span", "classroom-aux-sites-pixel-trail");
+    scene.append(server, trail, documentImage, browser);
+    classroomAuxMonitorContent.replaceChildren(scene);
+    return;
+  }
+
+  if (kind === "data-ai-sequence") {
+    const scene = createClassroomNode("div", "classroom-aux-data-ai-scene");
+    scene.setAttribute("role", "img");
+    const sprite = createClassroomNode("span", "classroom-aux-data-ai-sprite");
+    sprite.style.backgroundImage = `url("${payload.sprite || ASSETS.classroomDataAiSequence}")`;
+    scene.append(sprite);
+    classroomAuxMonitorContent.replaceChildren(scene);
+    setClassroomDataAiFrame(scene, Number(payload.frame) || 0);
+    return;
+  }
+
+  if (kind === "science-education-sequence") {
+    const scene = createClassroomNode("div", "classroom-aux-science-education-scene");
+    scene.setAttribute("role", "img");
+    (payload.frames || CLASSROOM_SCIENCE_EDUCATION_FRAMES).forEach((source, index) => {
+      const frame = createClassroomNode("img", "classroom-aux-science-education-frame");
+      frame.src = source;
+      frame.alt = "";
+      frame.loading = "eager";
+      frame.decoding = "async";
+      frame.draggable = false;
+      frame.dataset.frame = String(index + 1);
+      scene.append(frame);
+    });
+    classroomAuxMonitorContent.replaceChildren(scene);
+    setClassroomScienceEducationFrame(scene, Number(payload.frame) || 0);
+    return;
+  }
+
+  if (kind === "idea-code") {
+    const scene = createClassroomNode("div", "classroom-aux-idea-code-scene");
+    const duration = Math.max(14000, Number(payload.duration) || 24000);
+    scene.style.setProperty("--idea-code-loop", `${duration}ms`);
+    scene.setAttribute("role", "img");
+    scene.setAttribute(
+      "aria-label",
+      payload.alt || `${payload.idea || "IDEIA"} ${payload.arrow || "→"} ${payload.code || "CÓDIGO"}`,
+    );
+
+    const headline = createClassroomNode("div", "classroom-aux-idea-code-headline");
+    headline.append(
+      createClassroomNode("strong", "classroom-aux-idea-code-idea", payload.idea || "IDEIA"),
+      createClassroomNode("span", "classroom-aux-idea-code-arrow", payload.arrow || "→"),
+      createClassroomNode("strong", "classroom-aux-idea-code-code", payload.code || "CÓDIGO"),
+    );
+    const subtitleText = payload.subtitle || "PASSOS EXATOS PARA A MÁQUINA";
+    const subtitle = createClassroomNode("p", "classroom-aux-idea-code-subtitle");
+    const steps = createClassroomNode("ol", "classroom-aux-idea-code-steps");
+    const typedRows = [];
+    (payload.steps || []).slice(0, 4).forEach((step, index) => {
+      const item = createClassroomNode("li", "");
+      const stepText = String(step);
+      const stepNode = createClassroomNode("span", "classroom-aux-idea-code-step");
+      item.append(
+        createClassroomNode("span", "classroom-aux-idea-code-number", String(index + 1).padStart(2, "0")),
+        stepNode,
+      );
+      steps.append(item);
+      typedRows.push({ item, node: stepNode, text: stepText });
+    });
+    scene.append(headline, subtitle, steps);
+    classroomAuxMonitorContent.replaceChildren(scene);
+
+    const showCompleteText = () => {
+      subtitle.textContent = subtitleText;
+      typedRows.forEach(({ item, node, text }) => {
+        item.classList.add("is-visible");
+        node.textContent = text;
+      });
+      subtitle.classList.remove("is-cursor");
+      typedRows.forEach(({ node }) => node.classList.remove("is-cursor"));
+    };
+
+    if (prefersReducedMotion() || !settingsState.mompyAnimations) {
+      showCompleteText();
+      return;
+    }
+
+    const characters = (value) => Array.from(value);
+    const subtitleCharacters = characters(subtitleText);
+    const rowCharacters = typedRows.map(({ text }) => characters(text));
+    const subtitleStart = duration * 0.3;
+    const subtitleWindow = duration * 0.1;
+    const rowsStart = duration * 0.44;
+    const rowsEnd = duration * 0.75;
+    const rowSlot = typedRows.length ? (rowsEnd - rowsStart) / typedRows.length : 0;
+    const animationStartedAt = performance.now();
+
+    const revealCharacters = (node, values, elapsed, start, windowMs) => {
+      if (elapsed < start) {
+        node.textContent = "";
+        return false;
+      }
+      const progress = Math.min(1, (elapsed - start) / Math.max(1, windowMs));
+      node.textContent = values.slice(0, Math.ceil(values.length * progress)).join("");
+      return progress < 1;
+    };
+
+    const updateTyping = (now) => {
+      if (!scene.isConnected) {
+        return;
+      }
+      const elapsed = (now - animationStartedAt) % duration;
+      revealCharacters(subtitle, subtitleCharacters, elapsed, subtitleStart, subtitleWindow);
+      let activeCursorNode = elapsed >= subtitleStart && elapsed < rowsStart ? subtitle : null;
+      typedRows.forEach(({ item, node }, index) => {
+        const start = rowsStart + rowSlot * index;
+        const nextStart = Math.min(rowsEnd, start + rowSlot);
+        revealCharacters(node, rowCharacters[index], elapsed, start, rowSlot * 0.78);
+        item.classList.toggle("is-visible", elapsed >= start);
+        if (elapsed >= start && elapsed < nextStart) {
+          activeCursorNode = node;
+        }
+      });
+      subtitle.classList.toggle("is-cursor", activeCursorNode === subtitle);
+      typedRows.forEach(({ node }) => {
+        node.classList.toggle("is-cursor", activeCursorNode === node);
+      });
+      window.requestAnimationFrame(updateTyping);
+    };
+
+    window.requestAnimationFrame(updateTyping);
+    return;
+  }
+
+  if (kind === "fact") {
+    const fact = createClassroomNode("div", "classroom-aux-fact");
+    if (payload.icon) {
+      fact.append(createClassroomNode("span", "classroom-aux-fact-icon", payload.icon));
+    }
+    const factCopy = createClassroomNode("div", "classroom-aux-fact-copy");
+    factCopy.append(createClassroomNode("strong", "classroom-aux-fact-title", payload.title || payload.value || ""));
+    if (payload.subtitle) {
+      factCopy.append(createClassroomNode("span", "classroom-aux-fact-subtitle", payload.subtitle));
+    }
+    fact.append(factCopy);
+    classroomAuxMonitorContent.replaceChildren(label, fact);
+    return;
+  }
+
+  if (kind === "execution") {
+    const demo = createClassroomNode("div", "classroom-aux-execution");
+    const hasResultVisual = Boolean(payload.image);
+    const inputLabel = createClassroomNode(
+      "span",
+      "classroom-aux-execution-input-label",
+      payload.inputLabel || "INPUT",
+    );
+    const code = createClassroomNode("code", "classroom-aux-execution-code", payload.code || "");
+    const outputLabel = createClassroomNode(
+      "span",
+      "classroom-aux-execution-output-label",
+      Object.prototype.hasOwnProperty.call(payload, "outputLabel") ? payload.outputLabel : "OUTPUT",
+    );
+    const output = createClassroomNode(
+      "output",
+      "classroom-aux-execution-output",
+      payload.output || "",
+    );
+    output.setAttribute("aria-live", "polite");
+    demo.classList.add(`is-${payload.phase || "ready"}`);
+    const codeLines = String(payload.code || "").split("\n").length;
+    const outputLines = String(payload.output || "").split("\n").length;
+    if (codeLines > 1 || outputLines > 1) {
+      demo.classList.add("is-multiline");
+    }
+    if (codeLines + outputLines >= 7) {
+      demo.classList.add("is-dense");
+    }
+    if (hasResultVisual) {
+      demo.classList.add("has-result-visual");
+    }
+    demo.setAttribute("aria-label", payload.ariaLabel || label.textContent);
+    demo.append(inputLabel, code, outputLabel, output);
+    if (hasResultVisual) {
+      const visual = createClassroomNode("figure", "classroom-aux-execution-visual");
+      const image = createClassroomNode("img", "classroom-aux-execution-image");
+      image.src = payload.image;
+      image.alt = payload.imageAlt || payload.resultCaption || "";
+      image.loading = "eager";
+      image.decoding = "async";
+      visual.append(image);
+      if (payload.resultCaption) {
+        visual.append(createClassroomNode(
+          "figcaption",
+          "classroom-aux-execution-caption",
+          payload.resultCaption,
+        ));
+      }
+      demo.append(visual);
+    }
+    classroomAuxMonitorContent.replaceChildren(label, demo);
+    return;
+  }
+
+  const value = createClassroomNode("pre", "classroom-aux-monitor-output", payload.value || "");
+  classroomAuxMonitorContent.replaceChildren(label, value);
+}
+
+function setClassroomAuxMonitor(payload) {
+  if (!classroomAuxMonitor || !classroomLessonPanel) {
+    return;
+  }
+
+  if (!payload) {
+    if (classroomAuxMonitorMode === "open" || classroomAuxMonitorMode === "opening") {
+      const transitionToken = ++classroomAuxTransitionToken;
+      classroomAuxMonitor.classList.remove("is-opening", "is-open");
+      classroomAuxMonitor.classList.add("is-closing");
+      classroomAuxRail?.classList.remove("is-opening", "is-open");
+      classroomAuxRail?.classList.add("is-closing");
+      classroomAuxMonitorMode = "closing";
+      classroomAuxMonitorContent?.setAttribute("aria-busy", "true");
+      scheduleClassroomStageStep(() => {
+        if (
+          classroomAuxMonitorMode !== "closing"
+          || transitionToken !== classroomAuxTransitionToken
+        ) {
+          return;
+        }
+        classroomAuxMonitor.classList.remove("is-closing");
+        classroomAuxRail?.classList.remove("is-closing");
+        classroomLessonPanel.classList.remove("has-aux-monitor");
+        classroomAuxMonitorContent?.replaceChildren();
+        classroomAuxMonitorContent?.removeAttribute("aria-busy");
+        classroomAuxMonitorMode = "closed";
+      }, prefersReducedMotion() ? 20 : 1850);
+    } else if (classroomAuxMonitorMode === "closed") {
+      classroomLessonPanel.classList.remove("has-aux-monitor");
+      classroomAuxMonitorContent?.replaceChildren();
+    }
+    return;
+  }
+
+  classroomLessonPanel.classList.add("has-aux-monitor");
+  if (classroomAuxMonitorMode !== "open" && classroomAuxMonitorMode !== "opening") {
+    classroomAuxMonitorContent?.setAttribute("aria-busy", "true");
+  }
+  renderClassroomAuxPayload(payload);
+
+  if (classroomAuxMonitorMode === "open" || classroomAuxMonitorMode === "opening") {
+    return;
+  }
+
+  classroomAuxMonitor.classList.remove("is-closing");
+  classroomAuxMonitor.classList.add("is-opening");
+  classroomAuxRail?.classList.remove("is-closing");
+  classroomAuxRail?.classList.add("is-opening");
+  const transitionToken = ++classroomAuxTransitionToken;
+  classroomAuxMonitorMode = "opening";
+  if (!prefersReducedMotion()) {
+    playClassroomMechanismCue("monitor");
+  }
+  scheduleClassroomStageStep(() => {
+    if (
+      classroomAuxMonitorMode !== "opening"
+      || transitionToken !== classroomAuxTransitionToken
+    ) {
+      return;
+    }
+    classroomAuxMonitor.classList.remove("is-opening");
+    classroomAuxMonitor.classList.add("is-open");
+    classroomAuxRail?.classList.remove("is-opening");
+    classroomAuxRail?.classList.add("is-open");
+    classroomAuxMonitorContent?.removeAttribute("aria-busy");
+    classroomAuxMonitorMode = "open";
+  }, prefersReducedMotion() ? 20 : 2250);
+}
+
+function initializeClassroomAuxCrt() {
+  if (!classroomAuxMonitor || !classroomAuxMonitorContent || !classroomAuxCrt) {
+    return;
+  }
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const restingPoint = { x: 52, y: 28 };
+  let targetX = restingPoint.x;
+  let targetY = restingPoint.y;
+  let currentX = restingPoint.x;
+  let currentY = restingPoint.y;
+  let beam = 0;
+  let animationFrame = null;
+  let pulseTimer = null;
+
+  const isActive = () => (
+    classroomAuxMonitor.classList.contains("is-opening")
+    || classroomAuxMonitor.classList.contains("is-open")
+  );
+
+  const resetElectricalVariables = () => {
+    classroomAuxMonitor.style.setProperty("--crt-flicker", "1");
+    classroomAuxMonitor.style.setProperty("--crt-jitter-x", "0px");
+    classroomAuxMonitor.style.setProperty("--crt-jitter-y", "0px");
+    classroomAuxMonitor.style.setProperty("--crt-ghost-x", "0.08cqw");
+  };
+
+  const stopMotion = () => {
+    if (animationFrame !== null) {
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+    }
+    if (pulseTimer !== null) {
+      window.clearTimeout(pulseTimer);
+      pulseTimer = null;
+    }
+    targetX = restingPoint.x;
+    targetY = restingPoint.y;
+    currentX = restingPoint.x;
+    currentY = restingPoint.y;
+    classroomAuxMonitor.style.setProperty("--crt-mx", `${restingPoint.x}%`);
+    classroomAuxMonitor.style.setProperty("--crt-my", `${restingPoint.y}%`);
+    classroomAuxMonitor.style.setProperty("--crt-beam", "0");
+    resetElectricalVariables();
+  };
+
+  const animateGlass = () => {
+    if (!isActive() || reducedMotion.matches || document.hidden) {
+      animationFrame = null;
+      return;
+    }
+
+    currentX += (targetX - currentX) * 0.045;
+    currentY += (targetY - currentY) * 0.045;
+    beam = (beam + 0.11) % 100;
+    classroomAuxMonitor.style.setProperty("--crt-mx", `${currentX.toFixed(3)}%`);
+    classroomAuxMonitor.style.setProperty("--crt-my", `${currentY.toFixed(3)}%`);
+    classroomAuxMonitor.style.setProperty("--crt-beam", beam.toFixed(3));
+    animationFrame = window.requestAnimationFrame(animateGlass);
+  };
+
+  const scheduleAnalogPulse = () => {
+    if (!isActive() || reducedMotion.matches || document.hidden) {
+      pulseTimer = null;
+      resetElectricalVariables();
+      return;
+    }
+
+    const random = Math.random();
+    let brightness = 1;
+    let jitterX = 0;
+    let jitterY = 0;
+    let ghost = 0.08;
+
+    if (random < 0.09) {
+      brightness = 0.985 + Math.random() * 0.012;
+    }
+    if (random < 0.035) {
+      brightness = 0.965 + Math.random() * 0.018;
+      jitterX = (Math.random() - 0.5) * 0.7;
+    }
+    if (random < 0.012) {
+      jitterX = (Math.random() - 0.5) * 1.2;
+      jitterY = (Math.random() - 0.5) * 0.45;
+      ghost = 0.12 + Math.random() * 0.1;
+    }
+
+    classroomAuxMonitor.style.setProperty("--crt-flicker", brightness.toFixed(4));
+    classroomAuxMonitor.style.setProperty("--crt-jitter-x", `${jitterX.toFixed(3)}px`);
+    classroomAuxMonitor.style.setProperty("--crt-jitter-y", `${jitterY.toFixed(3)}px`);
+    classroomAuxMonitor.style.setProperty("--crt-ghost-x", `${ghost.toFixed(3)}cqw`);
+    pulseTimer = window.setTimeout(scheduleAnalogPulse, 70 + Math.random() * 240);
+  };
+
+  const startMotion = () => {
+    if (reducedMotion.matches || !isActive()) {
+      stopMotion();
+      return;
+    }
+    if (animationFrame === null) {
+      animationFrame = window.requestAnimationFrame(animateGlass);
+    }
+    if (pulseTimer === null) {
+      scheduleAnalogPulse();
+    }
+  };
+
+  document.addEventListener("pointermove", (event) => {
+    if (!isActive() || reducedMotion.matches) {
+      return;
+    }
+    const rect = classroomAuxCrt.getBoundingClientRect();
+    const inside = event.clientX >= rect.left
+      && event.clientX <= rect.right
+      && event.clientY >= rect.top
+      && event.clientY <= rect.bottom;
+    if (!inside || rect.width <= 0 || rect.height <= 0) {
+      targetX = restingPoint.x;
+      targetY = restingPoint.y;
+      return;
+    }
+    targetX = ((event.clientX - rect.left) / rect.width) * 100;
+    targetY = ((event.clientY - rect.top) / rect.height) * 100;
+  }, { passive: true });
+
+  const monitorObserver = new MutationObserver(() => {
+    if (isActive()) {
+      startMotion();
+    } else {
+      stopMotion();
+    }
+  });
+  monitorObserver.observe(classroomAuxMonitor, { attributes: true, attributeFilter: ["class"] });
+
+  reducedMotion.addEventListener?.("change", () => {
+    if (isActive()) {
+      startMotion();
+    } else {
+      stopMotion();
+    }
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopMotion();
+    } else if (isActive()) {
+      startMotion();
+    }
+  });
+}
+
+function setClassroomMompyGuide(visible, { speak = false, forceMaterialize = false } = {}) {
+  if (!classroomMompyGuide || !classroomLessonPanel) {
+    return;
+  }
+
+  clearTimeout(classroomMompyTimer);
+  classroomMompyTimer = null;
+  if (speak) {
+    stopMompyVoice();
+  }
+  classroomLessonPanel.classList.toggle("has-classroom-mompy", Boolean(visible));
+
+  if (!visible) {
+    stopMompyVoice();
+    classroomMompyGuide.classList.remove("is-materializing", "is-speaking", "is-visible");
+    if (classroomMompyVisible && !prefersReducedMotion()) {
+      classroomMompyGuide.classList.add("is-dematerializing");
+      classroomMompyTimer = window.setTimeout(() => {
+        classroomMompyGuide.classList.remove("is-dematerializing");
+      }, 760);
+    } else {
+      classroomMompyGuide.classList.remove("is-dematerializing");
+    }
+    classroomMompyVisible = false;
+    return;
+  }
+
+  classroomMompyGuide.classList.remove("is-dematerializing");
+  const shouldMaterialize = forceMaterialize || !classroomMompyVisible;
+  classroomMompyVisible = true;
+
+  if (shouldMaterialize && !prefersReducedMotion()) {
+    classroomMompyGuide.classList.remove("is-visible", "is-speaking");
+    // Restart the six-frame assembly only when Mompy actually re-enters.
+    void classroomMompyGuide.offsetWidth;
+    classroomMompyGuide.classList.add("is-materializing");
+    playClassroomMechanismCue("mompy");
+    classroomMompyTimer = window.setTimeout(() => {
+      classroomMompyGuide.classList.remove("is-materializing");
+      classroomMompyGuide.classList.add("is-visible");
+      if (speak) {
+        classroomMompyGuide.classList.add("is-speaking");
+        classroomMompyTimer = window.setTimeout(() => {
+          classroomMompyGuide.classList.remove("is-speaking");
+        }, 1900);
+      }
+    }, 1900);
+    return;
+  }
+
+  classroomMompyGuide.classList.add("is-visible");
+  classroomMompyGuide.classList.toggle("is-speaking", Boolean(speak && settingsState.mompyAnimations));
+  if (speak && settingsState.mompyAnimations) {
+    classroomMompyTimer = window.setTimeout(() => {
+      classroomMompyGuide.classList.remove("is-speaking");
+    }, 1900);
+  }
+}
+
+function stopMompyVoiceMouth() {
+  window.cancelAnimationFrame(activeMompyVoiceAnimationFrame);
+  activeMompyVoiceAnimationFrame = null;
+  classroomMompyGuide?.classList.remove("is-voice-driven", "is-mouth-open");
+  classroomMompyGuide?.removeAttribute("data-mouth-frame");
+}
+
+function pickMompyTalkFrame(voiceLevel, currentFrame, previousFrame) {
+  let weightedFrames;
+  if (voiceLevel < 0.2) {
+    weightedFrames = [2, 6, 2, 5, 1, 2];
+  } else if (voiceLevel < 0.45) {
+    weightedFrames = [2, 5, 2, 4, 6, 2, 5];
+  } else if (voiceLevel < 0.7) {
+    weightedFrames = [2, 4, 2, 3, 5, 2, 4];
+  } else {
+    weightedFrames = [3, 2, 4, 3, 2, 5, 4];
+  }
+
+  const nonRepeatingFrames = weightedFrames.filter((frame) => (
+    frame !== currentFrame && frame !== previousFrame
+  ));
+  const availableFrames = nonRepeatingFrames.length
+    ? nonRepeatingFrames
+    : weightedFrames.filter((frame) => frame !== currentFrame);
+  const framePool = availableFrames.length ? availableFrames : [2];
+  return framePool[Math.floor(Math.random() * framePool.length)];
+}
+
+function getMompyTalkFrameDelay(voiceLevel) {
+  const level = Math.min(1, Math.max(0, voiceLevel));
+  const variationMs = (Math.random() - 0.5) * 18;
+  return Math.round(Math.min(120, Math.max(60, 118 - level * 50 + variationMs)));
+}
+
+function startMompyVoiceMouth(voice, voiceConfig) {
+  stopMompyVoiceMouth();
+  if (!settingsState.mompyAnimations || prefersReducedMotion()) {
+    return;
+  }
+
+  classroomMompyGuide?.classList.remove("is-screen-action-ready");
+
+  const mouthLevels = voiceConfig.mouthLevels;
+  const mouthWindowMs = voiceConfig.mouthWindowMs;
+  if (!mouthLevels?.length || !mouthWindowMs) {
+    return;
+  }
+
+  let mouthOpen = false;
+  let mouthFrame = 1;
+  let previousMouthFrame = 1;
+  let nextMouthFrame = 0;
+
+  const updateMouth = (now) => {
+    if (activeMompyVoice !== voice || voice.ended) {
+      return;
+    }
+    if (voice.paused) {
+      activeMompyVoiceAnimationFrame = window.requestAnimationFrame(updateMouth);
+      return;
+    }
+
+    const levelIndex = Math.min(
+      mouthLevels.length - 1,
+      Math.floor((voice.currentTime * 1000) / mouthWindowMs),
+    );
+    const voiceLevel = mouthLevels[Math.max(0, levelIndex)] || 0;
+    const hasVoice = voiceLevel > 0.075;
+
+    if (!hasVoice) {
+      mouthOpen = false;
+      previousMouthFrame = mouthFrame;
+      mouthFrame = 1;
+      nextMouthFrame = now;
+    } else if (now >= nextMouthFrame) {
+      if (USE_EXTENDED_TALK_FRAMES) {
+        const nextFrame = pickMompyTalkFrame(voiceLevel, mouthFrame, previousMouthFrame);
+        previousMouthFrame = mouthFrame;
+        mouthFrame = nextFrame;
+        nextMouthFrame = now + getMompyTalkFrameDelay(voiceLevel);
+      } else {
+        mouthOpen = !mouthOpen;
+        nextMouthFrame = now + Math.round(190 - voiceLevel * 115);
+      }
+    }
+
+    classroomMompyGuide?.classList.add("is-speaking", "is-voice-driven");
+    if (USE_EXTENDED_TALK_FRAMES) {
+      classroomMompyGuide?.classList.remove("is-mouth-open");
+      if (classroomMompyGuide) {
+        classroomMompyGuide.dataset.mouthFrame = String(mouthFrame);
+      }
+    } else {
+      classroomMompyGuide?.removeAttribute("data-mouth-frame");
+      classroomMompyGuide?.classList.toggle("is-mouth-open", mouthOpen);
+    }
+    activeMompyVoiceAnimationFrame = window.requestAnimationFrame(updateMouth);
+  };
+
+  activeMompyVoiceAnimationFrame = window.requestAnimationFrame(updateMouth);
+}
+
+function stopMompyVoice() {
+  const voice = activeMompyVoice;
+  const endedHandler = activeMompyVoiceEndedHandler;
+  activeMompyVoice = null;
+  activeMompyVoiceEndedHandler = null;
+  stopMompyVoiceMouth();
+  classroomMompyGuide?.classList.remove("is-speaking");
+
+  if (!voice) {
+    return;
+  }
+
+  if (endedHandler) {
+    voice.removeEventListener("ended", endedHandler);
+  }
+  voice.pause();
+  voice.currentTime = 0;
+}
+
+function playMompyVoice(voiceKey, { onEnded } = {}) {
+  stopMompyVoice();
+  const voiceConfig = MOMPY_VOICE_MANIFEST[voiceKey];
+  if (!voiceConfig || voiceConfig.enabled === false) {
+    return null;
+  }
+
+  const voice = new Audio(voiceConfig.source);
+  voice.preload = "auto";
+  const handleEnded = () => {
+    if (activeMompyVoice !== voice) {
+      return;
+    }
+
+    activeMompyVoice = null;
+    activeMompyVoiceEndedHandler = null;
+    stopMompyVoiceMouth();
+    classroomMompyGuide?.classList.remove("is-speaking");
+    if (classroomMompyGuide?.classList.contains("is-use-cases-screen")) {
+      classroomMompyGuide.classList.add("is-screen-action-ready");
+    }
+    onEnded?.();
+  };
+
+  activeMompyVoice = voice;
+  activeMompyVoiceEndedHandler = handleEnded;
+  voice.addEventListener("ended", handleEnded, { once: true });
+  startMompyVoiceMouth(voice, voiceConfig);
+  const playAttempt = voice.play();
+  playAttempt?.catch((error) => {
+    if (activeMompyVoice !== voice) {
+      return;
+    }
+
+    voice.removeEventListener("ended", handleEnded);
+    activeMompyVoice = null;
+    activeMompyVoiceEndedHandler = null;
+    stopMompyVoiceMouth();
+    classroomMompyGuide?.classList.remove("is-speaking");
+    if (classroomMompyGuide?.classList.contains("is-use-cases-screen")) {
+      classroomMompyGuide.classList.add("is-screen-action-ready");
+    }
+    console.warn("Mompy voice playback failed.", error);
+    onEnded?.();
+  });
+  return voice;
+}
+
+function clearRichLessonInteractionTimer() {
+  window.clearTimeout(classroomInteractionTimer);
+  classroomInteractionTimer = null;
+  if (activeRichLessonState?.automationDemo) {
+    activeRichLessonState.automationDemo.cancelled = true;
+    activeRichLessonState.automationDemo = null;
+  }
+  if (activeRichLessonState?.sitesDemo) {
+    activeRichLessonState.sitesDemo.cancelled = true;
+    activeRichLessonState.sitesDemo = null;
+  }
+  if (activeRichLessonState?.dataAiDemo) {
+    activeRichLessonState.dataAiDemo.cancelled = true;
+    activeRichLessonState.dataAiDemo = null;
+  }
+  if (activeRichLessonState?.scienceEducationDemo) {
+    activeRichLessonState.scienceEducationDemo.cancelled = true;
+    activeRichLessonState.scienceEducationDemo = null;
+  }
+  if (activeRichLessonState?.syntaxDemo) {
+    activeRichLessonState.syntaxDemo.cancelled = true;
+    window.clearTimeout(activeRichLessonState.syntaxDemo.timer);
+    activeRichLessonState.syntaxDemo = null;
+  }
+  if (activeRichLessonState?.stringValueDemo) {
+    activeRichLessonState.stringValueDemo.cancelled = true;
+    window.clearTimeout(activeRichLessonState.stringValueDemo.timer);
+    activeRichLessonState.stringValueDemo = null;
+  }
+  if (activeRichLessonState?.printFunctionDemo) {
+    activeRichLessonState.printFunctionDemo.cancelled = true;
+    window.clearTimeout(activeRichLessonState.printFunctionDemo.timer);
+    activeRichLessonState.printFunctionDemo = null;
+  }
+  if (activeRichLessonState?.readingDemo) {
+    activeRichLessonState.readingDemo.cancelled = true;
+    window.clearTimeout(activeRichLessonState.readingDemo.timer);
+    activeRichLessonState.readingDemo = null;
+  }
+  if (activeRichLessonState?.lineOrderDemo) {
+    activeRichLessonState.lineOrderDemo.cancelled = true;
+    window.clearTimeout(activeRichLessonState.lineOrderDemo.timer);
+    activeRichLessonState.lineOrderDemo = null;
+  }
+  if (activeRichLessonState?.pairDemo) {
+    activeRichLessonState.pairDemo.cancelled = true;
+    window.clearTimeout(activeRichLessonState.pairDemo.timer);
+    activeRichLessonState.pairDemo = null;
+  }
+}
+
+function clearClassroomMompyScreenAction() {
+  if (!classroomMompyGuide || !classroomMompyScreenAction) {
+    return;
+  }
+
+  classroomMompyGuide.classList.remove("has-screen-action");
+  classroomMompyGuide.classList.remove("is-automation-code-mode");
+  classroomMompyScreenAction.hidden = true;
+  classroomMompyScreenAction.disabled = false;
+  classroomMompyScreenAction.classList.remove("has-code", "is-automation-display", "has-inline-continue");
+  classroomMompyScreenAction.textContent = "";
+  classroomMompyScreenActionHandler = null;
+  classroomMompyScreenAction.removeAttribute("aria-label");
+}
+
+function showClassroomMompyScreenAction(label, onClick, { code = "" } = {}) {
+  if (!classroomMompyGuide || !classroomMompyScreenAction) {
+    return;
+  }
+
+  if (!classroomMompyVisible) {
+    setClassroomMompyGuide(true, { speak: false, forceMaterialize: true });
+    window.setTimeout(() => {
+      showClassroomMompyScreenAction(label, onClick, { code });
+    }, prefersReducedMotion() ? 20 : 1920);
+    return;
+  }
+
+  classroomMompyGuide.classList.remove("is-speaking");
+  classroomMompyGuide.classList.add("has-screen-action");
+  classroomMompyGuide.classList.remove("is-automation-code-mode");
+  classroomMompyScreenAction.classList.remove("is-automation-display", "has-inline-continue");
+  classroomMompyScreenAction.classList.toggle("has-code", Boolean(code));
+  classroomMompyScreenAction.disabled = false;
+  if (code) {
+    classroomMompyScreenAction.replaceChildren(
+      createClassroomNode("code", "classroom-mompy-screen-code", code),
+      createClassroomNode("span", "classroom-mompy-screen-action-label", label),
+    );
+  } else {
+    classroomMompyScreenAction.textContent = label;
+  }
+  classroomMompyScreenAction.setAttribute("aria-label", code ? `${code}. ${label}` : label);
+  classroomMompyScreenAction.hidden = false;
+  classroomMompyScreenActionHandler = onClick;
+  window.requestAnimationFrame(() => {
+    if (classroomLessonContent?.dataset.interactive === "true") {
+      classroomMompyScreenAction.focus({ preventScroll: true });
+    }
+  });
+}
+
+classroomMompyScreenAction?.addEventListener("click", () => {
+  const handler = classroomMompyScreenActionHandler;
+  clearClassroomMompyScreenAction();
+  handler?.();
+});
+
+function clearClassroomTypewriter({ complete = false } = {}) {
+  if (complete && classroomTypewriterFinisher) {
+    classroomTypewriterFinisher();
+    return;
+  }
+
+  stopMompyVoice();
+  classroomTypewriterToken += 1;
+  window.clearTimeout(classroomTypewriterTimer);
+  classroomTypewriterTimer = null;
+  classroomTypewriterFinisher = null;
+  classroomLessonContent?.classList.remove("is-typing");
+  classroomLessonContent?.removeAttribute("aria-busy");
+  classroomLessonContent
+    ?.querySelectorAll(".is-currently-typing")
+    .forEach((element) => element.classList.remove("is-currently-typing"));
+  classroomLessonContent
+    ?.querySelectorAll(".classroom-rich-callout")
+    .forEach((element) => element.style.removeProperty("visibility"));
+  classroomLessonContent
+    ?.querySelectorAll(".classroom-rich-mompy-line")
+    .forEach((element) => element.style.removeProperty("visibility"));
+  classroomMompyGuide?.classList.remove("is-speaking");
+}
+
+function runClassroomTypewriter(root, { delay = 120, onComplete } = {}) {
+  clearClassroomTypewriter();
+  if (!root) {
+    onComplete?.();
+    return;
+  }
+
+  const selectors = [
+    ".classroom-rich-title",
+    ".classroom-rich-lead",
+    ".classroom-rich-paragraph",
+    ".classroom-rich-list li",
+    ".classroom-rich-callout-copy",
+    ".classroom-rich-note",
+    ".classroom-rich-mompy-copy",
+  ];
+  const entries = [...root.querySelectorAll(selectors.join(","))]
+    .map((element) => ({ element, text: element.textContent || "" }))
+    .filter((entry) => entry.text.length > 0);
+
+  if (!entries.length) {
+    onComplete?.();
+    return;
+  }
+
+  if (prefersReducedMotion() || !settingsState.mompyAnimations) {
+    const hasMompyCopy = entries.some(({ element }) => element.classList.contains("classroom-rich-mompy-copy"));
+    const voiceKey = `${currentLanguage}:${activeRichLessonState?.lessonId}:${activeRichLessonState?.stepId}:mompy`;
+    const voice = hasMompyCopy ? playMompyVoice(voiceKey, { onEnded: onComplete }) : null;
+    if (!voice) {
+      onComplete?.();
+    }
+    return;
+  }
+
+  entries.forEach(({ element, text }) => {
+    const height = element.getBoundingClientRect().height;
+    if (height > 0) {
+      element.style.minHeight = `${height}px`;
+    }
+    element.setAttribute("aria-label", text);
+    element.textContent = "";
+    element.closest(".classroom-rich-callout")?.style.setProperty("visibility", "hidden");
+    element.closest(".classroom-rich-mompy-line")?.style.setProperty("visibility", "hidden");
+  });
+
+  classroomLessonContent?.classList.add("is-typing");
+  classroomLessonContent?.setAttribute("aria-busy", "true");
+  const token = ++classroomTypewriterToken;
+  const totalCharacters = entries.reduce((total, entry) => total + entry.text.length, 0);
+  const characterDelay = Math.max(12, Math.min(34, Math.round(4700 / Math.max(1, totalCharacters))));
+  let entryIndex = 0;
+  let characterIndex = 0;
+  let finished = false;
+  let mompyVoiceStarted = false;
+  let mompyVoice = null;
+  let waitingForMompyVoice = false;
+  let finish = null;
+  const mompyVoiceKey = `${currentLanguage}:${activeRichLessonState?.lessonId}:${activeRichLessonState?.stepId}:mompy`;
+  const mompyVoiceConfig = MOMPY_VOICE_MANIFEST[mompyVoiceKey];
+  const mompyVoiceDuration = mompyVoiceConfig?.enabled === false
+    ? 0
+    : (mompyVoiceConfig?.durationMs || 0);
+  const hasMompyCopy = entries.some(({ element }) => element.classList.contains("classroom-rich-mompy-copy"));
+
+  const startMompySpeech = () => {
+    if (mompyVoiceStarted || !hasMompyCopy) {
+      return;
+    }
+    mompyVoiceStarted = true;
+    mompyVoice = playMompyVoice(mompyVoiceKey, {
+      onEnded: () => {
+        if (waitingForMompyVoice) {
+          finish?.();
+        }
+      },
+    });
+    if (classroomMompyVisible && settingsState.mompyAnimations) {
+      classroomMompyGuide?.classList.add("is-speaking");
+    }
+  };
+
+  const revealAllText = () => {
+    entries.forEach(({ element, text }) => {
+      element.textContent = text;
+      element.classList.remove("is-currently-typing");
+      element.style.removeProperty("min-height");
+      element.removeAttribute("aria-label");
+      element.closest(".classroom-rich-callout")?.style.removeProperty("visibility");
+      element.closest(".classroom-rich-mompy-line")?.style.removeProperty("visibility");
+    });
+    classroomLessonContent?.classList.remove("is-typing");
+    classroomLessonContent?.removeAttribute("aria-busy");
+  };
+
+  finish = () => {
+    if (finished || token !== classroomTypewriterToken) {
+      return;
+    }
+    startMompySpeech();
+    window.clearTimeout(classroomTypewriterTimer);
+    classroomTypewriterTimer = null;
+    revealAllText();
+    if (mompyVoice && activeMompyVoice === mompyVoice && !mompyVoice.ended) {
+      waitingForMompyVoice = true;
+      return;
+    }
+
+    finished = true;
+    waitingForMompyVoice = false;
+    classroomTypewriterFinisher = null;
+    if (!activeMompyVoice) {
+      classroomMompyGuide?.classList.remove("is-speaking");
+    }
+    onComplete?.();
+  };
+
+  classroomTypewriterFinisher = finish;
+  const typeNextCharacter = () => {
+    if (token !== classroomTypewriterToken || finished) {
+      return;
+    }
+
+    const current = entries[entryIndex];
+    if (!current) {
+      finish();
+      return;
+    }
+
+    entries.forEach(({ element }) => element.classList.remove("is-currently-typing"));
+    current.element.closest(".classroom-rich-callout")?.style.removeProperty("visibility");
+    current.element.closest(".classroom-rich-mompy-line")?.style.removeProperty("visibility");
+    const isMompyCopy = current.element.classList.contains("classroom-rich-mompy-copy");
+    if (isMompyCopy && characterIndex === 0) {
+      startMompySpeech();
+    }
+    current.element.classList.add("is-currently-typing");
+    characterIndex += 1;
+    current.element.textContent = current.text.slice(0, characterIndex);
+    if (characterIndex >= current.text.length) {
+      current.element.classList.remove("is-currently-typing");
+      entryIndex += 1;
+      characterIndex = 0;
+    }
+    const nextCharacterDelay = isMompyCopy && mompyVoice && mompyVoiceDuration
+      ? Math.max(characterDelay, Math.round(mompyVoiceDuration / Math.max(1, current.text.length)))
+      : characterDelay;
+    classroomTypewriterTimer = window.setTimeout(typeNextCharacter, nextCharacterDelay);
+  };
+
+  classroomTypewriterTimer = window.setTimeout(() => {
+    if (token !== classroomTypewriterToken) {
+      return;
+    }
+    typeNextCharacter();
+  }, delay);
+}
+
+function runClassroomExecutionDemo(demo, onComplete) {
+  clearRichLessonInteractionTimer();
+  if (!demo?.code) {
+    onComplete?.();
+    return;
+  }
+
+  const lessonId = activeRichLessonState?.lessonId;
+  const stepId = activeRichLessonState?.stepId;
+  const isCurrentStep = () => (
+    activeRichLessonState?.lessonId === lessonId
+    && activeRichLessonState?.stepId === stepId
+  );
+
+  if (pythonClassroomLessonPayload && !demo.pythonResolved) {
+    callPythonBackend("run_lesson_example", lessonId, stepId, currentLanguage)
+      .then((result) => {
+        if (!isCurrentStep()) {
+          return;
+        }
+        const resolvedOutput = result?.ok
+          ? String(result.output ?? "").replace(/\r?\n$/, "")
+          : (currentLanguage === "pt-BR" ? "Falha ao executar o exemplo." : "Example execution failed.");
+        runClassroomExecutionDemo({
+          ...demo,
+          output: resolvedOutput,
+          pythonResolved: true,
+        }, onComplete);
+      })
+      .catch(() => {
+        if (isCurrentStep()) {
+          runClassroomExecutionDemo({
+            ...demo,
+            output: currentLanguage === "pt-BR" ? "Falha ao executar o exemplo." : "Example execution failed.",
+            pythonResolved: true,
+          }, onComplete);
+        }
+      });
+    return;
+  }
+
+  const label = demo.label || (currentLanguage === "pt-BR" ? "EXECUÇÃO" : "EXECUTION");
+  const inputLabel = demo.inputLabel || "INPUT";
+  const outputLabel = Object.prototype.hasOwnProperty.call(demo, "outputLabel")
+    ? demo.outputLabel
+    : "OUTPUT";
+  const resultVisual = {
+    image: demo.image,
+    imageAlt: demo.imageAlt,
+    resultCaption: demo.resultCaption,
+  };
+  const schedule = (callback, delay) => {
+    window.clearTimeout(classroomInteractionTimer);
+    classroomInteractionTimer = window.setTimeout(() => {
+      classroomInteractionTimer = null;
+      if (isCurrentStep()) {
+        callback();
+      }
+    }, delay);
+  };
+
+  if (prefersReducedMotion() || !settingsState.mompyAnimations) {
+    setClassroomAuxMonitor({
+      kind: "execution",
+      label: outputLabel,
+      phase: "result",
+      inputLabel,
+      code: demo.code,
+      outputLabel,
+      output: demo.output,
+      ...resultVisual,
+    });
+    schedule(() => onComplete?.(), 80);
+    return;
+  }
+
+  let characterIndex = 0;
+  const renderTypingFrame = () => {
+    characterIndex += 1;
+    setClassroomAuxMonitor({
+      kind: "execution",
+      label: inputLabel,
+      phase: "typing",
+      inputLabel,
+      code: demo.code.slice(0, characterIndex),
+      outputLabel,
+    });
+
+    if (characterIndex < demo.code.length) {
+      schedule(renderTypingFrame, 52);
+      return;
+    }
+
+    schedule(() => {
+      setClassroomAuxMonitor({
+        kind: "execution",
+        label,
+        phase: "running",
+        inputLabel,
+        code: demo.code,
+        outputLabel,
+        ariaLabel: demo.running || (currentLanguage === "pt-BR" ? "Python executando o código" : "Python running the code"),
+      });
+      schedule(() => {
+        setClassroomAuxMonitor({
+          kind: "execution",
+          label: outputLabel,
+          phase: "result",
+          inputLabel,
+          code: demo.code,
+          outputLabel,
+          output: demo.output,
+          ...resultVisual,
+        });
+        schedule(() => onComplete?.(), 900);
+      }, 900);
+    }, 360);
+  };
+
+  const monitorNeedsOpening = !["open", "opening"].includes(classroomAuxMonitorMode);
+  setClassroomAuxMonitor({
+    kind: "execution",
+    label: inputLabel,
+    phase: "ready",
+    inputLabel,
+    code: "",
+    outputLabel,
+  });
+  schedule(renderTypingFrame, monitorNeedsOpening && !prefersReducedMotion() ? 2380 : 180);
+}
+
+function scheduleRichLessonAdvance(briefing, stepIndex, delay = 950, anchor = null) {
+  clearRichLessonInteractionTimer();
+  const lessonId = activeRichLessonState?.lessonId;
+  const stepId = activeRichLessonState?.stepId;
+  classroomInteractionTimer = window.setTimeout(() => {
+    classroomInteractionTimer = null;
+    if (
+      activeRichLessonState?.lessonId !== lessonId
+      || activeRichLessonState?.stepId !== stepId
+    ) {
+      return;
+    }
+
+    const container = anchor?.parentElement || classroomLessonContent?.querySelector(".classroom-rich-shell");
+    if (!container || container.querySelector("[data-answer-continue]")) {
+      return;
+    }
+
+    const actions = createClassroomNode("div", "classroom-rich-actions");
+    actions.classList.add("is-answer-continue");
+    actions.dataset.answerContinue = "true";
+    const continueButton = createRichLessonButton(
+      currentLanguage === "pt-BR" ? "CONTINUAR" : "CONTINUE",
+      {
+        primary: true,
+        onClick: () => renderBriefingStep(briefing, stepIndex + 1),
+      },
+    );
+    actions.append(continueButton);
+    if (anchor?.parentElement === container) {
+      anchor.after(actions);
+    } else {
+      container.append(actions);
+    }
+    continueButton.focus({ preventScroll: true });
+  }, prefersReducedMotion() ? 80 : delay);
+}
+
+function createRichLessonButton(label, { primary = false, className = "", onClick } = {}) {
+  const button = createClassroomNode(
+    "button",
+    ["classroom-rich-action", primary ? "is-primary" : "", className].filter(Boolean).join(" "),
+    label,
+  );
+  button.type = "button";
+  if (onClick) {
+    button.addEventListener("click", onClick);
+  }
+  return button;
+}
+
+function appendRichLessonCopy(container, step) {
+  if (step.lead) {
+    container.append(createClassroomNode("p", "classroom-rich-lead", step.lead));
+  }
+
+  const appendCallout = (kind, labelPt, labelEn, value) => {
+    if (!value) return;
+    const callout = createClassroomNode("section", `classroom-rich-callout is-${kind}`);
+    callout.append(
+      createClassroomNode(
+        "strong",
+        "classroom-rich-callout-label",
+        currentLanguage === "pt-BR" ? labelPt : labelEn,
+      ),
+      createClassroomNode("p", "classroom-rich-callout-copy", value),
+    );
+    container.append(callout);
+  };
+
+  appendCallout("definition", "CONCEITO", "CONCEPT", step.definition);
+
+  (step.body || []).forEach((line) => {
+    container.append(createClassroomNode("p", "classroom-rich-paragraph", line));
+  });
+
+  appendCallout("mental-model", "COMO PENSAR", "MENTAL MODEL", step.mentalModel);
+
+  if (step.bullets?.length) {
+    const list = createClassroomNode("ul", "classroom-rich-list");
+    step.bullets.forEach((item) => {
+      list.append(createClassroomNode("li", "", item));
+    });
+    container.append(list);
+  }
+
+  if (step.code && !step.hideCodeUntilReveal) {
+    const codeShell = createClassroomNode("div", "classroom-rich-code");
+    codeShell.append(createClassroomNode("span", "classroom-rich-code-label", "PYTHON"));
+    codeShell.append(createClassroomNode("pre", "", step.code));
+    container.append(codeShell);
+  }
+
+  appendCallout("warning", "ATENÇÃO", "WATCH OUT", step.warning);
+
+  if (step.note) {
+    container.append(createClassroomNode("p", "classroom-rich-note", step.note));
+  }
+}
+
+function renderRichProcessMap(shell, step) {
+  if (!step.processStages?.length) {
+    return null;
+  }
+
+  const process = createClassroomNode("ol", "classroom-rich-process");
+  process.setAttribute(
+    "aria-label",
+    currentLanguage === "pt-BR" ? "Etapas do programa" : "Program stages",
+  );
+  step.processStages.forEach((stage, index) => {
+    const item = createClassroomNode("li", "classroom-rich-process-stage");
+    item.dataset.processStage = String(index);
+    item.append(
+      createClassroomNode("span", "classroom-rich-process-number", String(index + 1).padStart(2, "0")),
+      createClassroomNode("strong", "classroom-rich-process-label", stage.label),
+      createClassroomNode("span", "classroom-rich-process-detail", stage.detail || ""),
+    );
+    process.append(item);
+  });
+  shell.append(process);
+  return process;
+}
+
+function setRichProcessStage(process, currentIndex, { completeCurrent = false } = {}) {
+  process?.querySelectorAll(".classroom-rich-process-stage").forEach((item, index) => {
+    item.classList.toggle("is-current", index === currentIndex && !completeCurrent);
+    item.classList.toggle("is-complete", index < currentIndex || (completeCurrent && index === currentIndex));
+  });
+}
+
+function startGuidedClassroomRun(briefing, step, stepIndex, shell, process) {
+  const lessonId = activeRichLessonState?.lessonId;
+  const stepId = activeRichLessonState?.stepId;
+  const isCurrentStep = () => (
+    activeRichLessonState?.lessonId === lessonId
+    && activeRichLessonState?.stepId === stepId
+  );
+  const schedule = (callback, delay) => {
+    clearRichLessonInteractionTimer();
+    classroomInteractionTimer = window.setTimeout(() => {
+      classroomInteractionTimer = null;
+      if (isCurrentStep()) callback();
+    }, delay);
+  };
+  const inputLabel = step.inputLabel || (currentLanguage === "pt-BR" ? "CÓDIGO" : "CODE");
+  const outputLabel = step.outputLabel || (currentLanguage === "pt-BR" ? "RESULTADO" : "OUTPUT");
+  const status = createClassroomNode(
+    "p",
+    "classroom-rich-guided-status",
+    currentLanguage === "pt-BR"
+      ? "Comece revelando a instrução que será entregue ao Python."
+      : "Start by revealing the instruction that will be given to Python.",
+  );
+  status.setAttribute("role", "status");
+  status.setAttribute("aria-live", "polite");
+  shell.append(status);
+  setRichProcessStage(process, 0);
+
+  const revealResult = () => {
+    if (!isCurrentStep()) return;
+    setClassroomAuxMonitor({
+      kind: "execution",
+      label: outputLabel,
+      phase: "result",
+      inputLabel,
+      code: step.code,
+      outputLabel,
+      output: activeRichLessonState.resolvedOutput ?? step.output ?? "",
+    });
+    setRichProcessStage(process, 2, { completeCurrent: true });
+    status.textContent = currentLanguage === "pt-BR"
+      ? "Resultado é a resposta produzida pela execução. O código continua sendo a instrução."
+      : "Output is the answer produced by execution. The code remains the instruction.";
+    audioManager.playSuccess();
+    showClassroomMompyScreenAction(
+      currentLanguage === "pt-BR" ? "CONTINUAR" : "CONTINUE",
+      () => renderBriefingStep(briefing, stepIndex + 1),
+    );
+  };
+
+  const handleExecutionFailure = () => {
+    if (!isCurrentStep()) return;
+    activeRichLessonState.locked = false;
+    activeRichLessonState.resolvedOutput = null;
+    setRichProcessStage(process, 1);
+    status.textContent = currentLanguage === "pt-BR"
+      ? "O intérprete não concluiu esta execução. Tente novamente; nenhum resultado foi aceito."
+      : "The interpreter did not complete this run. Try again; no output was accepted.";
+    setClassroomAuxMonitor({
+      kind: "execution",
+      label: currentLanguage === "pt-BR" ? "ERRO DE EXECUÇÃO" : "EXECUTION ERROR",
+      phase: "result",
+      inputLabel,
+      code: step.code,
+      outputLabel: currentLanguage === "pt-BR" ? "SEM RESULTADO" : "NO OUTPUT",
+      output: currentLanguage === "pt-BR" ? "TENTE NOVAMENTE" : "TRY AGAIN",
+    });
+    audioManager.playError();
+    showClassroomMompyScreenAction(
+      currentLanguage === "pt-BR" ? "TENTAR NOVAMENTE" : "TRY AGAIN",
+      executeCode,
+    );
+  };
+
+  const executeCode = async () => {
+    if (!isCurrentStep() || activeRichLessonState.locked) return;
+    activeRichLessonState.locked = true;
+    clearClassroomMompyScreenAction();
+    setRichProcessStage(process, 1);
+    status.textContent = currentLanguage === "pt-BR"
+      ? "Python está lendo a instrução e realizando a ação pedida."
+      : "Python is reading the instruction and performing the requested action.";
+    setClassroomAuxMonitor({
+      kind: "execution",
+      label: currentLanguage === "pt-BR" ? "PYTHON EXECUTANDO" : "PYTHON RUNNING",
+      phase: "running",
+      inputLabel,
+      code: step.code,
+      outputLabel,
+      ariaLabel: currentLanguage === "pt-BR" ? "Python executando o código" : "Python running the code",
+    });
+
+    let resolvedOutput = step.output ?? "";
+    if (pythonClassroomLessonPayload) {
+      try {
+        const result = await callPythonBackend("run_lesson_example", lessonId, stepId, currentLanguage);
+        if (!result?.ok || result.matches_expected_output !== true) {
+          handleExecutionFailure();
+          return;
+        }
+        resolvedOutput = String(result.output ?? "").replace(/\r?\n$/, "");
+      } catch {
+        handleExecutionFailure();
+        return;
+      }
+    }
+    if (!isCurrentStep()) return;
+    activeRichLessonState.resolvedOutput = resolvedOutput;
+    schedule(() => {
+      activeRichLessonState.locked = false;
+      setRichProcessStage(process, 2);
+      status.textContent = currentLanguage === "pt-BR"
+        ? "A execução terminou. Agora revele a resposta produzida."
+        : "Execution finished. Now reveal the answer it produced.";
+      showClassroomMompyScreenAction(
+        currentLanguage === "pt-BR" ? "VER RESULTADO" : "SEE OUTPUT",
+        revealResult,
+      );
+    }, prefersReducedMotion() ? 80 : 850);
+  };
+
+  const revealCode = () => {
+    if (!isCurrentStep()) return;
+    clearClassroomMompyScreenAction();
+    status.textContent = currentLanguage === "pt-BR"
+      ? "Código é a instrução escrita. Observe a telinha montar cada símbolo."
+      : "Code is the written instruction. Watch the small monitor assemble every symbol.";
+    setClassroomAuxMonitor({
+      kind: "execution",
+      label: inputLabel,
+      phase: "typing",
+      inputLabel,
+      code: "",
+      outputLabel,
+    });
+
+    let characterIndex = 0;
+    const typeNextCharacter = () => {
+      if (!isCurrentStep()) return;
+      characterIndex += 1;
+      setClassroomAuxMonitor({
+        kind: "execution",
+        label: inputLabel,
+        phase: "typing",
+        inputLabel,
+        code: step.code.slice(0, characterIndex),
+        outputLabel,
+      });
+      if (characterIndex < step.code.length) {
+        schedule(typeNextCharacter, prefersReducedMotion() ? 8 : 58);
+        return;
+      }
+      setRichProcessStage(process, 1);
+      status.textContent = currentLanguage === "pt-BR"
+        ? "A instrução está pronta. Agora peça ao Python para executá-la."
+        : "The instruction is ready. Now ask Python to run it.";
+      showClassroomMompyScreenAction(
+        currentLanguage === "pt-BR" ? "EXECUTAR" : "RUN",
+        executeCode,
+      );
+    };
+    schedule(typeNextCharacter, prefersReducedMotion() ? 30 : 2050);
+  };
+
+  showClassroomMompyScreenAction(
+    currentLanguage === "pt-BR" ? "VER CÓDIGO" : "SEE CODE",
+    revealCode,
+  );
+}
+
+function appendRichMompyLine(container, step) {
+  if (!step.mompy || !step.mompyVisible) {
+    return;
+  }
+
+  const line = createClassroomNode("p", "classroom-rich-mompy-line");
+  line.append(createClassroomNode("span", "classroom-rich-mompy-label", "MOMPY // "));
+  line.append(createClassroomNode("span", "classroom-rich-mompy-copy", step.mompy));
+  container.append(line);
+}
+
+function renderRichLessonFeedback(shell) {
+  const feedback = createClassroomNode("p", "classroom-rich-feedback");
+  feedback.setAttribute("role", "status");
+  feedback.setAttribute("aria-live", "polite");
+  shell.append(feedback);
+  return feedback;
+}
+
+function renderRichLessonHint(shell) {
+  const hint = createClassroomNode("p", "classroom-rich-feedback is-hint");
+  hint.hidden = true;
+  hint.setAttribute("role", "status");
+  hint.setAttribute("aria-live", "polite");
+  shell.append(hint);
+  return hint;
+}
+
+function revealRichLessonHint(step, hint) {
+  if (!step.hint || !hint) {
+    return;
+  }
+
+  setClassroomMompyGuide(true, { speak: true, forceMaterialize: !classroomMompyVisible });
+  hint.hidden = false;
+  hint.textContent = `MOMPY // ${step.hint}`;
+}
+
+function scheduleRichLessonHint(step, hint) {
+  const lessonId = activeRichLessonState?.lessonId;
+  const stepId = activeRichLessonState?.stepId;
+  const attempts = activeRichLessonState?.attempts || 0;
+  window.setTimeout(() => {
+    if (
+      activeRichLessonState?.lessonId !== lessonId
+      || activeRichLessonState?.stepId !== stepId
+      || (activeRichLessonState?.attempts || 0) < attempts
+    ) {
+      return;
+    }
+    revealRichLessonHint(step, hint);
+  }, prefersReducedMotion() ? 120 : 900);
+}
+
+async function checkRichLessonChoiceWithPython(briefing, step, choice, choiceIndex) {
+  if (typeof choice.correct === "boolean") {
+    return { correct: Boolean(choice.correct), offline: true };
+  }
+
+  const choiceId = choice.id || `choice_${String.fromCharCode(97 + choiceIndex)}`;
+  const result = await callPythonBackend(
+    "check_lesson_choice",
+    briefing.id,
+    step.id,
+    choiceId,
+    currentLanguage,
+  );
+  return result && typeof result.correct === "boolean" ? result : null;
+}
+
+function getRichLessonReviewStepIndex(briefing, questionStepId) {
+  const reviewStepId = CLASSROOM_REVIEW_STEP_BY_QUESTION[questionStepId];
+  const lesson = getRichClassroomLesson(briefing?.id);
+  if (!reviewStepId || !lesson?.steps?.length) {
+    return -1;
+  }
+  return lesson.steps.findIndex((candidate) => candidate.id === reviewStepId);
+}
+
+function renderRichChoiceInteraction(shell, briefing, step, stepIndex) {
+  const choices = createClassroomNode("div", "classroom-rich-choices");
+  const feedback = renderRichLessonFeedback(shell);
+  const hint = renderRichLessonHint(shell);
+
+  (step.choices || []).forEach((choice, choiceIndex) => {
+    const prefix = String.fromCharCode(65 + choiceIndex);
+    const button = createRichLessonButton(`${prefix}. ${choice.text}`, {
+      className: `classroom-rich-choice${choice.code ? " is-code" : ""}`,
+    });
+    button.dataset.choiceId = choice.id || `choice_${String.fromCharCode(97 + choiceIndex)}`;
+    button.addEventListener("click", async () => {
+      if (activeRichLessonState?.locked) {
+        return;
+      }
+
+      activeRichLessonState.locked = true;
+      choices.querySelectorAll("button").forEach((candidate) => {
+        candidate.disabled = true;
+      });
+      const validation = await checkRichLessonChoiceWithPython(briefing, step, choice, choiceIndex);
+      if (!validation) {
+        activeRichLessonState.locked = false;
+        choices.querySelectorAll("button").forEach((candidate) => {
+          candidate.disabled = false;
+        });
+        feedback.className = "classroom-rich-feedback is-wrong";
+        feedback.textContent = currentLanguage === "pt-BR"
+          ? "Não foi possível validar esta resposta com o Python. Tente novamente."
+          : "Python could not validate this answer. Try again.";
+        return;
+      }
+
+      if (validation.correct) {
+        activeRichLessonState.locked = true;
+        button.classList.add("is-correct");
+        feedback.className = "classroom-rich-feedback is-correct";
+        feedback.textContent = validation.feedback || step.success || t("correctAnswer");
+        setClassroomAuxMonitor({
+          kind: "question",
+          symbol: "✓",
+          alt: currentLanguage === "pt-BR" ? "Resposta correta" : "Correct answer",
+        });
+        audioManager.playSuccess();
+        scheduleRichLessonAdvance(briefing, stepIndex, 180, feedback);
+        return;
+      }
+
+      const reviewStepIndex = getRichLessonReviewStepIndex(briefing, step.id);
+      if (reviewStepIndex >= 0 && reviewStepIndex < stepIndex) {
+        activeRichLessonState.locked = true;
+        activeRichLessonState.attempts += 1;
+        button.classList.add("is-wrong");
+        feedback.className = "classroom-rich-feedback is-wrong";
+        feedback.textContent = `${validation.feedback || step.error || t("chooseCorrect")} ${
+          currentLanguage === "pt-BR"
+            ? "Vamos rever o conceito antes de tentar novamente."
+            : "Let us review the concept before trying again."
+        }`;
+        setClassroomAuxMonitor({
+          kind: "question",
+          symbol: "↺",
+          alt: currentLanguage === "pt-BR"
+            ? "Revisão do conceito necessária"
+            : "Concept review required",
+        });
+        audioManager.playError();
+        window.setTimeout(() => {
+          renderBriefingStep(briefing, reviewStepIndex, {
+            reviewReturnStepIndex: stepIndex,
+          });
+        }, prefersReducedMotion() ? 120 : 950);
+        return;
+      }
+
+      activeRichLessonState.locked = false;
+      choices.querySelectorAll("button").forEach((candidate) => {
+        candidate.disabled = false;
+      });
+      activeRichLessonState.attempts += 1;
+      button.classList.add("is-wrong");
+      feedback.className = "classroom-rich-feedback is-wrong";
+      feedback.textContent = validation.feedback || step.error || t("chooseCorrect");
+      audioManager.playError();
+      if (activeRichLessonState.attempts >= 2) {
+        scheduleRichLessonHint(step, hint);
+      }
+      window.setTimeout(() => {
+        button.classList.remove("is-wrong");
+      }, prefersReducedMotion() ? 60 : 620);
+    });
+    choices.append(button);
+  });
+
+  shell.insertBefore(choices, feedback);
+}
+
+function renderRichSequenceInteraction(shell, briefing, step, stepIndex) {
+  const sequence = createClassroomNode("div", "classroom-rich-sequence");
+  const answer = createClassroomNode("div", "classroom-rich-sequence-answer");
+  const feedback = renderRichLessonFeedback(shell);
+  const hint = renderRichLessonHint(shell);
+  shell.insertBefore(answer, feedback);
+  shell.insertBefore(sequence, answer);
+
+  const resetSelection = () => {
+    activeRichLessonState.sequence = [];
+    answer.replaceChildren();
+    sequence.querySelectorAll("button").forEach((button) => {
+      button.disabled = false;
+      button.classList.remove("is-selected", "is-wrong");
+      button.removeAttribute("data-order");
+    });
+  };
+
+  (step.sequenceItems || []).forEach((item) => {
+    const button = createRichLessonButton(item.label, { className: "classroom-rich-sequence-item" });
+    button.title = item.detail;
+    button.addEventListener("click", async () => {
+      if (activeRichLessonState?.locked || button.disabled) {
+        return;
+      }
+      activeRichLessonState.sequence.push(item.id);
+      button.disabled = true;
+      button.classList.add("is-selected");
+      button.dataset.order = String(activeRichLessonState.sequence.length);
+      answer.append(createClassroomNode("span", "", item.label));
+
+      const requiredLength = Number(step.sequenceLength)
+        || step.sequenceItems?.length
+        || step.correctOrder?.length
+        || 0;
+      if (activeRichLessonState.sequence.length < requiredLength) {
+        return;
+      }
+
+      sequence.querySelectorAll("button").forEach((candidate) => {
+        candidate.disabled = true;
+      });
+      const validation = Array.isArray(step.correctOrder)
+        ? {
+          correct: activeRichLessonState.sequence.every((id, index) => id === step.correctOrder[index]),
+          offline: true,
+        }
+        : pythonClassroomLessonPayload
+          ? await callPythonBackend(
+          "check_lesson_sequence",
+          briefing.id,
+          step.id,
+          [...activeRichLessonState.sequence],
+          currentLanguage,
+        )
+          : null;
+
+      if (!validation || typeof validation.correct !== "boolean") {
+        feedback.className = "classroom-rich-feedback is-wrong";
+        feedback.textContent = currentLanguage === "pt-BR"
+          ? "Não foi possível validar esta ordem com o Python. Tente novamente."
+          : "Python could not validate this order. Try again.";
+        window.setTimeout(resetSelection, prefersReducedMotion() ? 80 : 900);
+        return;
+      }
+
+      if (validation.correct) {
+        activeRichLessonState.locked = true;
+        sequence.querySelectorAll("button").forEach((candidate) => {
+          candidate.classList.add("is-correct");
+          candidate.disabled = true;
+        });
+        feedback.className = "classroom-rich-feedback is-correct";
+        feedback.textContent = validation.feedback || step.success;
+        setClassroomAuxMonitor({
+          kind: "question",
+          symbol: "✓",
+          alt: currentLanguage === "pt-BR" ? "Resposta correta" : "Correct answer",
+        });
+        audioManager.playSuccess();
+        scheduleRichLessonAdvance(briefing, stepIndex, 180, feedback);
+        return;
+      }
+
+      activeRichLessonState.attempts += 1;
+      sequence.querySelectorAll("button").forEach((candidate) => candidate.classList.add("is-wrong"));
+      feedback.className = "classroom-rich-feedback is-wrong";
+      feedback.textContent = validation.feedback || step.error;
+      audioManager.playError();
+      if (activeRichLessonState.attempts >= 2) {
+        scheduleRichLessonHint(step, hint);
+      }
+      window.setTimeout(resetSelection, prefersReducedMotion() ? 80 : 900);
+    });
+    sequence.append(button);
+  });
+}
+
+function createClassroomAutomationCodePanel(card) {
+  const code = String(card.code || "");
+  const codeLines = code.split("\n");
+  const scrollCode = card.codeScroll === true;
+  const longestCodeLine = codeLines.reduce(
+    (largest, line) => Math.max(largest, Array.from(line).length),
+    0,
+  );
+  const topic = String(card.codeTitle || card.label || "PYTHON");
+  const root = createClassroomNode("div", "classroom-automation-code-panel");
+  root.hidden = true;
+  root.dataset.phase = "idle";
+  root.dataset.codeScroll = scrollCode ? "true" : "false";
+  root.dataset.codeDensity = scrollCode
+    ? "normal"
+    : longestCodeLine > 38
+    ? "dense"
+    : longestCodeLine > 28
+      ? "compact"
+      : "normal";
+  root.setAttribute(
+    "aria-label",
+    currentLanguage === "pt-BR"
+      ? `Demonstração sincronizada do código de ${topic}`
+      : `Synchronized ${topic} code demonstration`,
+  );
+
+  const header = createClassroomNode("div", "classroom-automation-code-header");
+  const title = createClassroomNode(
+    "span",
+    "classroom-automation-code-title",
+    `PYTHON // ${topic}`,
+  );
+  const status = createClassroomNode(
+    "span",
+    "classroom-automation-code-status",
+    currentLanguage === "pt-BR" ? "AGUARDANDO" : "WAITING",
+  );
+  status.setAttribute("aria-live", "polite");
+  const cycle = createClassroomNode("span", "classroom-automation-code-cycle", "— / 3");
+  header.append(title, status, cycle);
+
+  const listing = createClassroomNode("div", "classroom-automation-code-listing");
+  const lines = codeLines.map((lineText, index) => {
+    const row = createClassroomNode("div", "classroom-automation-code-line");
+    row.dataset.line = String(index + 1);
+    const number = createClassroomNode(
+      "span",
+      "classroom-automation-line-number",
+      index === 0 ? ">>>" : "...",
+    );
+    number.setAttribute("aria-hidden", "true");
+    const codeText = createClassroomNode("code", "classroom-automation-line-code");
+    row.append(number, codeText);
+    listing.append(row);
+    return { row, code: codeText, fullText: lineText };
+  });
+  root.append(header, listing);
+  return { root, status, cycle, listing, lines, code, topic, scrollCode };
+}
+
+function mountClassroomAutomationCodePanel(panel) {
+  if (!panel || !classroomMompyGuide || !classroomMompyScreenAction) return;
+  classroomMompyGuide.classList.remove("is-speaking");
+  classroomMompyGuide.classList.add("has-screen-action", "is-automation-code-mode");
+  classroomMompyScreenAction.classList.remove("has-code", "has-inline-continue");
+  classroomMompyScreenAction.classList.add("is-automation-display");
+  classroomMompyScreenAction.disabled = true;
+  panel.root.classList.remove("has-continue");
+  panel.root.querySelector(".classroom-automation-continue-label")?.remove();
+  classroomMompyScreenAction.replaceChildren(panel.root);
+  classroomMompyScreenAction.hidden = false;
+  classroomMompyScreenActionHandler = null;
+  classroomMompyScreenAction.setAttribute(
+    "aria-label",
+    currentLanguage === "pt-BR"
+      ? `Código de ${panel.topic} sendo executado.`
+      : `${panel.topic} code running.`,
+  );
+  panel.root.hidden = false;
+}
+
+function showClassroomAutomationContinue(panel, onClick) {
+  if (!panel || !classroomMompyGuide || !classroomMompyScreenAction) return;
+  if (!panel.root.isConnected) {
+    mountClassroomAutomationCodePanel(panel);
+  }
+  let label = panel.root.querySelector(".classroom-automation-continue-label");
+  if (!label) {
+    label = createClassroomNode(
+      "span",
+      "classroom-automation-continue-label",
+      currentLanguage === "pt-BR" ? "CONTINUAR" : "CONTINUE",
+    );
+    panel.root.append(label);
+  }
+  panel.root.classList.add("has-continue");
+  classroomMompyGuide.classList.add("has-screen-action", "is-automation-code-mode");
+  classroomMompyScreenAction.classList.add("is-automation-display", "has-inline-continue");
+  classroomMompyScreenAction.disabled = false;
+  classroomMompyScreenAction.hidden = false;
+  classroomMompyScreenActionHandler = onClick;
+  classroomMompyScreenAction.setAttribute(
+    "aria-label",
+    currentLanguage === "pt-BR"
+      ? `Demonstração de ${panel.topic} em andamento. Continuar disponível.`
+      : `${panel.topic} demonstration running. Continue available.`,
+  );
+}
+
+function updateClassroomCardsMompyAction() {
+  const state = activeRichLessonState;
+  if (!state?.cardDemoVisited || !state.cardsContinueHandler) return;
+  const allVisited = state.cardDemoVisited.size >= state.cardDemoTotal;
+  if (allVisited) {
+    if (state.activeCodePanel?.root.isConnected) {
+      showClassroomAutomationContinue(state.activeCodePanel, state.cardsContinueHandler);
+      return;
+    }
+    showClassroomMompyScreenAction(
+      currentLanguage === "pt-BR" ? "CONTINUAR" : "CONTINUE",
+      state.cardsContinueHandler,
+    );
+    return;
+  }
+  if (state.activeCardLabel && state.activeCardDemoKind !== "automation-sync") {
+    clearClassroomMompyScreenAction();
+    setClassroomMompyGuide(true, { speak: false });
+  }
+}
+
+function resetClassroomAutomationCodePanel(panel) {
+  if (!panel) return;
+  panel.root.dataset.phase = "idle";
+  panel.status.textContent = currentLanguage === "pt-BR" ? "AGUARDANDO" : "WAITING";
+  panel.cycle.textContent = "— / 3";
+  if (panel.scrollCode && panel.listing) {
+    panel.listing.scrollTop = 0;
+  }
+  panel.lines.forEach(({ row, code }) => {
+    row.classList.remove("is-visible", "is-typing", "is-current", "is-complete");
+    code.textContent = "";
+  });
+}
+
+function setClassroomAutomationCurrentLine(panel, lineIndex = -1) {
+  const activeRow = panel.lines[lineIndex]?.row || null;
+  panel.lines.forEach(({ row }, index) => {
+    row.classList.toggle("is-current", index === lineIndex);
+    row.classList.remove("is-typing");
+  });
+  if (!panel.scrollCode || !panel.listing || !activeRow) return;
+
+  const listing = panel.listing;
+  const rowTop = activeRow.offsetTop;
+  const rowBottom = rowTop + activeRow.offsetHeight;
+  const viewportTop = listing.scrollTop;
+  const viewportBottom = viewportTop + listing.clientHeight;
+  const margin = Math.max(2, activeRow.offsetHeight);
+  let targetTop = null;
+
+  if (rowTop < viewportTop + margin) {
+    targetTop = rowTop - margin;
+  } else if (rowBottom > viewportBottom - margin) {
+    targetTop = rowBottom - listing.clientHeight + margin;
+  }
+
+  if (targetTop !== null) {
+    listing.scrollTo({
+      top: Math.max(0, targetTop),
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
+  }
+}
+
+function typeClassroomUseCaseCode(panel, controller, schedule, onComplete) {
+  if (!panel) {
+    onComplete?.();
+    return;
+  }
+  controller.typedCharacters = 0;
+  resetClassroomAutomationCodePanel(panel);
+  panel.root.dataset.phase = "typing";
+  panel.status.textContent = currentLanguage === "pt-BR" ? "DIGITANDO CÓDIGO" : "TYPING CODE";
+  const characterDelay = panel.scrollCode
+    ? Math.max(5, Math.min(12, Math.round(2400 / Math.max(1, panel.code.length))))
+    : 28;
+  const initialDelay = panel.scrollCode ? 60 : 160;
+
+  const renderTypedCode = () => {
+    const typedCode = panel.code.slice(0, controller.typedCharacters);
+    const typedLines = typedCode.split("\n");
+    const activeLineIndex = Math.min(panel.lines.length - 1, typedLines.length - 1);
+    panel.lines.forEach(({ row, code }, index) => {
+      const hasReachedLine = index < typedLines.length;
+      code.textContent = hasReachedLine ? (typedLines[index] || "") : "";
+      row.classList.toggle("is-visible", hasReachedLine);
+      row.classList.toggle("is-typing", hasReachedLine && index === activeLineIndex);
+      row.classList.remove("is-current", "is-complete");
+    });
+    if (panel.scrollCode && panel.listing) {
+      panel.listing.scrollTop = panel.listing.scrollHeight;
+    }
+  };
+
+  const typeNextCharacter = () => {
+    if (controller.typedCharacters >= panel.code.length) {
+      panel.lines.forEach(({ row }) => row.classList.remove("is-typing"));
+      panel.root.dataset.phase = "ready";
+      panel.status.textContent = currentLanguage === "pt-BR" ? "CÓDIGO PRONTO" : "CODE READY";
+      schedule(() => onComplete?.(), 320);
+      return;
+    }
+    controller.typedCharacters += 1;
+    renderTypedCode();
+    schedule(typeNextCharacter, characterDelay);
+  };
+
+  renderTypedCode();
+  schedule(typeNextCharacter, initialDelay);
+}
+
+function setClassroomAutomationArmState(state, cycle = 1) {
+  const scene = classroomAuxMonitorContent?.querySelector(".classroom-aux-automation-scene");
+  if (!scene) return;
+  scene.dataset.state = state;
+  scene.dataset.cycle = String(cycle);
+  const descriptions = currentLanguage === "pt-BR"
+    ? {
+        idle: "Braço parado, garra aberta e bloco sobre a esteira",
+        approach: "Braço se aproximando do bloco",
+        grip: "Garra fechando sobre o bloco",
+        lift: "Braço levantando o bloco",
+        move: "Braço transportando o bloco",
+        release: "Garra abrindo e soltando o bloco",
+        vanishing: "Braço desaparecendo antes de reiniciar",
+      }
+    : {
+        idle: "Arm stopped with its claw open and the block on the conveyor",
+        approach: "Arm moving toward the block",
+        grip: "Claw closing around the block",
+        lift: "Arm lifting the block",
+        move: "Arm carrying the block",
+        release: "Claw opening and releasing the block",
+        vanishing: "Arm fading before restarting",
+      };
+  scene.setAttribute("aria-label", descriptions[state] || descriptions.idle);
+}
+
+function runClassroomAutomationDemo(card, panel, onComplete) {
+  clearRichLessonInteractionTimer();
+  resetClassroomAutomationCodePanel(panel);
+  panel.root.hidden = false;
+
+  const controller = {
+    cancelled: false,
+    lessonId: activeRichLessonState?.lessonId,
+    stepId: activeRichLessonState?.stepId,
+    typedCharacters: 0,
+    cycle: 1,
+    actionIndex: 0,
+    completionReported: false,
+  };
+  if (!activeRichLessonState) return;
+  activeRichLessonState.automationDemo = controller;
+
+  setClassroomAuxMonitor({
+    kind: "automation-arm",
+    state: "idle",
+    cycle: 1,
+    frames: CLASSROOM_AUTOMATION_ARM_FRAMES,
+  });
+
+  const reducedMotion = prefersReducedMotion() || !settingsState.mompyAnimations;
+  const isCurrent = () => (
+    !controller.cancelled
+    && panel.root.isConnected
+    && activeRichLessonState?.automationDemo === controller
+    && activeRichLessonState?.lessonId === controller.lessonId
+    && activeRichLessonState?.stepId === controller.stepId
+  );
+  const schedule = (callback, delay) => {
+    window.clearTimeout(classroomInteractionTimer);
+    classroomInteractionTimer = window.setTimeout(() => {
+      classroomInteractionTimer = null;
+      if (isCurrent()) callback();
+    }, reducedMotion ? Math.min(180, delay) : delay);
+  };
+  const languageText = currentLanguage === "pt-BR"
+    ? {
+        typing: "DIGITANDO CÓDIGO",
+        ready: "CÓDIGO PRONTO",
+        loop: (cycle) => `CICLO ${cycle} DE 3`,
+        approach: "INDO ATÉ O BLOCO",
+        grip: "FECHANDO A GARRA",
+        lift: "LEVANTANDO O BLOCO",
+        move: "MOVENDO O BLOCO",
+        release: "SOLTANDO O BLOCO",
+        complete: "3 CICLOS CONCLUÍDOS",
+        reset: "REINICIANDO DEMONSTRAÇÃO",
+      }
+    : {
+        typing: "TYPING CODE",
+        ready: "CODE READY",
+        loop: (cycle) => `CYCLE ${cycle} OF 3`,
+        approach: "MOVING TO THE BLOCK",
+        grip: "CLOSING THE CLAW",
+        lift: "LIFTING THE BLOCK",
+        move: "MOVING THE BLOCK",
+        release: "RELEASING THE BLOCK",
+        complete: "3 CYCLES COMPLETED",
+        reset: "RESTARTING DEMONSTRATION",
+      };
+  const actions = [
+    { lineIndex: 1, state: "approach", duration: 940 },
+    { lineIndex: 2, state: "grip", duration: 760 },
+    { lineIndex: 3, state: "lift", duration: 860 },
+    { lineIndex: 4, state: "move", duration: 980 },
+    { lineIndex: 5, state: "release", duration: 920 },
+  ];
+
+  const renderTypedCode = () => {
+    const typedCode = panel.code.slice(0, controller.typedCharacters);
+    const typedLines = typedCode.split("\n");
+    const activeLineIndex = Math.min(panel.lines.length - 1, typedLines.length - 1);
+    panel.lines.forEach(({ row, code }, index) => {
+      const hasReachedLine = index < typedLines.length;
+      code.textContent = hasReachedLine ? (typedLines[index] || "") : "";
+      row.classList.toggle("is-visible", hasReachedLine);
+      row.classList.toggle("is-typing", hasReachedLine && index === activeLineIndex);
+      row.classList.remove("is-current", "is-complete");
+    });
+  };
+
+  const finishLoop = () => {
+    setClassroomAutomationCurrentLine(panel, -1);
+    panel.root.dataset.phase = "complete";
+    panel.status.textContent = languageText.complete;
+    panel.cycle.textContent = "3 / 3";
+    schedule(() => {
+      if (!controller.completionReported) {
+        controller.completionReported = true;
+        onComplete?.();
+      }
+      panel.root.dataset.phase = "reset";
+      panel.status.textContent = languageText.reset;
+      setClassroomAutomationArmState("vanishing", 3);
+      schedule(startTyping, 460);
+    }, 900);
+  };
+
+  const executeAction = () => {
+    const action = actions[controller.actionIndex];
+    if (!action) {
+      if (controller.cycle >= 3) {
+        finishLoop();
+        return;
+      }
+      setClassroomAutomationArmState("vanishing", controller.cycle);
+      schedule(() => {
+        controller.cycle += 1;
+        beginCycle();
+      }, 460);
+      return;
+    }
+    setClassroomAutomationCurrentLine(panel, action.lineIndex);
+    panel.status.textContent = languageText[action.state];
+    setClassroomAutomationArmState(action.state, controller.cycle);
+    controller.actionIndex += 1;
+    schedule(executeAction, action.duration);
+  };
+
+  const beginCycle = () => {
+    controller.actionIndex = 0;
+    panel.root.dataset.phase = "running";
+    panel.cycle.textContent = `${controller.cycle} / 3`;
+    panel.status.textContent = languageText.loop(controller.cycle);
+    setClassroomAutomationCurrentLine(panel, 0);
+    setClassroomAutomationArmState("idle", controller.cycle);
+    schedule(executeAction, 620);
+  };
+
+  const typeNextCharacter = () => {
+    if (controller.typedCharacters >= panel.code.length) {
+      panel.lines.forEach(({ row }) => row.classList.remove("is-typing"));
+      panel.status.textContent = languageText.ready;
+      panel.root.dataset.phase = "ready";
+      schedule(beginCycle, 560);
+      return;
+    }
+    controller.typedCharacters += 1;
+    renderTypedCode();
+    schedule(typeNextCharacter, 34);
+  };
+
+  function startTyping() {
+    controller.typedCharacters = 0;
+    controller.cycle = 1;
+    controller.actionIndex = 0;
+    resetClassroomAutomationCodePanel(panel);
+    panel.root.dataset.phase = "typing";
+    panel.status.textContent = languageText.typing;
+    panel.cycle.textContent = "— / 3";
+    setClassroomAutomationArmState("idle", 1);
+    renderTypedCode();
+    schedule(typeNextCharacter, 180);
+  }
+
+  startTyping();
+}
+
+function setClassroomSitesPhase(scene, phase) {
+  if (!scene) return;
+  const stateMap = {
+    idle: { server: "idle", document: "hidden", browser: "empty" },
+    active: { server: "active", document: "hidden", browser: "empty" },
+    emerging: { server: "active", document: "emerging", browser: "empty" },
+    traveling: { server: "active", document: "traveling", browser: "empty" },
+    entering: { server: "active", document: "enteringBrowser", browser: "receiving" },
+    buildHero: { server: "idle", document: "hidden", browser: "building" },
+    buildText: { server: "idle", document: "hidden", browser: "building" },
+    buildSide: { server: "idle", document: "hidden", browser: "building" },
+    buildRest: { server: "idle", document: "hidden", browser: "building" },
+    complete: { server: "idle", document: "hidden", browser: "complete" },
+    reset: { server: "idle", document: "hidden", browser: "empty" },
+  };
+  const state = stateMap[phase] || stateMap.idle;
+  scene.dataset.phase = phase;
+  scene.dataset.serverState = state.server;
+  scene.dataset.documentState = state.document;
+  scene.dataset.browserState = state.browser;
+  const descriptions = currentLanguage === "pt-BR"
+    ? {
+        idle: "Servidor e navegador aguardando",
+        active: "Servidor Python preparando a página",
+        emerging: "Documento saindo do servidor",
+        traveling: "Documento viajando até o navegador",
+        entering: "Navegador recebendo o documento",
+        buildHero: "Navegador construindo o bloco principal do site",
+        buildText: "Navegador adicionando as linhas de texto",
+        buildSide: "Navegador adicionando o bloco lateral",
+        buildRest: "Navegador concluindo os elementos da página",
+        complete: "Site completo no navegador",
+        reset: "Demonstração reiniciando",
+      }
+    : {
+        idle: "Server and browser waiting",
+        active: "Python server preparing the page",
+        emerging: "Document leaving the server",
+        traveling: "Document traveling to the browser",
+        entering: "Browser receiving the document",
+        buildHero: "Browser building the main site block",
+        buildText: "Browser adding text lines",
+        buildSide: "Browser adding the side block",
+        buildRest: "Browser completing the page elements",
+        complete: "Complete site in the browser",
+        reset: "Demonstration restarting",
+      };
+  scene.setAttribute("aria-label", descriptions[phase] || descriptions.idle);
+}
+
+function runClassroomSitesDemo(card, panel, onComplete) {
+  clearRichLessonInteractionTimer();
+  if (!activeRichLessonState) return;
+
+  const controller = {
+    cancelled: false,
+    lessonId: activeRichLessonState.lessonId,
+    stepId: activeRichLessonState.stepId,
+    phaseIndex: 0,
+    typedCharacters: 0,
+  };
+  activeRichLessonState.sitesDemo = controller;
+  setClassroomAuxMonitor({ kind: "sites-delivery", phase: "idle" });
+  const scene = classroomAuxMonitorContent?.querySelector(".classroom-aux-sites-scene");
+  if (!scene) return;
+
+  const reducedMotion = prefersReducedMotion() || !settingsState.mompyAnimations;
+  const phases = [
+    { name: "idle", duration: 760 },
+    { name: "active", duration: 520 },
+    { name: "emerging", duration: 540 },
+    { name: "traveling", duration: 1560 },
+    { name: "entering", duration: 560 },
+    { name: "buildHero", duration: 360 },
+    { name: "buildText", duration: 300 },
+    { name: "buildSide", duration: 320 },
+    { name: "buildRest", duration: 340 },
+    { name: "complete", duration: 1100 },
+    { name: "reset", duration: 380 },
+  ];
+  const phaseLineIndexes = [0, 4, 5, 6, 8, 9, 10, 12, 14, 14, -1];
+  const isCurrent = () => (
+    !controller.cancelled
+    && scene.isConnected
+    && activeRichLessonState?.sitesDemo === controller
+    && activeRichLessonState?.lessonId === controller.lessonId
+    && activeRichLessonState?.stepId === controller.stepId
+  );
+  const schedule = (callback, delay) => {
+    window.clearTimeout(classroomInteractionTimer);
+    classroomInteractionTimer = window.setTimeout(() => {
+      classroomInteractionTimer = null;
+      if (isCurrent()) callback();
+    }, reducedMotion ? Math.min(220, delay) : delay);
+  };
+  const advance = () => {
+    if (controller.phaseIndex >= phases.length) {
+      onComplete?.();
+      return;
+    }
+    const phase = phases[controller.phaseIndex];
+    setClassroomAutomationCurrentLine(panel, phaseLineIndexes[controller.phaseIndex]);
+    panel.cycle.textContent = `${controller.phaseIndex + 1} / ${phases.length}`;
+    panel.status.textContent = card.running || card.label;
+    setClassroomSitesPhase(scene, phase.name);
+    controller.phaseIndex += 1;
+    schedule(advance, phase.duration);
+  };
+  typeClassroomUseCaseCode(panel, controller, schedule, advance);
+}
+
+function setClassroomDataAiFrame(scene, frameIndex) {
+  if (!scene) return;
+  const safeFrame = Math.max(0, Math.min(19, Number(frameIndex) || 0));
+  const stabilizationOffsets = [
+    [0, 0], [1, 0], [1, 0], [8, 0], [8, 0],
+    [1, 14], [1, 14], [1, 14], [7, 13], [10, 11],
+    [1, 26], [1, 27], [3, 24], [9, 27], [19, 30],
+    [5, 42], [2, 43], [-3, 41], [10, 41], [9, 42],
+  ];
+  const column = safeFrame % 5;
+  const row = Math.floor(safeFrame / 5);
+  const sprite = scene.querySelector(".classroom-aux-data-ai-sprite");
+  if (!sprite) return;
+  const [shiftX, shiftY] = stabilizationOffsets[safeFrame];
+  scene.dataset.frame = String(safeFrame + 1);
+  sprite.style.backgroundPosition = `${column * 25}% ${row * (100 / 3)}%`;
+  sprite.style.setProperty("--data-ai-shift-x", `${((shiftX - 6.5) / 307.2) * 100}%`);
+  sprite.style.setProperty("--data-ai-shift-y", `${((shiftY - 35) / 256) * 100}%`);
+  scene.setAttribute(
+    "aria-label",
+    currentLanguage === "pt-BR"
+      ? `Inteligência artificial processando dados, quadro ${safeFrame + 1} de 20`
+      : `Artificial intelligence processing data, frame ${safeFrame + 1} of 20`,
+  );
+}
+
+function runClassroomDataAiDemo(card, panel, onComplete) {
+  clearRichLessonInteractionTimer();
+  if (!activeRichLessonState) return;
+
+  const controller = {
+    cancelled: false,
+    lessonId: activeRichLessonState.lessonId,
+    stepId: activeRichLessonState.stepId,
+    frameIndex: 0,
+    completionReported: false,
+    typedCharacters: 0,
+  };
+  activeRichLessonState.dataAiDemo = controller;
+  setClassroomAuxMonitor({
+    kind: "data-ai-sequence",
+    frame: 0,
+    sprite: ASSETS.classroomDataAiSequence,
+  });
+  const scene = classroomAuxMonitorContent?.querySelector(".classroom-aux-data-ai-scene");
+  if (!scene) return;
+
+  const reducedMotion = prefersReducedMotion() || !settingsState.mompyAnimations;
+  const frameDurations = [
+    560, 230, 230, 230, 240,
+    240, 240, 240, 250, 250,
+    260, 260, 270, 270, 280,
+    300, 320, 340, 380, 280,
+  ];
+  const playbackFactor = 0.82;
+  const lineForFrame = (frameIndex) => {
+    if (frameIndex < 5) return 0;
+    if (frameIndex < 10) return 6;
+    if (frameIndex < 15) return 8;
+    return 16;
+  };
+  const isCurrent = () => (
+    !controller.cancelled
+    && scene.isConnected
+    && activeRichLessonState?.dataAiDemo === controller
+    && activeRichLessonState?.lessonId === controller.lessonId
+    && activeRichLessonState?.stepId === controller.stepId
+  );
+  const schedule = (callback, delay) => {
+    window.clearTimeout(classroomInteractionTimer);
+    classroomInteractionTimer = window.setTimeout(() => {
+      classroomInteractionTimer = null;
+      if (isCurrent()) callback();
+    }, reducedMotion ? Math.min(150, delay) : Math.round(delay * playbackFactor));
+  };
+  const advance = () => {
+    if (controller.frameIndex >= 19) {
+      schedule(() => {
+        if (!controller.completionReported) {
+          controller.completionReported = true;
+          onComplete?.();
+        }
+        controller.frameIndex = 0;
+        setClassroomDataAiFrame(scene, 0);
+        setClassroomAutomationCurrentLine(panel, 0);
+        panel.cycle.textContent = "1 / 20";
+        advance();
+      }, frameDurations[19]);
+      return;
+    }
+    schedule(() => {
+      controller.frameIndex += 1;
+      setClassroomDataAiFrame(scene, controller.frameIndex);
+      setClassroomAutomationCurrentLine(panel, lineForFrame(controller.frameIndex));
+      panel.cycle.textContent = `${controller.frameIndex + 1} / 20`;
+      panel.status.textContent = card.running || card.label;
+      advance();
+    }, frameDurations[controller.frameIndex]);
+  };
+  setClassroomDataAiFrame(scene, 0);
+  typeClassroomUseCaseCode(panel, controller, schedule, () => {
+    setClassroomAutomationCurrentLine(panel, 0);
+    panel.cycle.textContent = "1 / 20";
+    panel.status.textContent = card.running || card.label;
+    advance();
+  });
+}
+
+function setClassroomScienceEducationFrame(scene, frameIndex) {
+  if (!scene) return;
+  const safeFrame = Math.max(0, Math.min(3, Number(frameIndex) || 0));
+  scene.dataset.frame = String(safeFrame + 1);
+  const descriptions = currentLanguage === "pt-BR"
+    ? [
+        "Laboratório científico aguardando uma descoberta",
+        "Um livro de conhecimento se materializando",
+        "Livro científico aberto sobre a bancada",
+        "Laboratório completo com livro, microscópio e átomo na tela",
+      ]
+    : [
+        "Science laboratory waiting for a discovery",
+        "A knowledge book materializing",
+        "Open science book on the workbench",
+        "Complete laboratory with book, microscope, and atom on screen",
+      ];
+  scene.setAttribute("aria-label", descriptions[safeFrame]);
+}
+
+function runClassroomScienceEducationDemo(card, panel, onComplete) {
+  clearRichLessonInteractionTimer();
+  if (!activeRichLessonState) return;
+
+  const controller = {
+    cancelled: false,
+    lessonId: activeRichLessonState.lessonId,
+    stepId: activeRichLessonState.stepId,
+    frameIndex: 0,
+    typedCharacters: 0,
+  };
+  activeRichLessonState.scienceEducationDemo = controller;
+  setClassroomAuxMonitor({
+    kind: "science-education-sequence",
+    frame: 0,
+    frames: CLASSROOM_SCIENCE_EDUCATION_FRAMES,
+  });
+  const scene = classroomAuxMonitorContent?.querySelector(".classroom-aux-science-education-scene");
+  if (!scene) return;
+
+  const reducedMotion = prefersReducedMotion() || !settingsState.mompyAnimations;
+  const frameDurations = [760, 380, 190, 1150];
+  const isCurrent = () => (
+    !controller.cancelled
+    && scene.isConnected
+    && activeRichLessonState?.scienceEducationDemo === controller
+    && activeRichLessonState?.lessonId === controller.lessonId
+    && activeRichLessonState?.stepId === controller.stepId
+  );
+  const schedule = (callback, delay) => {
+    window.clearTimeout(classroomInteractionTimer);
+    classroomInteractionTimer = window.setTimeout(() => {
+      classroomInteractionTimer = null;
+      if (isCurrent()) callback();
+    }, reducedMotion ? Math.max(45, Math.round(delay * (180 / 760))) : delay);
+  };
+  const advance = () => {
+    if (controller.frameIndex >= 3) {
+      schedule(() => onComplete?.(), frameDurations[3]);
+      return;
+    }
+    schedule(() => {
+      controller.frameIndex += 1;
+      setClassroomScienceEducationFrame(scene, controller.frameIndex);
+      const scienceLineIndexes = [0, 5, 8, 19];
+      setClassroomAutomationCurrentLine(panel, scienceLineIndexes[controller.frameIndex]);
+      panel.cycle.textContent = `${controller.frameIndex + 1} / 4`;
+      panel.status.textContent = card.running || card.label;
+      advance();
+    }, frameDurations[controller.frameIndex]);
+  };
+  setClassroomScienceEducationFrame(scene, 0);
+  typeClassroomUseCaseCode(panel, controller, schedule, () => {
+    setClassroomAutomationCurrentLine(panel, 0);
+    panel.cycle.textContent = "1 / 4";
+    panel.status.textContent = card.running || card.label;
+    advance();
+  });
+}
+
+function renderRichCardsInteraction(shell, step) {
+  const cards = createClassroomNode("div", "classroom-rich-cards");
+  const automationCard = (step.cards || []).find((card) => card.demoKind === "automation-sync");
+  const codePanels = new Map(
+    (step.cards || [])
+      .filter((card) => card.code)
+      .map((card) => [card.label, createClassroomAutomationCodePanel(card)]),
+  );
+  const automationPanel = automationCard ? codePanels.get(automationCard.label) : null;
+  activeRichLessonState.cardDemoCompleted = new Set();
+  activeRichLessonState.cardDemoVisited = new Set();
+  activeRichLessonState.cardDemoTotal = (step.cards || []).length;
+  activeRichLessonState.activeCardLabel = null;
+  activeRichLessonState.activeCardDemoKind = "";
+  activeRichLessonState.activeCodePanel = null;
+  activeRichLessonState.automationPanel = automationPanel;
+  activeRichLessonState.useCaseCodePanels = codePanels;
+  (step.cards || []).forEach((card) => {
+    const button = createRichLessonButton(card.label, { className: "classroom-rich-card" });
+    const detail = createClassroomNode("span", "classroom-rich-card-detail", card.detail);
+    button.append(detail);
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-pressed", "false");
+    button.addEventListener("click", () => {
+      clearRichLessonInteractionTimer();
+      cards.querySelectorAll(".classroom-rich-card").forEach((candidate) => {
+        candidate.classList.remove("is-expanded", "is-selected");
+        candidate.setAttribute("aria-expanded", "false");
+        candidate.setAttribute("aria-pressed", "false");
+      });
+      button.classList.remove("is-complete");
+      button.classList.add("is-expanded", "is-selected");
+      button.setAttribute("aria-expanded", "true");
+      button.setAttribute("aria-pressed", "true");
+      activeRichLessonState.cardDemoVisited.add(card.label);
+      activeRichLessonState.activeCardLabel = card.label;
+      activeRichLessonState.activeCardDemoKind = card.demoKind || "";
+      const codePanel = codePanels.get(card.label) || null;
+      activeRichLessonState.activeCodePanel = codePanel;
+      updateClassroomCardsMompyAction();
+      const completeCard = () => {
+        if (
+          activeRichLessonState?.stepId !== step.id
+          || activeRichLessonState?.activeCardLabel !== card.label
+        ) {
+          return;
+        }
+        activeRichLessonState.cardDemoCompleted.add(card.label);
+        if (activeRichLessonState.cardDemoVisited.size < activeRichLessonState.cardDemoTotal) {
+          activeRichLessonState.activeCardLabel = null;
+          activeRichLessonState.activeCardDemoKind = "";
+        }
+        button.classList.remove("is-expanded", "is-selected");
+        button.classList.add("is-complete");
+        button.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-pressed", "false");
+        audioManager.playSuccess();
+        updateClassroomCardsMompyAction();
+      };
+      if (card.demoKind === "automation-sync" && automationPanel) {
+        mountClassroomAutomationCodePanel(automationPanel);
+        runClassroomAutomationDemo(card, automationPanel, completeCard);
+        updateClassroomCardsMompyAction();
+        return;
+      }
+      if (codePanel) {
+        mountClassroomAutomationCodePanel(codePanel);
+        if (
+          activeRichLessonState.cardDemoVisited.size
+          >= activeRichLessonState.cardDemoTotal
+        ) {
+          updateClassroomCardsMompyAction();
+        }
+      }
+      if (card.demoKind === "sites-delivery" && codePanel) {
+        runClassroomSitesDemo(card, codePanel, completeCard);
+        return;
+      }
+      if (card.demoKind === "data-ai-sequence" && codePanel) {
+        runClassroomDataAiDemo(card, codePanel, completeCard);
+        return;
+      }
+      if (card.demoKind === "science-education-sequence" && codePanel) {
+        runClassroomScienceEducationDemo(card, codePanel, completeCard);
+        return;
+      }
+      if (card.code) {
+        runClassroomExecutionDemo({
+          code: card.code,
+          output: card.result || "",
+          label: card.label,
+          inputLabel: currentLanguage === "pt-BR" ? "CÓDIGO DEMONSTRATIVO" : "DEMO CODE",
+          outputLabel: "",
+          image: card.image,
+          imageAlt: card.imageAlt,
+          resultCaption: card.resultCaption || card.detail,
+          running: card.running,
+          pythonResolved: true,
+        }, completeCard);
+      }
+    });
+    cards.append(button);
+  });
+  shell.append(cards);
+}
+
+function renderRichInspectInteraction(shell, briefing, step, stepIndex) {
+  const inspector = createClassroomNode("div", "classroom-rich-inspector");
+  const detail = createClassroomNode(
+    "p",
+    "classroom-rich-inspector-detail",
+    currentLanguage === "pt-BR" ? "Selecione uma peça do código." : "Select one piece of the code.",
+  );
+  (step.inspectItems || []).forEach((item) => {
+    const button = createRichLessonButton(item.label, { className: "classroom-rich-inspect-item" });
+    button.addEventListener("click", () => {
+      activeRichLessonState.inspected.add(item.label);
+      button.classList.add("is-inspected");
+      detail.textContent = `${item.label} — ${item.detail}`;
+      if (activeRichLessonState.inspected.size === step.inspectItems.length) {
+        showClassroomMompyScreenAction(
+          step.actionLabel || t("gotIt"),
+          () => renderBriefingStep(briefing, stepIndex + 1),
+        );
+      }
+    });
+    inspector.append(button);
+  });
+  shell.append(inspector, detail);
+}
+
+function renderRichSummary(shell, step) {
+  const columns = createClassroomNode("div", "classroom-rich-summary-grid");
+  const learned = createClassroomNode("section", "classroom-rich-summary-block");
+  learned.append(createClassroomNode("h3", "", currentLanguage === "pt-BR" ? "VOCÊ APRENDEU" : "YOU LEARNED"));
+  const learnedList = createClassroomNode("ul", "");
+  (step.learned || []).forEach((item) => learnedList.append(createClassroomNode("li", "", item)));
+  learned.append(learnedList);
+
+  const missions = createClassroomNode("section", "classroom-rich-summary-block is-missions");
+  missions.append(createClassroomNode("h3", "", currentLanguage === "pt-BR" ? "PRONTO PARA PRATICAR" : "READY TO PRACTICE"));
+  const missionList = createClassroomNode("ul", "");
+  (step.missions || []).forEach((item) => missionList.append(createClassroomNode("li", "", item)));
+  missions.append(missionList);
+  columns.append(learned, missions);
+  shell.append(columns);
+
+}
+
+function renderRichClassroomLessonStep(briefing, lesson, stepIndex, navigation = {}) {
+  const step = lesson.steps?.[stepIndex];
+  if (!step) {
+    completeBriefing(briefing.id, { directToMission: true });
+    return;
+  }
+
+  clearRichLessonInteractionTimer();
+  clearClassroomTypewriter();
+  clearClassroomMompyScreenAction();
+  classroomMompyGuide?.classList.toggle(
+    "is-use-cases-screen",
+    step.type === "cards" && step.id === "uses",
+  );
+  classroomMompyGuide?.classList.remove("is-screen-action-ready");
+  activeBriefingStepIndex = stepIndex;
+  activeBriefingRetry = false;
+  const reviewReturnStepIndex = Number.isInteger(navigation.reviewReturnStepIndex)
+    ? navigation.reviewReturnStepIndex
+    : -1;
+  const isDirectedReview = reviewReturnStepIndex >= 0;
+  const advanceFromCurrentStep = () => {
+    if (isDirectedReview) {
+      renderBriefingStep(briefing, reviewReturnStepIndex, { reviewCompleted: true });
+      return;
+    }
+    renderBriefingStep(briefing, stepIndex + 1);
+  };
+  activeRichLessonState = {
+    lessonId: briefing.id,
+    stepId: step.id,
+    attempts: 0,
+    sequence: [],
+    inspected: new Set(),
+    locked: false,
+    runComplete: false,
+    resolvedOutput: null,
+    reviewReturnStepIndex,
+  };
+
+  const mompyNeedsMaterialize = Boolean(step.mompyVisible && !classroomMompyVisible);
+  const actionUsesMompyScreen = Boolean(
+    step.actionOnMompy
+    || ["lesson", "cards", "run", "summary"].includes(step.type),
+  );
+  setMompyState("briefing");
+  const isQuestionStep = ["choice", "sequence"].includes(step.type);
+  setClassroomAuxMonitor(
+    step.guidedExecution
+      ? null
+      : isQuestionStep
+        ? {
+          kind: "question",
+          symbol: "?",
+          alt: currentLanguage === "pt-BR"
+            ? "Pergunta aguardando resposta"
+            : "Question awaiting an answer",
+        }
+        : (step.aux || null),
+  );
+  setClassroomMompyGuide(Boolean(step.mompyVisible), {
+    speak: false,
+    forceMaterialize: mompyNeedsMaterialize,
+  });
+
+  classroomLessonContent.hidden = false;
+  classroomLessonContent.className = `classroom-lesson-content is-rich is-${step.type}`;
+  classroomLessonContent.dataset.lessonStep = step.id;
+
+  const shell = createClassroomNode("div", "classroom-rich-shell");
+  const meta = createClassroomNode("div", "classroom-rich-meta");
+  meta.append(
+    createClassroomNode("span", "classroom-rich-phase", step.phase || lesson.title),
+    createClassroomNode("span", "classroom-rich-progress", `${stepIndex + 1} / ${lesson.steps.length}`),
+  );
+  const copy = createClassroomNode("div", "classroom-rich-copy");
+  copy.append(createClassroomNode("h2", "classroom-rich-title", step.title));
+  if (isDirectedReview) {
+    copy.append(createClassroomNode(
+      "p",
+      "classroom-rich-review-notice is-directed",
+      currentLanguage === "pt-BR"
+        ? "REVISÃO DIRECIONADA // Releia este conceito. Ao concluir, você voltará à pergunta."
+        : "DIRECTED REVIEW // Read this concept again. When finished, you will return to the question.",
+    ));
+  } else if (navigation.reviewCompleted) {
+    copy.append(createClassroomNode(
+      "p",
+      "classroom-rich-review-notice is-complete",
+      currentLanguage === "pt-BR"
+        ? "REVISÃO CONCLUÍDA // Tente novamente com o conceito fresco."
+        : "REVIEW COMPLETE // Try again with the concept fresh in mind.",
+    ));
+  }
+  appendRichLessonCopy(copy, step);
+  appendRichMompyLine(copy, step);
+  shell.append(meta, copy);
+  const process = renderRichProcessMap(shell, step);
+
+  if (step.type === "choice") {
+    renderRichChoiceInteraction(shell, briefing, step, stepIndex);
+  } else if (step.type === "sequence") {
+    renderRichSequenceInteraction(shell, briefing, step, stepIndex);
+  } else if (step.type === "cards") {
+    renderRichCardsInteraction(shell, step);
+  } else if (step.type === "run") {
+    // Execution and continuation controls are revealed on Mompy's own screen.
+  } else if (step.type === "inspect") {
+    renderRichInspectInteraction(shell, briefing, step, stepIndex);
+  } else if (step.type === "summary") {
+    renderRichSummary(shell, step);
+  } else {
+    if (!actionUsesMompyScreen) {
+      const actions = createClassroomNode("div", "classroom-rich-actions");
+      actions.append(createRichLessonButton(step.actionLabel || (currentLanguage === "pt-BR" ? "CONTINUAR" : "CONTINUE"), {
+        primary: true,
+        onClick: advanceFromCurrentStep,
+      }));
+      shell.append(actions);
+    }
+  }
+
+  classroomLessonContent.replaceChildren(shell);
+  const revealPresentationAction = () => {
+    if (step.type === "run") {
+      if (step.guidedExecution) {
+        startGuidedClassroomRun(briefing, step, stepIndex, shell, process);
+        return;
+      }
+      showClassroomMompyScreenAction(step.actionLabel || t("run"), () => {
+        activeRichLessonState.runComplete = true;
+        setClassroomAuxMonitor({
+          label: currentLanguage === "pt-BR" ? "RESULTADO" : "OUTPUT",
+          value: step.output,
+        });
+        audioManager.playSuccess();
+        showClassroomMompyScreenAction(
+          currentLanguage === "pt-BR" ? "CONTINUAR" : "CONTINUE",
+          () => renderBriefingStep(briefing, stepIndex + 1),
+        );
+      });
+      return;
+    }
+    if (step.type === "summary") {
+      showClassroomMompyScreenAction(
+        step.actionLabel || (currentLanguage === "pt-BR" ? "PRATICAR" : "PRACTICE"),
+        () => completeBriefing(briefing.id, { directToMission: true }),
+      );
+      return;
+    }
+    if (step.type === "cards" && activeRichLessonState?.cardDemoVisited) {
+      activeRichLessonState.cardsContinueHandler = () => renderBriefingStep(briefing, stepIndex + 1);
+      updateClassroomCardsMompyAction();
+      return;
+    }
+    if (actionUsesMompyScreen) {
+      showClassroomMompyScreenAction(
+        isDirectedReview
+          ? (currentLanguage === "pt-BR" ? "VOLTAR À PERGUNTA" : "BACK TO QUESTION")
+          : step.actionLabel || (step.type === "cards"
+          ? t("gotIt")
+          : (currentLanguage === "pt-BR" ? "CONTINUAR" : "CONTINUE")),
+        advanceFromCurrentStep,
+        { code: step.screenCode || "" },
+      );
+      return;
+    }
+    if (classroomLessonContent.dataset.interactive === "true") {
+      window.requestAnimationFrame(() => {
+        classroomLessonContent.querySelector("button:not([disabled])")?.focus({ preventScroll: true });
+      });
+    }
+  };
+  const finishPresentation = () => {
+    if (step.executionDemo) {
+      runClassroomExecutionDemo(step.executionDemo, revealPresentationAction);
+      return;
+    }
+    revealPresentationAction();
+  };
+
+  if (step.mompyVisible && step.mompy) {
+    runClassroomTypewriter(shell, {
+      delay: mompyNeedsMaterialize ? 1900 : 220,
+      onComplete: finishPresentation,
+    });
+  } else {
+    finishPresentation();
+  }
+}
+
+classroomLessonContent?.addEventListener("click", (event) => {
+  if (!classroomTypewriterFinisher || event.target.closest("button")) {
+    return;
+  }
+  clearClassroomTypewriter({ complete: true });
+});
+
+function renderClassroomAuxiliaryMonitor(example, variant) {
+  if (!classroomAuxMonitorContent) {
+    return;
+  }
+
+  if (variant === "check") {
+    setClassroomAuxMonitor({
+      label: currentLanguage === "pt-BR" ? "SUA VEZ" : "YOUR TURN",
+      value: "?",
+    });
+    return;
+  }
+
+  if (example) {
+    setClassroomAuxMonitor({
+      label: currentLanguage === "pt-BR" ? "RESULTADO" : "OUTPUT",
+      value: example.output,
+    });
+    return;
+  }
+
+  setClassroomAuxMonitor({
+    label: "STATUS",
+    value: currentLanguage === "pt-BR" ? "AULA CONCLUÍDA" : "LESSON COMPLETE",
+  });
+}
+
 function renderMompyScreenPanel({ title, lines = [], actions = [], variant = "" }) {
   stopTalking();
   clearTimeout(settleTimer);
   machine.classList.remove("is-success", "is-error", "is-impressed");
   sprite.src = ASSETS.blank;
 
-  mompyScreenMessage.hidden = false;
-  mompyScreenMessage.className = "mompy-screen-message is-briefing";
+  const useClassroomScreen = machine.classList.contains("classroom-stage-active")
+    && classroomLessonContent;
+  const panel = useClassroomScreen ? classroomLessonContent : mompyScreenMessage;
+  const example = useClassroomScreen ? getClassroomBriefingExample() : null;
+
+  if (useClassroomScreen) {
+    mompyScreenMessage.hidden = true;
+    panel.hidden = false;
+    panel.className = "classroom-lesson-content is-briefing";
+    if (!getRichClassroomLesson(activeBriefingId)) {
+      setClassroomMompyGuide(true, {
+        speak: Boolean(lines.length),
+        forceMaterialize: !classroomMompyVisible,
+      });
+    }
+  } else {
+    panel.hidden = false;
+    panel.className = "mompy-screen-message is-briefing";
+  }
 
   if (variant) {
-    mompyScreenMessage.classList.add(`is-${variant}`);
+    panel.classList.add(`is-${variant}`);
   }
 
   const text = document.createElement("div");
-  text.className = "mompy-screen-text";
+  text.className = useClassroomScreen ? "classroom-lesson-text" : "mompy-screen-text";
 
   if (title) {
     const heading = document.createElement("p");
-    heading.className = "mompy-screen-heading";
+    heading.className = useClassroomScreen ? "classroom-lesson-heading" : "mompy-screen-heading";
     heading.textContent = title;
     text.append(heading);
   }
@@ -3900,6 +8200,18 @@ function renderMompyScreenPanel({ title, lines = [], actions = [], variant = "" 
     paragraph.textContent = line;
     text.append(paragraph);
   });
+
+  if (useClassroomScreen && example && variant !== "check") {
+    const exampleShell = document.createElement("div");
+    exampleShell.className = "classroom-lesson-example";
+    const exampleLabel = document.createElement("span");
+    exampleLabel.className = "classroom-lesson-example-label";
+    exampleLabel.textContent = currentLanguage === "pt-BR" ? "EXEMPLO" : "EXAMPLE";
+    const code = document.createElement("pre");
+    code.textContent = example.code;
+    exampleShell.append(exampleLabel, code);
+    text.append(exampleShell);
+  }
 
   const actionShell = document.createElement("div");
   actionShell.className = "mompy-screen-actions";
@@ -3929,7 +8241,16 @@ function renderMompyScreenPanel({ title, lines = [], actions = [], variant = "" 
     actionShell.append(button);
   });
 
-  mompyScreenMessage.replaceChildren(text, actionShell);
+  panel.replaceChildren(text, actionShell);
+
+  if (useClassroomScreen) {
+    renderClassroomAuxiliaryMonitor(example, variant);
+    if (panel.dataset.interactive === "true") {
+      window.requestAnimationFrame(() => {
+        panel.querySelector("button")?.focus({ preventScroll: true });
+      });
+    }
+  }
 }
 
 function renderMompyCompletionPrompt() {
@@ -4011,6 +8332,7 @@ function showLearningBriefing(briefingId) {
   activeBriefingId = briefing.id;
   activeBriefingStepIndex = 0;
   activeBriefingRetry = false;
+  activeRichLessonState = null;
   resetClassroomStage();
   clearTimeout(briefingFinalTimer);
   stopMissionTyping();
@@ -4031,14 +8353,47 @@ function clearClassroomStageTimers() {
 function resetClassroomStage() {
   stopClassroomEnvironmentAudio({ immediate: true });
   clearClassroomStageTimers();
+  clearRichLessonInteractionTimer();
+  clearClassroomTypewriter();
+  clearClassroomMompyScreenAction();
+  window.clearTimeout(classroomMompyTimer);
+  classroomMompyTimer = null;
+  classroomMompyVisible = false;
+  classroomAuxMonitorMode = "closed";
+  classroomAuxTransitionToken += 1;
+  activeRichLessonState = null;
   machine.classList.remove(
     "classroom-stage-activating",
     "classroom-stage-dimming",
     "classroom-stage-opening",
+    "classroom-doors-closing",
+    "classroom-doors-sealed",
+    "classroom-doors-travelling",
+    "classroom-doors-opening",
     "classroom-background-exiting",
     "classroom-background-dropping",
     "classroom-stage-active",
   );
+  classroomSceneTransition?.setAttribute("aria-hidden", "true");
+  classroomLessonPanel?.classList.remove("has-classroom-mompy", "has-aux-monitor");
+  classroomMompyGuide?.classList.remove(
+    "is-materializing",
+    "is-dematerializing",
+    "is-visible",
+    "is-speaking",
+    "has-screen-action",
+    "is-use-cases-screen",
+  );
+  classroomAuxMonitor?.classList.remove("is-opening", "is-open", "is-closing");
+  classroomAuxRail?.classList.remove("is-opening", "is-open", "is-closing");
+  if (classroomLessonContent) {
+    classroomLessonContent.hidden = true;
+    classroomLessonContent.className = "classroom-lesson-content";
+    classroomLessonContent.replaceChildren();
+    delete classroomLessonContent.dataset.interactive;
+  }
+  classroomAuxMonitorContent?.replaceChildren();
+  classroomAuxMonitorContent?.removeAttribute("aria-busy");
   mompyScreenMessage
     ?.querySelectorAll(".is-classroom-launching")
     .forEach((button) => {
@@ -4066,13 +8421,37 @@ function beginClassroomStage(briefing, triggerButton) {
   }
 
   clearClassroomStageTimers();
+  clearClassroomTypewriter();
+  clearClassroomMompyScreenAction();
+  classroomSceneTransition?.setAttribute("aria-hidden", "false");
+  if (classroomLessonContent) {
+    classroomLessonContent.hidden = true;
+    classroomLessonContent.replaceChildren();
+    delete classroomLessonContent.dataset.interactive;
+  }
+  classroomLessonPanel?.classList.remove("has-classroom-mompy", "has-aux-monitor");
+  classroomMompyGuide?.classList.remove(
+    "is-materializing",
+    "is-dematerializing",
+    "is-visible",
+    "is-speaking",
+    "has-screen-action",
+  );
+  classroomAuxMonitor?.classList.remove("is-opening", "is-open", "is-closing");
+  classroomAuxRail?.classList.remove("is-opening", "is-open", "is-closing");
+  classroomMompyVisible = false;
+  classroomAuxMonitorMode = "closed";
+  classroomAuxTransitionToken += 1;
+  activeRichLessonState = null;
+  classroomAuxMonitorContent?.replaceChildren();
+  classroomAuxMonitorContent?.removeAttribute("aria-busy");
   const reduceMotion = prefersReducedMotion() || !settingsState.mompyAnimations;
   const query = new URLSearchParams(location.search);
   const holdClassroomLab = ["localhost", "127.0.0.1"].includes(location.hostname)
     && query.get("classroomHold") === "1";
   const timings = reduceMotion
-    ? { dim: 30, grow: 60, exit: 90, drop: 260, finish: 390 }
-    : { dim: 260, grow: 560, exit: 1320, drop: 12200, finish: 15600 };
+    ? { dim: 10, grow: 20, close: 30, seal: 45, travel: 60, open: 80, reveal: 100, drop: 5100, finish: 5140 }
+    : { dim: 120, grow: 240, close: 260, seal: 1300, travel: 1510, open: 3520, reveal: 4680, drop: 14680, finish: 17880 };
 
   prepareClassroomAudioContext();
   triggerButton?.classList.add("is-classroom-launching");
@@ -4091,17 +8470,55 @@ function beginClassroomStage(briefing, triggerButton) {
   }, timings.grow);
 
   scheduleClassroomStageStep(() => {
+    machine.classList.add("classroom-doors-closing");
+    if (!reduceMotion) {
+      audioManager.playSettingsGearEngage();
+      audioManager.playSettingsGearsTurn();
+    }
+  }, timings.close);
+
+  scheduleClassroomStageStep(() => {
+    machine.classList.remove("classroom-doors-closing");
+    machine.classList.add("classroom-doors-sealed");
+    if (!reduceMotion) {
+      audioManager.playSettingsPanelLock();
+    }
+  }, timings.seal);
+
+  scheduleClassroomStageStep(() => {
+    machine.classList.remove("classroom-doors-sealed");
+    machine.classList.add("classroom-doors-travelling");
     machine.classList.add("classroom-background-exiting");
-    playClassroomMechanismCue("exit");
+    if (!reduceMotion) {
+      playClassroomMechanismCue("exit");
+    }
+  }, timings.travel);
+
+  scheduleClassroomStageStep(() => {
+    machine.classList.remove("classroom-doors-travelling");
+    machine.classList.add("classroom-doors-opening");
     startClassroomEnvironmentAudio();
-  }, timings.exit);
+    if (!reduceMotion) {
+      audioManager.playSettingsGearsTurn();
+    }
+  }, timings.open);
+
+  scheduleClassroomStageStep(() => {
+    machine.classList.remove("classroom-doors-opening");
+    if (!reduceMotion) {
+      audioManager.playSettingsGearEngage();
+    }
+  }, timings.reveal);
 
   if (!holdClassroomLab) {
     scheduleClassroomStageStep(() => {
       machine.classList.remove("classroom-background-exiting");
       machine.classList.add("classroom-background-dropping");
       stopClassroomEnvironmentAudio();
-      playClassroomMechanismCue("drop");
+      if (!reduceMotion) {
+        playClassroomMechanismCue("drop");
+        audioManager.playAchievementRail();
+      }
     }, timings.drop);
 
     scheduleClassroomStageStep(() => {
@@ -4109,13 +8526,27 @@ function beginClassroomStage(briefing, triggerButton) {
         "classroom-stage-activating",
         "classroom-stage-dimming",
         "classroom-stage-opening",
+        "classroom-doors-closing",
+        "classroom-doors-sealed",
+        "classroom-doors-travelling",
+        "classroom-doors-opening",
         "classroom-background-exiting",
         "classroom-background-dropping",
       );
       machine.classList.add("classroom-stage-active");
       activeBriefingStepIndex = 0;
       activeBriefingRetry = false;
+      if (!reduceMotion) {
+        audioManager.playAchievementReveal();
+      }
       renderBriefingStep(briefing, 0);
+      scheduleClassroomStageStep(() => {
+        if (!classroomLessonContent) {
+          return;
+        }
+        classroomLessonContent.dataset.interactive = "true";
+        classroomLessonContent.querySelector("button")?.focus({ preventScroll: true });
+      }, reduceMotion ? 0 : 1840);
     }, timings.finish);
   }
 }
@@ -4141,7 +8572,13 @@ function renderBriefingIntro(briefing) {
   });
 }
 
-function renderBriefingStep(briefing, stepIndex) {
+function renderBriefingStep(briefing, stepIndex, navigation = {}) {
+  const richLesson = getRichClassroomLesson(briefing?.id);
+  if (richLesson) {
+    renderRichClassroomLessonStep(briefing, richLesson, stepIndex, navigation);
+    return;
+  }
+
   const step = briefing.steps[stepIndex];
 
   if (!step) {
@@ -4321,11 +8758,28 @@ function handleBriefingCheckAnswer(briefing, stepIndex, option) {
   renderBriefingCheck(briefing, stepIndex, step.failText);
 }
 
-function completeBriefing(briefingId) {
+function completeBriefing(briefingId, { directToMission = false, pythonConfirmed = false } = {}) {
   const briefing = findBriefingById(briefingId);
 
   if (!briefing) {
     renderCurrentMission({ intro: true });
+    return;
+  }
+
+  if (pythonClassroomLessonPayload && !pythonConfirmed) {
+    callPythonBackend("complete_classroom_lesson", briefingId)
+      .then((result) => {
+        if (!result) {
+          audioManager.playError();
+          showClassroomMompyScreenAction(
+            currentLanguage === "pt-BR" ? "TENTAR NOVAMENTE" : "TRY AGAIN",
+            () => completeBriefing(briefingId, { directToMission }),
+          );
+          return;
+        }
+        applyPythonProgress(result.progress || result);
+        completeBriefing(briefingId, { directToMission, pythonConfirmed: true });
+      });
     return;
   }
 
@@ -4338,6 +8792,16 @@ function completeBriefing(briefingId) {
   activeBriefingId = null;
   activeBriefingStepIndex = 0;
   activeBriefingRetry = false;
+  activeRichLessonState = null;
+
+  if (directToMission) {
+    audioManager.playSuccess();
+    resetClassroomStage();
+    clearMompyScreenMessage();
+    renderCurrentMission({ intro: true });
+    return;
+  }
+
   setMompyState("briefing");
   renderMompyScreenPanel({
     title: t("briefingComplete"),
@@ -5417,6 +9881,15 @@ function showMissionCompleteOnMompy() {
 function clearMompyScreenMessage() {
   mompyScreenMessage.hidden = true;
   mompyScreenMessage.className = "mompy-screen-message";
+  clearClassroomTypewriter();
+  clearClassroomMompyScreenAction();
+  if (classroomLessonContent) {
+    classroomLessonContent.hidden = true;
+    classroomLessonContent.className = "classroom-lesson-content";
+    classroomLessonContent.replaceChildren();
+    delete classroomLessonContent.dataset.interactive;
+  }
+  classroomAuxMonitorContent?.replaceChildren();
 }
 
 function resumeMompyAfterCodeEdit() {
@@ -7290,6 +11763,7 @@ document.addEventListener("keydown", unlockAudioOnFirstInteraction, { once: true
 
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
+    stopMompyVoice();
     suspendClassroomEnvironmentAudio();
   } else {
     resumeClassroomEnvironmentAudio();
@@ -7297,6 +11771,7 @@ document.addEventListener("visibilitychange", () => {
 });
 
 window.addEventListener("pagehide", () => {
+  stopMompyVoice();
   stopClassroomEnvironmentAudio({ immediate: true });
 });
 
@@ -7475,6 +11950,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 audioManager.init();
+initializeClassroomAuxCrt();
 loadUserProfile();
 loadInterfaceSettings();
 loadProgress();
